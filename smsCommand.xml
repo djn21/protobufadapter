@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<cmd>
+	<name>smsCommand</name>
+	<type>SELECT_MESSAGE_SERVICE</type>
+	<class>write</class>
+	<prefix>AT+CSMS=</prefix>
+	<delimiter>,</delimiter>
+	<params>
+		<order>
+			<param name="messageService" optional="false"></param>
+		</order>
+	</params>
+</cmd> 
