@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<cmd name="generalCommand" prefix="" sufix="" delimiter=",">
+	<type name="DISPLAY_PRODUCT_IDENTIFICATION_INFORMATION" prefix="ATI">
+		<class name="execution" prefix="">
+			<order></order>
+		</class>
+	</type>
+</cmd>

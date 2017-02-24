@@ -11,14 +11,40 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import com.google.common.base.CaseFormat;
+
 import com.rtrk.adapter.exception.CommandPrefixException;
 import com.rtrk.adapter.exception.IllegalArgumentException;
 import com.rtrk.adapter.exception.ParameterValueOutOfBoundException;
 import com.rtrk.adapter.exception.RequiredParameterMissingException;
+
 import com.rtrk.atcommands.ATCommand.Command;
+
+/**
+ * 
+ * @author djekanovic
+ * 
+ *         Utility class for AT command encoding and decoding. The class
+ *         conatins static methods for converting between String and Protobuf AT
+ *         command format.
+ *
+ */
 
 public class ProtobufAdapter {
 
+	/**
+	 * Translate from Protobuf format to String format using a specific
+	 * description of message. The method uses XML file which contains
+	 * description of specific AT command.
+	 * 
+	 * @param commandByteArray
+	 *            AT command in Protobuf format which receives as byte array
+	 * 
+	 * @param commandDescription
+	 *            XML file which contains description of AT command
+	 * 
+	 * @return AT command in String format as byte array
+	 * 
+	 */
 	public static byte[] encode(byte[] commandByteArray, File commandDescription) {
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder;
@@ -66,9 +92,14 @@ public class ProtobufAdapter {
 				if (hasParam) {
 					Object paramObject = commandTypeClass.getMethod("get" + paramNameUpperCamel)
 							.invoke(commandTypeObject);
+					Class<?> paramClass = paramObject.getClass();
 					String paramValue = paramObject.toString();
-					if (String.class.equals(paramObject.getClass())) {
+					if (paramClass.equals(String.class)) {
 						paramValue = "\"" + paramObject.toString() + "\"";
+					} else if (paramClass.isPrimitive()) {
+						paramValue = paramObject.toString();
+					} else {
+						paramValue = paramClass.getMethod("getNumber").invoke(paramObject).toString();
 					}
 					if (i == 0)
 						commandString += paramValue;
@@ -80,10 +111,23 @@ public class ProtobufAdapter {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return commandString.getBytes();
 	}
 
+	/**
+	 * Translate from String format to Protobuf format using a specific
+	 * description of message. The method uses XML file which contains
+	 * description of specific AT command.
+	 * 
+	 * @param commandByteArray
+	 *            AT command in String format which receives as byte array
+	 * 
+	 * @param commandDescription
+	 *            XML file which contains description of AT command
+	 * 
+	 * @return AT command in Protobuf format as byte array
+	 * 
+	 */
 	public static byte[] decode(byte[] commandByteArray, File commandDescription) {
 		String commandString = new String(commandByteArray);
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -220,7 +264,16 @@ public class ProtobufAdapter {
 		return null;
 	}
 
-	private static Class<?> getWrepperClass(Class<?> primitiveType) {
+	/**
+	 * Get wrepper class from primitive class
+	 * 
+	 * @param primitiveClass
+	 *            - primitive class type
+	 * 
+	 * @return wrepper class type
+	 * 
+	 */
+	private static Class<?> getWrepperClass(Class<?> primitiveClass) {
 		HashMap<Class<?>, Class<?>> map = new HashMap<Class<?>, Class<?>>();
 		map.put(byte.class, Byte.class);
 		map.put(short.class, Short.class);
@@ -230,7 +283,7 @@ public class ProtobufAdapter {
 		map.put(double.class, Double.class);
 		map.put(char.class, Character.class);
 		map.put(boolean.class, Boolean.class);
-		return map.get(primitiveType);
+		return map.get(primitiveClass);
 	}
 
 }

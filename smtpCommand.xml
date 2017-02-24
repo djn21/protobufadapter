@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<cmd name="smtpCommand" prefix="AT+QSMTP" sufix="" delimiter=",">
+	<type name="ADD_OR_DELETE_RECIPIENTS" prefix="DST">
+		<class name="write" prefix="=">
+			<order>
+				<param name="recipientMode" optional="false"></param>
+				<param name="recipientType" optional="true"></param>
+				<param name="emailAddress" optional="true"></param>
+			</order>
+		</class>
+	</type>
+</cmd>
