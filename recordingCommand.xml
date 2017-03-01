@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<cmd name="recordingCommand" type="RECORD_MEDIA_FILE" class="write">
-	<params>
-		<param name="control" optional="false"></param>
-		<param name="fileName" optional="true"></param>
-		<param name="format" optional="true"></param>
-	</params>
-</cmd> 

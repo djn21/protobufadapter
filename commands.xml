@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<cmds>
+	<cmd name="httpCommand" prefix="AT+QHTTP" sufix="" delimiter=",">
+		<type name="DOWNLOAD_FILE_FROM_HTTP_SERVER" prefix="DL">
+			<class name="test" prefix="=?"></class>
+			<class name="write" prefix="=">
+				<order>
+					<param name="fileName" optional="true"></param>
+					<param name="length" optional="true"></param>
+					<param name="waitTime" optional="true">
+						<min>1</min>
+						<max>65536</max>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="SET_HTTP_SERVER_URL" prefix="URL">
+			<class name="test" prefix="=?"></class>
+			<class name="write" prefix="=">
+				<order>
+					<param name="URLLength" optional="false">
+						<min>1</min>
+						<max>450</max>
+					</param>
+					<param name="inputTime" optional="true">
+						<min>1</min>
+						<max>65536</max>
+					</param>
+				</order>
+			</class>
+		</type>
+	</cmd>
+	<cmd name="fileCommand" prefix="AT+QF" sufix="" delimiter=",">
+		<type name="UPLOAD_FILE_TO_STORAGE" prefix="UPL">
+			<class name="test" prefix="=?"></class>
+			<class name="write" prefix="=">
+				<order>
+					<param name="fileName" optional="false"></param>
+					<param name="fileSize" optional="true"></param>
+					<param name="timeout" optional="true"></param>
+					<param name="turnOnACTMode" optional="true"></param>
+				</order>
+			</class>
+		</type>
+	</cmd>
+	<cmd name="generalCommand" prefix="" sufix="" delimiter=",">
+		<type name="DISPLAY_PRODUCT_IDENTIFICATION_INFORMATION" prefix="ATI">
+			<class name="execution" prefix=""></class>
+		</type>
+	</cmd>
+	<cmd name="smsCommand" prefix="AT+" sufix="" delimiter=",">
+		<type name="DELETE_SMS_MESSAGE" prefix="CMGD">
+			<class name="write" prefix="=">
+				<order>
+					<param name="index" optional="false"></param>
+					<param name="delFlag" optional="true"></param>
+				</order>
+			</class>
+		</type>
+	</cmd>
+	<cmd name="smtpCommand" prefix="AT+QSMTP" sufix="" delimiter=",">
+		<type name="ADD_OR_DELETE_RECIPIENTS" prefix="DST">
+			<class name="write" prefix="=">
+				<order>
+					<param name="recipientMode" optional="false"></param>
+					<param name="recipientType" optional="true"></param>
+					<param name="emailAddress" optional="true"></param>
+				</order>
+			</class>
+		</type>
+	</cmd>
+</cmds>

@@ -4,7 +4,6 @@ import java.io.File;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.rtrk.atcommands.ATCommand.Command;
-import com.rtrk.atcommands.ATCommand.GeneralCommand;
 
 /**
  * Hello world!
@@ -12,12 +11,9 @@ import com.rtrk.atcommands.ATCommand.GeneralCommand;
  */
 public class App {
 	public static void main(String[] args) throws InvalidProtocolBufferException {
-		byte[] decoded = ProtobufAdapter.decode("ATI".getBytes(), new File("generalCommand.xml"));
-		Command cmd=Command.parseFrom(decoded);
-		GeneralCommand g=cmd.getGeneralCommand();
-		System.out.println(g.getMessageType());
-		System.out.println(g.getExecution());
-		byte[] encoded = ProtobufAdapter.encode(decoded, new File("generalCommand.xml"));
-		System.out.println(new String(encoded));
+		byte[] decoded = ProtobufAdapter.decode("AT+QHTTPURL=20,40".getBytes());
+		Command cmd = Command.parseFrom(decoded);
+		System.out.println(cmd.getHttpCommand().getMessageType());
 	}
+
 }
