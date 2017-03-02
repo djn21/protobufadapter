@@ -1,4 +1,4 @@
-package com.rtrk.adapter;
+package com.rtrk.atcommand.adapter;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -16,9 +16,11 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import com.google.common.base.CaseFormat;
-import com.rtrk.adapter.exception.XMLParseException;
-import com.rtrk.atcommands.ATCommand.Command;
-import com.rtrk.xml.Parameter;
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.rtrk.atcommand.ATCommand;
+import com.rtrk.atcommand.Parameter;
+import com.rtrk.atcommand.exception.XMLParseException;
+import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 
 /**
  * 
@@ -30,10 +32,10 @@ import com.rtrk.xml.Parameter;
  *
  */
 
-public class ProtobufAdapter {
+public class ProtobufATCommandAdapter {
 
-	private static Map<String, com.rtrk.xml.Command> decodeMap = new HashMap<String, com.rtrk.xml.Command>();
-	private static Map<String, Map<String, com.rtrk.xml.Command>> encodeMap = new HashMap<String, Map<String, com.rtrk.xml.Command>>();
+	private static Map<String, ATCommand> decodeMap = new HashMap<String, ATCommand>();
+	private static Map<String, Map<String, ATCommand>> encodeMap = new HashMap<String, Map<String, ATCommand>>();
 
 	static {
 		init();
@@ -62,7 +64,7 @@ public class ProtobufAdapter {
 				// type node list
 				NodeList typeNodeList = cmdElement.getElementsByTagName("type");
 				for (int j = 0; j < typeNodeList.getLength(); j++) {
-					Map<String, com.rtrk.xml.Command> classMap = new HashMap<String, com.rtrk.xml.Command>();
+					Map<String, ATCommand> classMap = new HashMap<String, ATCommand>();
 					// type element
 					Element typeElement = (Element) typeNodeList.item(j);
 					String typeName = typeElement.getAttribute("name");
@@ -95,19 +97,34 @@ public class ProtobufAdapter {
 									if (paramElement.hasChildNodes()) {
 										Element minElement = (Element) paramElement.getElementsByTagName("min").item(0);
 										Element maxElement = (Element) paramElement.getElementsByTagName("max").item(0);
-										int min = Integer.valueOf(minElement.getTextContent());
-										int max = Integer.valueOf(maxElement.getTextContent());
-										// set parameter attributes
-										parameter.setMin(min);
-										parameter.setMax(max);
+										Element trueElement = (Element) paramElement.getElementsByTagName("true")
+												.item(0);
+										Element falseElement = (Element) paramElement.getElementsByTagName("false")
+												.item(0);
+										if (minElement != null) {
+											int minValue = Integer.valueOf(minElement.getTextContent());
+											parameter.setMinValue(minValue);
+										}
+										if (maxElement != null) {
+											int maxValue = Integer.valueOf(maxElement.getTextContent());
+											parameter.setMaxValue(maxValue);
+										}
+										if (trueElement != null) {
+											int trueValue = Integer.valueOf(trueElement.getTextContent());
+											parameter.setTrueValue(trueValue);
+										}
+										if (falseElement != null) {
+											int falseValue = Integer.valueOf(falseElement.getTextContent());
+											parameter.setFalseValue(falseValue);
+										}
 									}
 									parameters.add(parameter);
 								}
 							}
 						}
 						String fullPrefix = cmdPrefix + typePrefix + classPrefix;
-						com.rtrk.xml.Command command = new com.rtrk.xml.Command(cmdName, typeName, className,
-								fullPrefix, cmdSufix, cmdDelimiter, parameters);
+						ATCommand command = new ATCommand(cmdName, typeName, className, fullPrefix, cmdSufix,
+								cmdDelimiter, parameters);
 						decodeMap.put(command.getPrefix(), command);
 						classMap.put(command.getClazz(), command);
 					}
@@ -128,62 +145,61 @@ public class ProtobufAdapter {
 	 * @param commandByteArray
 	 *            AT command in Protobuf format which receives as byte array
 	 * 
-	 * @param commandDescription
-	 *            XML file which contains description of AT command
-	 * 
 	 * @return AT command in String format as byte array
 	 * 
 	 */
-	public static byte[] encode(byte[] commandByteArray, File commandDescription) {
-		/*
-		 * String commandString = ""; try { documentBuilder =
-		 * documentBuilderFactory.newDocumentBuilder(); document =
-		 * documentBuilder.parse(commandDescription);
-		 * document.getDocumentElement().normalize(); // command Command command
-		 * = Command.parseFrom(commandByteArray); Class<?> commandClass =
-		 * command.getClass(); // cmd element Element cmdElement = (Element)
-		 * document.getDocumentElement(); String cmdName =
-		 * cmdElement.getAttribute("name"); String cmdPrefix =
-		 * cmdElement.getAttribute("prefix"); String cmdSufix =
-		 * cmdElement.getAttribute("sufix"); String cmdDelimiter =
-		 * cmdElement.getAttribute("delimiter"); // type element Element
-		 * typeElement = (Element)
-		 * cmdElement.getElementsByTagName("type").item(0); String typePrefix =
-		 * typeElement.getAttribute("prefix"); // class element Element
-		 * classElement = (Element)
-		 * typeElement.getElementsByTagName("class").item(0); String classPrefix
-		 * = classElement.getAttribute("prefix"); // full prefix String prefix =
-		 * cmdPrefix + typePrefix + classPrefix; // upper camel name String
-		 * cmdNameUpperCamel = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL,
-		 * cmdName); // command type object and class Object commandTypeObject =
-		 * commandClass.getMethod("get" + cmdNameUpperCamel).invoke(command);
-		 * Class<?> commandTypeClass = commandTypeObject.getClass(); // order
-		 * element Element paramsElement = (Element)
-		 * classElement.getElementsByTagName("order").item(0); NodeList params =
-		 * paramsElement.getElementsByTagName("param"); commandString = prefix;
-		 * for (int i = 0; i < params.getLength(); i++) { // param element
-		 * Element param = (Element) params.item(i); // param attribures String
-		 * paramName = param.getAttribute("name"); String paramNameUpperCamel =
-		 * CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, paramName); // has
-		 * parameter boolean hasParam = (Boolean)
-		 * commandTypeClass.getMethod("has" + paramNameUpperCamel)
-		 * .invoke(commandTypeObject); if (hasParam) { Class<?> paramClass =
-		 * commandTypeClass.getMethod("get" +
-		 * paramNameUpperCamel).getReturnType(); Object paramObject =
-		 * commandTypeClass.getMethod("get" + paramNameUpperCamel)
-		 * .invoke(commandTypeObject); String paramValue =
-		 * paramObject.toString(); if (paramClass.equals(String.class)) {
-		 * paramValue = "\"" + paramObject.toString() + "\""; } else if
-		 * (paramClass.equals(boolean.class)) { paramValue = (boolean)
-		 * paramObject ? "1" : "0"; } else if (paramClass.isPrimitive()) {
-		 * paramValue = paramObject.toString(); } else { paramValue =
-		 * paramClass.getMethod("getNumber").invoke(paramObject).toString(); }
-		 * if (i == 0) commandString += paramValue; else commandString +=
-		 * cmdDelimiter + paramValue; } } commandString += cmdSufix; } catch
-		 * (Exception e) { e.printStackTrace(); } return
-		 * commandString.getBytes();
-		 */
-		return null;
+	public static byte[] encode(byte[] commandByteArray) {
+		String commandString = "";
+		try {
+			// command and command class
+			Command command = Command.parseFrom(commandByteArray);
+			Class<?> commandClass = command.getClass();
+			String commandTypeUpperCamle = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL,
+					command.getCommandType().toString());
+			// message and message class
+			Class<?> messageClass = commandClass.getMethod("get" + commandTypeUpperCamle).getReturnType();
+			Object message = commandClass.getMethod("get" + commandTypeUpperCamle).invoke(command);
+			// message type
+			String messageType = messageClass.getMethod("getMessageType").invoke(message).toString();
+			// message action
+			String messageAction = messageClass.getMethod("getAction").invoke(message).toString();
+			ATCommand atCommand = encodeMap.get(messageType).get(messageAction);
+			// set prefix
+			commandString += atCommand.getPrefix();
+			// set parameters
+			Vector<Parameter> parameters = atCommand.getParameters();
+			for (int i = 0; i < parameters.size(); i++) {
+				Parameter parameter = parameters.get(i);
+				String paramNameUpperCamel = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, parameter.getName());
+				boolean hasParemeter = (boolean) messageClass.getMethod("has" + paramNameUpperCamel).invoke(message);
+				if (hasParemeter) {
+					Class<?> paramClass = messageClass.getMethod("get" + paramNameUpperCamel).getReturnType();
+					String paramValue = messageClass.getMethod("get" + paramNameUpperCamel).invoke(message).toString();
+					if (paramClass.equals(String.class)) {
+						paramValue = "\"" + paramValue + "\"";
+					} else if (paramClass.equals(boolean.class)) {
+						paramValue = paramValue.equals("true") ? parameter.getTrueValue() + ""
+								: parameter.getFalseValue() + "";
+					} else if (!paramClass.isPrimitive()) {
+						Object paramObject = messageClass.getMethod("get" + paramNameUpperCamel).invoke(message);
+						paramValue = paramClass.getMethod("getNumber").invoke(paramObject).toString();
+					}
+					// set parameter
+					if (i == 0) {
+						commandString += paramValue;
+					} else {
+						commandString += atCommand.getDelimiter() + paramValue;
+					}
+					if (i == parameters.size() - 1) {
+						commandString += atCommand.getSufix();
+					}
+				}
+			}
+		} catch (InvalidProtocolBufferException | NoSuchMethodException | SecurityException | IllegalAccessException
+				| IllegalArgumentException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		return commandString.getBytes();
 	}
 
 	/**
@@ -194,9 +210,6 @@ public class ProtobufAdapter {
 	 * 
 	 * @param commandByteArray
 	 *            AT command in String format which receives as byte array
-	 * 
-	 * @param commandDescription
-	 *            XML file which contains description of AT command
 	 * 
 	 * @return AT command in Protobuf format as byte array
 	 * 
@@ -215,13 +228,12 @@ public class ProtobufAdapter {
 			prefix = matcher.group(0);
 		}
 		// command with prefix
-		com.rtrk.xml.Command command = decodeMap.get(prefix);
-		if (command == null) {
+		ATCommand atCommand = decodeMap.get(prefix);
+		if (atCommand == null) {
 			throw new XMLParseException("Can't find description for command with " + prefix + " prefix");
 		}
 		// name to upper camel
-		String cmdNameUpperCamel = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, command.getName());
-		String classNameUpperCamel = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, command.getClazz());
+		String cmdNameUpperCamel = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, atCommand.getName());
 		try {
 			// command type class, builder and builder class
 			Class<?> commandTypeClass = commandBuilderClass.getMethod("get" + cmdNameUpperCamel).getReturnType();
@@ -230,26 +242,32 @@ public class ProtobufAdapter {
 			// set command type
 			Class<?> commandMessageTypeClass = commandTypeBuilderClass.getMethod("getMessageType").getReturnType();
 			Object commandMessageTypeObject = commandMessageTypeClass.getMethod("valueOf", String.class)
-					.invoke(commandMessageTypeClass, command.getType());
+					.invoke(commandMessageTypeClass, atCommand.getType());
 			commandTypeBuilderClass.getMethod("setMessageType", commandMessageTypeClass)
 					.invoke(commandTypeBuilderObject, commandMessageTypeObject);
-			// set command class
-			commandTypeBuilderClass.getMethod("set" + classNameUpperCamel, boolean.class)
-					.invoke(commandTypeBuilderObject, true);
+			// set command action
+			Class<?> actionClass = commandTypeBuilderClass.getMethod("getAction").getReturnType();
+			Object actionObject = actionClass.getMethod("valueOf", String.class).invoke(actionClass,
+					atCommand.getClazz());
+			commandTypeBuilderClass.getMethod("setAction", actionClass).invoke(commandTypeBuilderObject, actionObject);
 			// params length check
-			int numOfParams = commandString.split(command.getDelimiter()).length;
-			int maxNumOfParams = command.getParameters().size();
+			int numOfParams = 0;
+			if (commandString.contains(atCommand.getDelimiter())) {
+				numOfParams = commandString.split(atCommand.getDelimiter()).length;
+			}
+			int maxNumOfParams = atCommand.getParameters().size();
 			// prefix regex
 			String prefixRegex = prefix.replace("+", "\\+");
 			if (numOfParams > maxNumOfParams) {
 				throw new XMLParseException("Number of arguments must be less or equal to " + maxNumOfParams
 						+ " [current " + numOfParams + "]");
 			}
-			for (int i = 0; i < command.getParameters().size(); i++) {
-				Parameter parameter = command.getParameters().get(i);
+			for (int i = 0; i < atCommand.getParameters().size(); i++) {
+				Parameter parameter = atCommand.getParameters().get(i);
 				String paramNameUpperCamel = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, parameter.getName());
 				// parameters syntax check
-				if (commandString.split(prefixRegex).length == 0 || i == commandString.split(command.getDelimiter()).length) {
+				if (commandString.split(prefixRegex).length == 0
+						|| i == commandString.split(atCommand.getDelimiter()).length) {
 					if (parameter.isOptional()) {
 						break;
 					} else {
@@ -260,12 +278,12 @@ public class ProtobufAdapter {
 				// param class
 				Class<?> paramClass = commandTypeBuilderClass.getMethod("get" + paramNameUpperCamel).getReturnType();
 				// param value
-				String paramValue = commandString.split(command.getDelimiter())[i].trim();
+				String paramValue = commandString.split(atCommand.getDelimiter())[i].trim();
 				if (i == 0) {
 					paramValue = paramValue.split(prefixRegex)[1].trim();
 				}
-				if (i + 1 == commandString.split(command.getDelimiter()).length && !"".equals(command.getSufix())) {
-					paramValue = paramValue.split(command.getSufix())[0].trim();
+				if (i + 1 == commandString.split(atCommand.getDelimiter()).length && !"".equals(atCommand.getSufix())) {
+					paramValue = paramValue.split(atCommand.getSufix())[0].trim();
 				}
 				if (paramClass.equals(String.class)) {
 					paramValue = paramValue.substring(1, paramValue.length() - 1);
@@ -275,20 +293,30 @@ public class ProtobufAdapter {
 					Class<?> wrepperClass = getWrepperClass(paramClass);
 					Object paramValueObject = null;
 					if (boolean.class.equals(paramClass)) {
+						boolean paramValueBoolean = false;
+						if (parameter.hasTrueValue() && paramValue.equals(parameter.getTrueValue() + "")) {
+							paramValueBoolean = true;
+						} else if (parameter.hasFalseValue() && paramValue.equals(parameter.getFalseValue() + "")) {
+							paramValueBoolean = false;
+						} else {
+							throw new XMLParseException(
+									"Incorrect value for " + parameter.getName() + " parameter [expected true="
+											+ parameter.getTrueValue() + ", false=" + parameter.getFalseValue() + "]");
+						}
 						paramValueObject = wrepperClass.getMethod("valueOf", boolean.class).invoke(wrepperClass,
-								(paramValue.equals("1") ? true : false));
+								paramValueBoolean);
 					} else {
 						paramValueObject = wrepperClass.getMethod("valueOf", String.class).invoke(wrepperClass,
 								paramValue);
-					}
-					double paramValueDouble = Double.valueOf(paramValueObject.toString());
-					if (parameter.hasMin() && paramValueDouble < parameter.getMin()) {
-						throw new XMLParseException("Parameter " + parameter.getName() + " must be greater then "
-								+ (int) parameter.getMin());
-					}
-					if (parameter.hasMax() && paramValueDouble > parameter.getMax()) {
-						throw new XMLParseException(
-								"Parameter " + parameter.getName() + " must be less then " + (int) parameter.getMax());
+						double paramValueDouble = Double.valueOf(paramValueObject.toString());
+						if (parameter.hasMinValue() && paramValueDouble < parameter.getMinValue()) {
+							throw new XMLParseException("Parameter " + parameter.getName() + " must be greater then "
+									+ (int) parameter.getMinValue());
+						}
+						if (parameter.hasMaxValue() && paramValueDouble > parameter.getMaxValue()) {
+							throw new XMLParseException("Parameter " + parameter.getName() + " must be less then "
+									+ (int) parameter.getMaxValue());
+						}
 					}
 					commandTypeBuilderClass.getMethod("set" + paramNameUpperCamel, paramClass)
 							.invoke(commandTypeBuilderObject, paramValueObject);
@@ -296,8 +324,12 @@ public class ProtobufAdapter {
 					int paramValueInt = Integer.parseInt(paramValue);
 					Object paramValueObject = paramClass.getMethod("valueOf", int.class).invoke(paramClass,
 							paramValueInt);
-					commandTypeBuilderClass.getMethod("set" + paramNameUpperCamel, paramClass)
-							.invoke(commandTypeBuilderObject, paramValueObject);
+					if (paramValueObject != null) {
+						commandTypeBuilderClass.getMethod("set" + paramNameUpperCamel, paramClass)
+								.invoke(commandTypeBuilderObject, paramValueObject);
+					} else {
+						throw new XMLParseException("Incorrect value ["+paramValueInt+"] for "+parameter.getName());
+					}
 				}
 			}
 			// set command type
@@ -306,7 +338,7 @@ public class ProtobufAdapter {
 					commandTypeObject);
 			// set command type enumeration
 			Class<?> commandTypeEnumClass = commandBuilderClass.getMethod("getCommandType").getReturnType();
-			String commandTypeEnum = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, command.getName());
+			String commandTypeEnum = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, atCommand.getName());
 			Object commandTypeEnumObject = commandTypeEnumClass.getMethod("valueOf", String.class)
 					.invoke(commandTypeEnumClass, commandTypeEnum);
 			commandBuilderClass.getMethod("setCommandType", commandTypeEnumClass).invoke(commandBuilder,

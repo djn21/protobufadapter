@@ -1,8 +1,8 @@
-package com.rtrk.xml;
+package com.rtrk.atcommand;
 
 import java.util.Vector;
 
-public class Command {
+public class ATCommand {
 
 	private String name;
 	private String type;
@@ -12,11 +12,11 @@ public class Command {
 	private String delimiter;
 	private Vector<Parameter> parameters = new Vector<Parameter>();
 
-	public Command() {
+	public ATCommand() {
 		super();
 	}
 
-	public Command(String name, String type, String clazz, String prefix, String sufix, String delimiter,
+	public ATCommand(String name, String type, String clazz, String prefix, String sufix, String delimiter,
 			Vector<Parameter> parameters) {
 		super();
 		this.name = name;

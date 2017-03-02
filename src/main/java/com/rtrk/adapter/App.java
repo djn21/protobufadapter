@@ -1,9 +1,7 @@
 package com.rtrk.adapter;
 
-import java.io.File;
-
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.rtrk.atcommands.ATCommand.Command;
+import com.rtrk.atcommand.adapter.ProtobufATCommandAdapter;
 
 /**
  * Hello world!
@@ -11,9 +9,9 @@ import com.rtrk.atcommands.ATCommand.Command;
  */
 public class App {
 	public static void main(String[] args) throws InvalidProtocolBufferException {
-		byte[] decoded = ProtobufAdapter.decode("AT+QHTTPURL=20,40".getBytes());
-		Command cmd = Command.parseFrom(decoded);
-		System.out.println(cmd.getHttpCommand().getMessageType());
+		byte[] decoded = ProtobufATCommandAdapter.decode("AT+QSMTPDST=1, 3, 'dd@rtrk.com'".getBytes());
+		byte[] encoded=ProtobufATCommandAdapter.encode(decoded);
+		System.out.println(new String(encoded));
 	}
 
 }

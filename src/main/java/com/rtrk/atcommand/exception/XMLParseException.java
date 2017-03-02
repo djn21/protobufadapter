@@ -1,4 +1,4 @@
-package com.rtrk.adapter.exception;
+package com.rtrk.atcommand.exception;
 
 public class XMLParseException extends RuntimeException {
 
