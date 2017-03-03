@@ -17,6 +17,7 @@ import org.w3c.dom.NodeList;
 
 import com.google.common.base.CaseFormat;
 import com.google.protobuf.InvalidProtocolBufferException;
+
 import com.rtrk.atcommand.ATCommand;
 import com.rtrk.atcommand.Parameter;
 import com.rtrk.atcommand.exception.XMLParseException;
@@ -25,8 +26,8 @@ import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 /**
  * 
  * Utility class for AT command encoding and decoding. The class conatins static
- * methods encode and decode for converting between String and Protobuf AT
- * command format.
+ * methods encode and decode for converting between AT Command and Protobuf AT
+ * Command format.
  * 
  * @author djekanovic
  *
@@ -34,6 +35,7 @@ import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 
 public class ProtobufATCommandAdapter {
 
+	private static String regexp;
 	private static Map<String, ATCommand> decodeMap = new HashMap<String, ATCommand>();
 	private static Map<String, Map<String, ATCommand>> encodeMap = new HashMap<String, Map<String, ATCommand>>();
 
@@ -52,6 +54,7 @@ public class ProtobufATCommandAdapter {
 			document.getDocumentElement().normalize();
 			// cmds element
 			Element cmdsElement = document.getDocumentElement();
+			regexp = cmdsElement.getAttribute("regex").trim();
 			// cmd node list
 			NodeList cmdNodeList = cmdsElement.getElementsByTagName("cmd");
 			for (int i = 0; i < cmdNodeList.getLength(); i++) {
@@ -123,6 +126,7 @@ public class ProtobufATCommandAdapter {
 							}
 						}
 						String fullPrefix = cmdPrefix + typePrefix + classPrefix;
+						System.out.println(fullPrefix);
 						ATCommand command = new ATCommand(cmdName, typeName, className, fullPrefix, cmdSufix,
 								cmdDelimiter, parameters);
 						decodeMap.put(command.getPrefix(), command);
@@ -138,9 +142,9 @@ public class ProtobufATCommandAdapter {
 
 	/**
 	 * 
-	 * Translate from Protobuf format to String format using a specific
-	 * description of message. The method uses XML file which contains
-	 * description of specific AT command.
+	 * Translate AT Command from Protobuf format using a specific description of
+	 * message. The method uses XML file which contains description of specific
+	 * AT command.
 	 * 
 	 * @param commandByteArray
 	 *            AT command in Protobuf format which receives as byte array
@@ -190,10 +194,11 @@ public class ProtobufATCommandAdapter {
 					} else {
 						commandString += atCommand.getDelimiter() + paramValue;
 					}
-					if (i == parameters.size() - 1) {
-						commandString += atCommand.getSufix();
-					}
 				}
+			}
+			// set sufix
+			if (atCommand.hasSufix()) {
+				commandString += atCommand.getSufix();
 			}
 		} catch (InvalidProtocolBufferException | NoSuchMethodException | SecurityException | IllegalAccessException
 				| IllegalArgumentException | InvocationTargetException e) {
@@ -204,9 +209,9 @@ public class ProtobufATCommandAdapter {
 
 	/**
 	 * 
-	 * Translate from String format to Protobuf format using a specific
-	 * description of message. The method uses XML file which contains
-	 * description of specific AT command.
+	 * Translate AT Command to Protobuf format using a specific description of
+	 * command. The method uses XML file which contains description of specific
+	 * AT command.
 	 * 
 	 * @param commandByteArray
 	 *            AT command in String format which receives as byte array
@@ -221,8 +226,7 @@ public class ProtobufATCommandAdapter {
 		Class<?> commandBuilderClass = commandBuilder.getClass();
 		// command prefix
 		String prefix = "";
-		String regex = "AT\\+?[A-Z]*=?\\??";
-		Pattern pattern = Pattern.compile(regex);
+		Pattern pattern = Pattern.compile(regexp);
 		Matcher matcher = pattern.matcher(commandString);
 		if (matcher.find()) {
 			prefix = matcher.group(0);
@@ -250,14 +254,29 @@ public class ProtobufATCommandAdapter {
 			Object actionObject = actionClass.getMethod("valueOf", String.class).invoke(actionClass,
 					atCommand.getClazz());
 			commandTypeBuilderClass.getMethod("setAction", actionClass).invoke(commandTypeBuilderObject, actionObject);
-			// params length check
+			// sufix check
+			if (!commandString.endsWith(atCommand.getSufix())) {
+				throw new XMLParseException(
+						"Command " + commandString + " must have " + atCommand.getSufix() + " sufix");
+			}
+			// params
+			String params = commandString.substring(atCommand.getPrefix().length(),
+					commandString.length() - atCommand.getSufix().length());
+			// num of params check
 			int numOfParams = 0;
-			if (commandString.contains(atCommand.getDelimiter())) {
-				numOfParams = commandString.split(atCommand.getDelimiter()).length;
+			if (atCommand.hasDelimiter()) {
+				numOfParams = params.split(atCommand.getDelimiter()).length;
+				if (params.length() == 0) {
+					numOfParams = 0;
+				}
+			} else {
+				if (params.length() == 0) {
+					numOfParams = 0;
+				} else {
+					numOfParams = 1;
+				}
 			}
 			int maxNumOfParams = atCommand.getParameters().size();
-			// prefix regex
-			String prefixRegex = prefix.replace("+", "\\+");
 			if (numOfParams > maxNumOfParams) {
 				throw new XMLParseException("Number of arguments must be less or equal to " + maxNumOfParams
 						+ " [current " + numOfParams + "]");
@@ -265,30 +284,44 @@ public class ProtobufATCommandAdapter {
 			for (int i = 0; i < atCommand.getParameters().size(); i++) {
 				Parameter parameter = atCommand.getParameters().get(i);
 				String paramNameUpperCamel = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, parameter.getName());
+				String paramValue = "";
 				// parameters syntax check
-				if (commandString.split(prefixRegex).length == 0
-						|| i == commandString.split(atCommand.getDelimiter()).length) {
-					if (parameter.isOptional()) {
-						break;
-					} else {
-						throw new XMLParseException("Required parameter " + parameter.getName() + " is missing");
+				if (i == 0) {
+					if (params.length() == 0) {
+						if (!parameter.isOptional()) {
+							throw new XMLParseException("Required parameter " + parameter.getName() + " is missing");
+						} else {
+							break;
+						}
+					}
+				} else {
+					if (atCommand.hasDelimiter()) {
+						if (params.split(atCommand.getDelimiter()).length == i) {
+							if (!parameter.isOptional()) {
+								throw new XMLParseException(
+										"Required parameter " + parameter.getName() + " is missing");
+							} else {
+								break;
+							}
+						}
 					}
 				}
-
 				// param class
 				Class<?> paramClass = commandTypeBuilderClass.getMethod("get" + paramNameUpperCamel).getReturnType();
 				// param value
-				String paramValue = commandString.split(atCommand.getDelimiter())[i].trim();
-				if (i == 0) {
-					paramValue = paramValue.split(prefixRegex)[1].trim();
-				}
-				if (i + 1 == commandString.split(atCommand.getDelimiter()).length && !"".equals(atCommand.getSufix())) {
-					paramValue = paramValue.split(atCommand.getSufix())[0].trim();
+				if (atCommand.hasDelimiter()) {
+					paramValue = params.split(atCommand.getDelimiter())[i].trim();
+				} else {
+					paramValue = params;
 				}
 				if (paramClass.equals(String.class)) {
-					paramValue = paramValue.substring(1, paramValue.length() - 1);
-					commandTypeBuilderClass.getMethod("set" + paramNameUpperCamel, paramClass)
-							.invoke(commandTypeBuilderObject, paramValue);
+					if (paramValue.startsWith("\"") && paramValue.endsWith("\"")) {
+						paramValue = paramValue.substring(1, paramValue.length() - 1);
+						commandTypeBuilderClass.getMethod("set" + paramNameUpperCamel, paramClass)
+								.invoke(commandTypeBuilderObject, paramValue);
+					} else {
+						throw new XMLParseException("String format exception for input: " + paramValue);
+					}
 				} else if (paramClass.isPrimitive()) {
 					Class<?> wrepperClass = getWrepperClass(paramClass);
 					Object paramValueObject = null;
@@ -328,7 +361,8 @@ public class ProtobufATCommandAdapter {
 						commandTypeBuilderClass.getMethod("set" + paramNameUpperCamel, paramClass)
 								.invoke(commandTypeBuilderObject, paramValueObject);
 					} else {
-						throw new XMLParseException("Incorrect value ["+paramValueInt+"] for "+parameter.getName());
+						throw new XMLParseException(
+								"Incorrect value [" + paramValueInt + "] for " + parameter.getName());
 					}
 				}
 			}
@@ -344,7 +378,9 @@ public class ProtobufATCommandAdapter {
 			commandBuilderClass.getMethod("setCommandType", commandTypeEnumClass).invoke(commandBuilder,
 					commandTypeEnumObject);
 		} catch (NoSuchMethodException | IllegalAccessException | java.lang.IllegalArgumentException
-				| InvocationTargetException | SecurityException e) {
+				| InvocationTargetException |
+
+				SecurityException e) {
 			e.printStackTrace();
 		}
 		return commandBuilder.build().toByteArray();

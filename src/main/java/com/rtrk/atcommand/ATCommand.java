@@ -2,6 +2,13 @@ package com.rtrk.atcommand;
 
 import java.util.Vector;
 
+/**
+ * 
+ * The ATCommand class represents AT Command.
+ * 
+ * @author djekanovic
+ *
+ */
 public class ATCommand {
 
 	private String name;
@@ -67,6 +74,10 @@ public class ATCommand {
 	public void setSufix(String sufix) {
 		this.sufix = sufix;
 	}
+	
+	public boolean hasSufix(){
+		return !"".equals(sufix);
+	}
 
 	public String getDelimiter() {
 		return delimiter;
@@ -74,6 +85,10 @@ public class ATCommand {
 
 	public void setDelimiter(String delimiter) {
 		this.delimiter = delimiter;
+	}
+	
+	public boolean hasDelimiter(){
+		return !"".equals(delimiter);
 	}
 
 	public Vector<Parameter> getParameters() {

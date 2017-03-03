@@ -9,7 +9,7 @@ import com.rtrk.atcommand.adapter.ProtobufATCommandAdapter;
  */
 public class App {
 	public static void main(String[] args) throws InvalidProtocolBufferException {
-		byte[] decoded = ProtobufATCommandAdapter.decode("AT+QSMTPDST=1, 3, 'dd@rtrk.com'".getBytes());
+		byte[] decoded = ProtobufATCommandAdapter.decode("AT+QHTTPURL=?".getBytes());
 		byte[] encoded=ProtobufATCommandAdapter.encode(decoded);
 		System.out.println(new String(encoded));
 	}

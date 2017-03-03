@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<cmds>
+<cmds regex="(AT)?\+?[&amp;]?[A-Z]*=?\??[\+]*">
 	<cmd name="httpCommand" prefix="AT+QHTTP" sufix="" delimiter=",">
 		<type name="DOWNLOAD_FILE_FROM_HTTP_SERVER" prefix="DL">
 			<class name="TEST" prefix="=?"></class>
@@ -47,9 +47,9 @@
 			</class>
 		</type>
 	</cmd>
-	<cmd name="generalCommand" prefix="" sufix="" delimiter=",">
+	<cmd name="generalCommand" delimiter=",">
 		<type name="DISPLAY_PRODUCT_IDENTIFICATION_INFORMATION" prefix="ATI">
-			<class name="EXECUTION" prefix=""></class>
+			<class name="EXECUTION"></class>
 		</type>
 	</cmd>
 	<cmd name="smsCommand" prefix="AT+" sufix="" delimiter=",">
@@ -62,7 +62,7 @@
 			</class>
 		</type>
 	</cmd>
-	<cmd name="smtpCommand" prefix="AT+QSMTP" sufix="" delimiter=",">
+	<cmd name="smtpCommand" prefix="AT+QSMTP" sufix=";" delimiter=":">
 		<type name="ADD_OR_DELETE_RECIPIENTS" prefix="DST">
 			<class name="WRITE" prefix="=">
 				<order>
@@ -71,6 +71,20 @@
 					<param name="emailAddress" optional="true"></param>
 				</order>
 			</class>
+		</type>
+	</cmd>
+	<cmd name="generalCommand">
+		<type name="SET_ALL_CURRENT_PARAMETERS_TO_MANUFACTURER_DEFAULTS" prefix="AT&amp;F">
+			<class name="EXECUTION">
+				<order>
+					<param name="default" optional="true"></param>
+				</order>
+			</class>
+		</type>
+	</cmd>
+	<cmd name="callRelatedCommand"> 
+		<type name="SWITCH_FROM_DATA_MODE_TO_COMMAND_MODE" prefix="+++">
+			<class name="EXECUTION"></class>
 		</type>
 	</cmd>
 </cmds>

@@ -3,6 +3,14 @@ package com.rtrk.atcommand;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * 
+ * The Parameter class represents parameter of AT Command.
+ * 
+ * @author djekanovic
+ *
+ */
 public class Parameter {
 
 	private String name;
