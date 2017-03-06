@@ -17,6 +17,7 @@ public class ATCommand {
 	private String prefix;
 	private String sufix;
 	private String delimiter;
+	private String parser;
 	private Vector<Parameter> parameters = new Vector<Parameter>();
 
 	public ATCommand() {
@@ -24,7 +25,7 @@ public class ATCommand {
 	}
 
 	public ATCommand(String name, String type, String clazz, String prefix, String sufix, String delimiter,
-			Vector<Parameter> parameters) {
+			String parser, Vector<Parameter> parameters) {
 		super();
 		this.name = name;
 		this.type = type;
@@ -32,6 +33,7 @@ public class ATCommand {
 		this.prefix = prefix;
 		this.sufix = sufix;
 		this.delimiter = delimiter;
+		this.parser = parser;
 		this.parameters = parameters;
 	}
 
@@ -74,8 +76,8 @@ public class ATCommand {
 	public void setSufix(String sufix) {
 		this.sufix = sufix;
 	}
-	
-	public boolean hasSufix(){
+
+	public boolean hasSufix() {
 		return !"".equals(sufix);
 	}
 
@@ -86,9 +88,17 @@ public class ATCommand {
 	public void setDelimiter(String delimiter) {
 		this.delimiter = delimiter;
 	}
-	
-	public boolean hasDelimiter(){
+
+	public boolean hasDelimiter() {
 		return !"".equals(delimiter);
+	}
+
+	public String getParser() {
+		return parser;
+	}
+
+	public void setParser(String parser) {
+		this.parser = parser;
 	}
 
 	public Vector<Parameter> getParameters() {

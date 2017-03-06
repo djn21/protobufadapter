@@ -9,9 +9,11 @@ import com.rtrk.atcommand.adapter.ProtobufATCommandAdapter;
  */
 public class App {
 	public static void main(String[] args) throws InvalidProtocolBufferException {
-		byte[] decoded = ProtobufATCommandAdapter.decode("AT+QHTTPURL=?".getBytes());
+		byte[] decoded = ProtobufATCommandAdapter.decode("AT+CMGF=0".getBytes());
 		byte[] encoded=ProtobufATCommandAdapter.encode(decoded);
 		System.out.println(new String(encoded));
+		int i=5;
+		System.out.println(new String(ProtobufATCommandAdapter.environmentVariables.get("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat")));
 	}
 
 }

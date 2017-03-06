@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <cmds regex="(AT)?\+?[&amp;]?[A-Z]*=?\??[\+]*">
-	<cmd name="httpCommand" prefix="AT+QHTTP" sufix="" delimiter=",">
+	<cmd name="httpCommand" prefix="AT+QHTTP" delimiter=",">
 		<type name="DOWNLOAD_FILE_FROM_HTTP_SERVER" prefix="DL">
 			<class name="TEST" prefix="=?"></class>
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="fileName" optional="true"></param>
+					<param name="fileName"></param>
 					<param name="length" optional="true"></param>
 					<param name="waitTime" optional="true">
 						<min>1</min>
@@ -56,25 +56,22 @@
 		<type name="DELETE_SMS_MESSAGE" prefix="CMGD">
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="index" optional="false"></param>
+					<param name="index" parser="com.rtrk.atcommand.parser.CMGDIndexParser"></param>
 					<param name="delFlag" optional="true"></param>
 				</order>
 			</class>
 		</type>
-	</cmd>
-	<cmd name="smtpCommand" prefix="AT+QSMTP" sufix=";" delimiter=":">
-		<type name="ADD_OR_DELETE_RECIPIENTS" prefix="DST">
+		<type name="SELECT_SMS_MESSAGE_FORMAT" prefix="CMGF">
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="recipientMode" optional="false"></param>
-					<param name="recipientType" optional="true"></param>
-					<param name="emailAddress" optional="true"></param>
+					<param name="messageFormat" optional="true" environment="true"></param>
 				</order>
 			</class>
 		</type>
 	</cmd>
 	<cmd name="generalCommand">
-		<type name="SET_ALL_CURRENT_PARAMETERS_TO_MANUFACTURER_DEFAULTS" prefix="AT&amp;F">
+		<type name="SET_ALL_CURRENT_PARAMETERS_TO_MANUFACTURER_DEFAULTS"
+			prefix="AT&amp;F">
 			<class name="EXECUTION">
 				<order>
 					<param name="default" optional="true"></param>
@@ -82,9 +79,15 @@
 			</class>
 		</type>
 	</cmd>
-	<cmd name="callRelatedCommand"> 
+	<cmd name="callRelatedCommand">
 		<type name="SWITCH_FROM_DATA_MODE_TO_COMMAND_MODE" prefix="+++">
 			<class name="EXECUTION"></class>
+		</type>
+	</cmd>
+	<cmd name="ftpCommand" prefix="AT+QFTP" delimiter=",">
+		<type name="SET_SOME_CONFIGURABLE_PARAMETERS_FOR_THE_FTP_SERVICE"
+			prefix="CFG">
+			<class name="WRITE" prefix="=" parser="com.rtrk.atcommand.parser.FTPCFGParser"></class>
 		</type>
 	</cmd>
 </cmds>

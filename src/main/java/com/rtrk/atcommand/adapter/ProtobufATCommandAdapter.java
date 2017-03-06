@@ -21,6 +21,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.rtrk.atcommand.ATCommand;
 import com.rtrk.atcommand.Parameter;
 import com.rtrk.atcommand.exception.XMLParseException;
+import com.rtrk.atcommand.parser.Parser;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 
 /**
@@ -34,6 +35,8 @@ import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
  */
 
 public class ProtobufATCommandAdapter {
+
+	public static Map<String, byte[]> environmentVariables = new HashMap<String, byte[]>();
 
 	private static String regexp;
 	private static Map<String, ATCommand> decodeMap = new HashMap<String, ATCommand>();
@@ -79,6 +82,7 @@ public class ProtobufATCommandAdapter {
 						Element classElement = (Element) classNodeList.item(k);
 						String className = classElement.getAttribute("name");
 						String classPrefix = classElement.getAttribute("prefix");
+						String classParser = classElement.getAttribute("parser");
 						// order node list
 						Vector<Parameter> parameters = new Vector<Parameter>();
 						if (classElement.hasChildNodes()) {
@@ -93,10 +97,22 @@ public class ProtobufATCommandAdapter {
 									// param element
 									Element paramElement = (Element) paramNodeList.item(n);
 									String paramName = paramElement.getAttribute("name");
-									boolean paramOptional = Boolean.valueOf(paramElement.getAttribute("optional"));
+									String paramOptional = paramElement.getAttribute("optional");
+									String paramParser = paramElement.getAttribute("parser");
+									String paramEnvironment = paramElement.getAttribute("environment");
+									boolean optional = false;
+									if (paramOptional.equals("true")) {
+										optional = true;
+									}
+									boolean environment = false;
+									if (paramEnvironment.equals("true")) {
+										environment = true;
+									}
 									// set parameter attributes
 									parameter.setName(paramName);
-									parameter.setOptional(paramOptional);
+									parameter.setOptional(optional);
+									parameter.setParser(paramParser);
+									parameter.setEnvironment(environment);
 									if (paramElement.hasChildNodes()) {
 										Element minElement = (Element) paramElement.getElementsByTagName("min").item(0);
 										Element maxElement = (Element) paramElement.getElementsByTagName("max").item(0);
@@ -126,9 +142,8 @@ public class ProtobufATCommandAdapter {
 							}
 						}
 						String fullPrefix = cmdPrefix + typePrefix + classPrefix;
-						System.out.println(fullPrefix);
 						ATCommand command = new ATCommand(cmdName, typeName, className, fullPrefix, cmdSufix,
-								cmdDelimiter, parameters);
+								cmdDelimiter, classParser, parameters);
 						decodeMap.put(command.getPrefix(), command);
 						classMap.put(command.getClazz(), command);
 					}
@@ -168,6 +183,11 @@ public class ProtobufATCommandAdapter {
 			// message action
 			String messageAction = messageClass.getMethod("getAction").invoke(message).toString();
 			ATCommand atCommand = encodeMap.get(messageType).get(messageAction);
+			if (!atCommand.getParser().equals("")) {
+				Class<?> parserClass = Class.forName(atCommand.getParser());
+				Parser parser = (Parser) parserClass.newInstance();
+				return parser.encode(command);
+			}
 			// set prefix
 			commandString += atCommand.getPrefix();
 			// set parameters
@@ -177,16 +197,23 @@ public class ProtobufATCommandAdapter {
 				String paramNameUpperCamel = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, parameter.getName());
 				boolean hasParemeter = (boolean) messageClass.getMethod("has" + paramNameUpperCamel).invoke(message);
 				if (hasParemeter) {
-					Class<?> paramClass = messageClass.getMethod("get" + paramNameUpperCamel).getReturnType();
-					String paramValue = messageClass.getMethod("get" + paramNameUpperCamel).invoke(message).toString();
-					if (paramClass.equals(String.class)) {
-						paramValue = "\"" + paramValue + "\"";
-					} else if (paramClass.equals(boolean.class)) {
-						paramValue = paramValue.equals("true") ? parameter.getTrueValue() + ""
-								: parameter.getFalseValue() + "";
-					} else if (!paramClass.isPrimitive()) {
-						Object paramObject = messageClass.getMethod("get" + paramNameUpperCamel).invoke(message);
-						paramValue = paramClass.getMethod("getNumber").invoke(paramObject).toString();
+					String paramValue = "";
+					if (!parameter.getParser().equals("")) {
+						Class<?> parserClass = Class.forName(parameter.getParser());
+						Parser parser = (Parser) parserClass.newInstance();
+						paramValue = new String(parser.encode(command));
+					} else {
+						Class<?> paramClass = messageClass.getMethod("get" + paramNameUpperCamel).getReturnType();
+						paramValue = messageClass.getMethod("get" + paramNameUpperCamel).invoke(message).toString();
+						if (paramClass.equals(String.class)) {
+							paramValue = "\"" + paramValue + "\"";
+						} else if (paramClass.equals(boolean.class)) {
+							paramValue = paramValue.equals("true") ? parameter.getTrueValue() + ""
+									: parameter.getFalseValue() + "";
+						} else if (!paramClass.isPrimitive()) {
+							Object paramObject = messageClass.getMethod("get" + paramNameUpperCamel).invoke(message);
+							paramValue = paramClass.getMethod("getNumber").invoke(paramObject).toString();
+						}
 					}
 					// set parameter
 					if (i == 0) {
@@ -201,7 +228,8 @@ public class ProtobufATCommandAdapter {
 				commandString += atCommand.getSufix();
 			}
 		} catch (InvalidProtocolBufferException | NoSuchMethodException | SecurityException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException e) {
+				| IllegalArgumentException | InvocationTargetException | ClassNotFoundException
+				| InstantiationException e) {
 			e.printStackTrace();
 		}
 		return commandString.getBytes();
@@ -262,41 +290,19 @@ public class ProtobufATCommandAdapter {
 			// params
 			String params = commandString.substring(atCommand.getPrefix().length(),
 					commandString.length() - atCommand.getSufix().length());
-			// num of params check
-			int numOfParams = 0;
-			if (atCommand.hasDelimiter()) {
-				numOfParams = params.split(atCommand.getDelimiter()).length;
-				if (params.length() == 0) {
-					numOfParams = 0;
-				}
+			// decode command with parser
+			if (!atCommand.getParser().equals("")) {
+				Class<?> parserClass = Class.forName(atCommand.getParser());
+				Parser parser = (Parser) parserClass.newInstance();
+				parser.decode(params.getBytes(), commandTypeBuilderObject);
 			} else {
-				if (params.length() == 0) {
-					numOfParams = 0;
-				} else {
-					numOfParams = 1;
-				}
-			}
-			int maxNumOfParams = atCommand.getParameters().size();
-			if (numOfParams > maxNumOfParams) {
-				throw new XMLParseException("Number of arguments must be less or equal to " + maxNumOfParams
-						+ " [current " + numOfParams + "]");
-			}
-			for (int i = 0; i < atCommand.getParameters().size(); i++) {
-				Parameter parameter = atCommand.getParameters().get(i);
-				String paramNameUpperCamel = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, parameter.getName());
-				String paramValue = "";
-				// parameters syntax check
-				if (i == 0) {
-					if (params.length() == 0) {
-						if (!parameter.isOptional()) {
-							throw new XMLParseException("Required parameter " + parameter.getName() + " is missing");
-						} else {
-							break;
-						}
-					}
-				} else {
-					if (atCommand.hasDelimiter()) {
-						if (params.split(atCommand.getDelimiter()).length == i) {
+				for (int i = 0; i < atCommand.getParameters().size(); i++) {
+					Parameter parameter = atCommand.getParameters().get(i);
+					String paramNameUpperCamel = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, parameter.getName());
+					String paramValue = "";
+					// parameters syntax check
+					if (i == 0) {
+						if (params.length() == 0) {
 							if (!parameter.isOptional()) {
 								throw new XMLParseException(
 										"Required parameter " + parameter.getName() + " is missing");
@@ -304,66 +310,96 @@ public class ProtobufATCommandAdapter {
 								break;
 							}
 						}
-					}
-				}
-				// param class
-				Class<?> paramClass = commandTypeBuilderClass.getMethod("get" + paramNameUpperCamel).getReturnType();
-				// param value
-				if (atCommand.hasDelimiter()) {
-					paramValue = params.split(atCommand.getDelimiter())[i].trim();
-				} else {
-					paramValue = params;
-				}
-				if (paramClass.equals(String.class)) {
-					if (paramValue.startsWith("\"") && paramValue.endsWith("\"")) {
-						paramValue = paramValue.substring(1, paramValue.length() - 1);
-						commandTypeBuilderClass.getMethod("set" + paramNameUpperCamel, paramClass)
-								.invoke(commandTypeBuilderObject, paramValue);
 					} else {
-						throw new XMLParseException("String format exception for input: " + paramValue);
+						if (atCommand.hasDelimiter()) {
+							if (params.split(atCommand.getDelimiter()).length == i) {
+								if (!parameter.isOptional()) {
+									throw new XMLParseException(
+											"Required parameter " + parameter.getName() + " is missing");
+								} else {
+									break;
+								}
+							}
+						}
 					}
-				} else if (paramClass.isPrimitive()) {
-					Class<?> wrepperClass = getWrepperClass(paramClass);
-					Object paramValueObject = null;
-					if (boolean.class.equals(paramClass)) {
-						boolean paramValueBoolean = false;
-						if (parameter.hasTrueValue() && paramValue.equals(parameter.getTrueValue() + "")) {
-							paramValueBoolean = true;
-						} else if (parameter.hasFalseValue() && paramValue.equals(parameter.getFalseValue() + "")) {
-							paramValueBoolean = false;
+					// param class
+					Class<?> paramClass = commandTypeBuilderClass.getMethod("get" + paramNameUpperCamel)
+							.getReturnType();
+					// param value
+					if (atCommand.hasDelimiter()) {
+						paramValue = params.split(atCommand.getDelimiter())[i].trim();
+					} else {
+						paramValue = params.trim();
+					}
+					// decode parameter
+					if (!parameter.getParser().equals("")) {
+						Class<?> parserClass = Class.forName(parameter.getParser());
+						Parser parser = (Parser) parserClass.newInstance();
+						parser.decode(paramValue.getBytes(), commandTypeBuilderObject);
+					} else {
+						if (paramClass.equals(String.class)) {
+							if (paramValue.startsWith("\"") && paramValue.endsWith("\"")) {
+								paramValue = paramValue.substring(1, paramValue.length() - 1);
+								commandTypeBuilderClass.getMethod("set" + paramNameUpperCamel, paramClass)
+										.invoke(commandTypeBuilderObject, paramValue);
+							} else {
+								throw new XMLParseException("String format exception for input: " + paramValue);
+							}
+						} else if (paramClass.isPrimitive()) {
+							Class<?> wrepperClass = getWrepperClass(paramClass);
+							Object paramValueObject = null;
+							if (boolean.class.equals(paramClass)) {
+								boolean paramValueBoolean = false;
+								if (parameter.hasTrueValue() && paramValue.equals(parameter.getTrueValue() + "")) {
+									paramValueBoolean = true;
+								} else if (parameter.hasFalseValue()
+										&& paramValue.equals(parameter.getFalseValue() + "")) {
+									paramValueBoolean = false;
+								} else {
+									throw new XMLParseException("Incorrect value for " + parameter.getName()
+											+ " parameter [expected true=" + parameter.getTrueValue() + ", false="
+											+ parameter.getFalseValue() + "]");
+								}
+								paramValueObject = wrepperClass.getMethod("valueOf", boolean.class).invoke(wrepperClass,
+										paramValueBoolean);
+							} else {
+								paramValueObject = wrepperClass.getMethod("valueOf", String.class).invoke(wrepperClass,
+										paramValue);
+								double paramValueDouble = Double.valueOf(paramValueObject.toString());
+								if (parameter.hasMinValue() && paramValueDouble < parameter.getMinValue()) {
+									throw new XMLParseException("Parameter " + parameter.getName()
+											+ " must be greater or equals to " + (int) parameter.getMinValue());
+								}
+								if (parameter.hasMaxValue() && paramValueDouble > parameter.getMaxValue()) {
+									throw new XMLParseException("Parameter " + parameter.getName()
+											+ " must be less or equals to " + (int) parameter.getMaxValue());
+								}
+							}
+							commandTypeBuilderClass.getMethod("set" + paramNameUpperCamel, paramClass)
+									.invoke(commandTypeBuilderObject, paramValueObject);
 						} else {
-							throw new XMLParseException(
-									"Incorrect value for " + parameter.getName() + " parameter [expected true="
-											+ parameter.getTrueValue() + ", false=" + parameter.getFalseValue() + "]");
-						}
-						paramValueObject = wrepperClass.getMethod("valueOf", boolean.class).invoke(wrepperClass,
-								paramValueBoolean);
-					} else {
-						paramValueObject = wrepperClass.getMethod("valueOf", String.class).invoke(wrepperClass,
-								paramValue);
-						double paramValueDouble = Double.valueOf(paramValueObject.toString());
-						if (parameter.hasMinValue() && paramValueDouble < parameter.getMinValue()) {
-							throw new XMLParseException("Parameter " + parameter.getName() + " must be greater then "
-									+ (int) parameter.getMinValue());
-						}
-						if (parameter.hasMaxValue() && paramValueDouble > parameter.getMaxValue()) {
-							throw new XMLParseException("Parameter " + parameter.getName() + " must be less then "
-									+ (int) parameter.getMaxValue());
+							int paramValueInt = Integer.parseInt(paramValue);
+							Object paramValueObject = paramClass.getMethod("valueOf", int.class).invoke(paramClass,
+									paramValueInt);
+							if (paramValueObject != null) {
+								commandTypeBuilderClass.getMethod("set" + paramNameUpperCamel, paramClass)
+										.invoke(commandTypeBuilderObject, paramValueObject);
+							} else {
+								throw new XMLParseException(
+										"Incorrect value [" + paramValueInt + "] for " + parameter.getName());
+							}
 						}
 					}
-					commandTypeBuilderClass.getMethod("set" + paramNameUpperCamel, paramClass)
-							.invoke(commandTypeBuilderObject, paramValueObject);
-				} else {
-					int paramValueInt = Integer.parseInt(paramValue);
-					Object paramValueObject = paramClass.getMethod("valueOf", int.class).invoke(paramClass,
-							paramValueInt);
-					if (paramValueObject != null) {
-						commandTypeBuilderClass.getMethod("set" + paramNameUpperCamel, paramClass)
-								.invoke(commandTypeBuilderObject, paramValueObject);
-					} else {
-						throw new XMLParseException(
-								"Incorrect value [" + paramValueInt + "] for " + parameter.getName());
-					}
+				}
+			}
+			// set environment
+			for (Parameter parameter : atCommand.getParameters()) {
+				if (parameter.isEnvironment()) {
+					String paramNameUpperCamel = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, parameter.getName());
+					String key = atCommand.getName() + "." + atCommand.getType() + "." + parameter.getName();
+					byte[] value = commandTypeBuilderClass.getMethod("get" + paramNameUpperCamel)
+							.invoke(commandTypeBuilderObject).toString().getBytes();
+					environmentVariables.put(key, value);
 				}
 			}
 			// set command type
@@ -380,7 +416,7 @@ public class ProtobufATCommandAdapter {
 		} catch (NoSuchMethodException | IllegalAccessException | java.lang.IllegalArgumentException
 				| InvocationTargetException |
 
-				SecurityException e) {
+				SecurityException | ClassNotFoundException | InstantiationException e) {
 			e.printStackTrace();
 		}
 		return commandBuilder.build().toByteArray();

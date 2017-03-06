@@ -15,6 +15,8 @@ public class Parameter {
 
 	private String name;
 	private boolean optional;
+	private String parser;
+	private boolean environment;
 	private Map<String, Double> boundaries = new HashMap<String, Double>();
 	private Map<String, Integer> trueAndFalseValues=new HashMap<String, Integer>();
 
@@ -22,10 +24,12 @@ public class Parameter {
 		super();
 	}
 
-	public Parameter(String name, boolean optional, Map<String, Double> boundaries, Map<String, Integer> trueAndFalseValues) {
+	public Parameter(String name, boolean optional, String parser, boolean environment,Map<String, Double> boundaries, Map<String, Integer> trueAndFalseValues) {
 		super();
 		this.name = name;
 		this.optional = optional;
+		this.parser=parser;
+		this.environment=environment;
 		this.boundaries = boundaries;
 		this.trueAndFalseValues=trueAndFalseValues;
 	}
@@ -44,6 +48,22 @@ public class Parameter {
 
 	public void setOptional(boolean optional) {
 		this.optional = optional;
+	}
+
+	public String getParser() {
+		return parser;
+	}
+
+	public void setParser(String parser) {
+		this.parser = parser;
+	}
+
+	public boolean isEnvironment() {
+		return environment;
+	}
+
+	public void setEnvironment(boolean environment) {
+		this.environment = environment;
 	}
 
 	public double getMinValue() {
