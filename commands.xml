@@ -31,7 +31,7 @@
 			</class>
 		</type>
 	</cmd>
-	<cmd name="fileCommand" prefix="AT+QF" sufix="" delimiter=",">
+	<cmd name="fileCommand" prefix="AT+QF" delimiter=",">
 		<type name="UPLOAD_FILE_TO_STORAGE" prefix="UPL">
 			<class name="TEST" prefix="=?"></class>
 			<class name="WRITE" prefix="=">
@@ -47,16 +47,23 @@
 			</class>
 		</type>
 	</cmd>
+	<cmd name="mmsCommand" delimiter="," prefix="AT+QMM">
+		<type name="WRITE_MMS_MESSAGE" prefix="SW">
+			<class name="WRITE" prefix="="
+				parser="com.rtrk.atcommand.parser.WriteMMSMessageParser"></class>
+		</type>
+	</cmd>
 	<cmd name="generalCommand" delimiter=",">
 		<type name="DISPLAY_PRODUCT_IDENTIFICATION_INFORMATION" prefix="ATI">
 			<class name="EXECUTION"></class>
 		</type>
 	</cmd>
-	<cmd name="smsCommand" prefix="AT+" sufix="" delimiter=",">
+	<cmd name="smsCommand" prefix="AT+" delimiter=",">
 		<type name="DELETE_SMS_MESSAGE" prefix="CMGD">
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="index" parser="com.rtrk.atcommand.parser.CMGDIndexParser"></param>
+					<param name="index"
+						parser="com.rtrk.atcommand.parser.DeleteSMSMessageIndexParser"></param>
 					<param name="delFlag" optional="true"></param>
 				</order>
 			</class>
@@ -67,6 +74,14 @@
 					<param name="messageFormat" optional="true" environment="true"></param>
 				</order>
 			</class>
+		</type>
+		<type name="SEND_SMS_MESSAGE" prefix="CMGS">
+			<class name="WRITE" prefix="="
+				parser="com.rtrk.atcommand.parser.SendSMSMessageParser"></class>
+		</type>
+		<type name="RESTORE_SMS_SETTINGS" prefix="CRES">
+			<class name="WRITE" prefix="=" optional="true"
+				parser="com.rtrk.atcommand.parser.RestoreSMSSettingsParser"></class>
 		</type>
 	</cmd>
 	<cmd name="generalCommand">
@@ -87,7 +102,19 @@
 	<cmd name="ftpCommand" prefix="AT+QFTP" delimiter=",">
 		<type name="SET_SOME_CONFIGURABLE_PARAMETERS_FOR_THE_FTP_SERVICE"
 			prefix="CFG">
-			<class name="WRITE" prefix="=" parser="com.rtrk.atcommand.parser.FTPCFGParser"></class>
+			<class name="WRITE" prefix="="
+				parser="com.rtrk.atcommand.parser.FTPCFGParser"></class>
+		</type>
+		<type
+			name="LIST_CONTENTS_OF_DIRECTORY_OR_FILE_INFORMATION_ON_THE_FTP_SERVER"
+			prefix="LIST">
+			<class name="WRITE" prefix="=" optional="true"
+				parser="com.rtrk.atcommand.parser.ListDirectoryContentParser"></class>
+		</type>
+		<type name="LIST_FILE_NAMES_IN_THE_GIVEN_DIRECTORY_ON_THE_FTP_SERVER"
+			prefix="NLIST">
+			<class name="WRITE" prefix="=" optional="true"
+				parser="com.rtrk.atcommand.parser.ListFileNamesParser"></class>
 		</type>
 	</cmd>
 </cmds>

@@ -82,6 +82,7 @@ public class ProtobufATCommandAdapter {
 						Element classElement = (Element) classNodeList.item(k);
 						String className = classElement.getAttribute("name");
 						String classPrefix = classElement.getAttribute("prefix");
+						String classOptional = classElement.getAttribute("optional");
 						String classParser = classElement.getAttribute("parser");
 						// order node list
 						Vector<Parameter> parameters = new Vector<Parameter>();
@@ -141,6 +142,16 @@ public class ProtobufATCommandAdapter {
 								}
 							}
 						}
+						boolean optional = false;
+						if (!"".equals(classOptional)) {
+							optional = Boolean.parseBoolean(classOptional);
+						}
+						if (optional) {
+							String fullPrefix = cmdPrefix + typePrefix;
+							ATCommand command = new ATCommand(cmdName, typeName, className, fullPrefix, cmdSufix,
+									cmdDelimiter, classParser, parameters);
+							decodeMap.put(command.getPrefix(), command);
+						}
 						String fullPrefix = cmdPrefix + typePrefix + classPrefix;
 						ATCommand command = new ATCommand(cmdName, typeName, className, fullPrefix, cmdSufix,
 								cmdDelimiter, classParser, parameters);
@@ -183,13 +194,14 @@ public class ProtobufATCommandAdapter {
 			// message action
 			String messageAction = messageClass.getMethod("getAction").invoke(message).toString();
 			ATCommand atCommand = encodeMap.get(messageType).get(messageAction);
+			// set prefix
+			commandString += atCommand.getPrefix();
+			// parser encode
 			if (!atCommand.getParser().equals("")) {
 				Class<?> parserClass = Class.forName(atCommand.getParser());
 				Parser parser = (Parser) parserClass.newInstance();
 				return parser.encode(command);
 			}
-			// set prefix
-			commandString += atCommand.getPrefix();
 			// set parameters
 			Vector<Parameter> parameters = atCommand.getParameters();
 			for (int i = 0; i < parameters.size(); i++) {
