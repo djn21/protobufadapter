@@ -98,6 +98,10 @@
 		<type name="SWITCH_FROM_DATA_MODE_TO_COMMAND_MODE" prefix="+++">
 			<class name="EXECUTION"></class>
 		</type>
+		<type name="MOBILE_ORIGINATED_CALL_TO_DIAL_A_NUMBER" prefix="ATD">
+			<class name="EXECUTION"
+				parser="com.rtrk.atcommand.parser.MobileOriginatedCallParser"></class>
+		</type>
 	</cmd>
 	<cmd name="ftpCommand" prefix="AT+QFTP" delimiter=",">
 		<type name="SET_SOME_CONFIGURABLE_PARAMETERS_FOR_THE_FTP_SERVICE"
@@ -115,6 +119,22 @@
 			prefix="NLIST">
 			<class name="WRITE" prefix="=" optional="true"
 				parser="com.rtrk.atcommand.parser.ListFileNamesParser"></class>
+		</type>
+	</cmd>
+	<cmd name="tcpipCommand" prefix="AT+Q">
+		<type name="ENABLE_MULTIPLE_TCPIP_SESSION" prefix="IMUX">
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="enableMultipleTCPIPSession" environment="true">
+						<true>1</true>
+						<false>0</false>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="SEND_DATA_THROUGH_TCP_OR_UDP_CONNECTION" prefix="ISEND">
+			<class name="WRITE" prefix="="
+				parser="com.rtrk.atcommand.parser.SendDataTCPUDPParser"></class>
 		</type>
 	</cmd>
 </cmds>

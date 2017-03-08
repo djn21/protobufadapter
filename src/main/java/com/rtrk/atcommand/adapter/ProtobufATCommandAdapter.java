@@ -217,9 +217,7 @@ public class ProtobufATCommandAdapter {
 					} else {
 						Class<?> paramClass = messageClass.getMethod("get" + paramNameUpperCamel).getReturnType();
 						paramValue = messageClass.getMethod("get" + paramNameUpperCamel).invoke(message).toString();
-						if (paramClass.equals(String.class)) {
-							paramValue = "\"" + paramValue + "\"";
-						} else if (paramClass.equals(boolean.class)) {
+						if (paramClass.equals(boolean.class)) {
 							paramValue = paramValue.equals("true") ? parameter.getTrueValue() + ""
 									: parameter.getFalseValue() + "";
 						} else if (!paramClass.isPrimitive()) {
@@ -350,13 +348,8 @@ public class ProtobufATCommandAdapter {
 						parser.decode(paramValue.getBytes(), commandTypeBuilderObject);
 					} else {
 						if (paramClass.equals(String.class)) {
-							if (paramValue.startsWith("\"") && paramValue.endsWith("\"")) {
-								paramValue = paramValue.substring(1, paramValue.length() - 1);
-								commandTypeBuilderClass.getMethod("set" + paramNameUpperCamel, paramClass)
-										.invoke(commandTypeBuilderObject, paramValue);
-							} else {
-								throw new XMLParseException("String format exception for input: " + paramValue);
-							}
+							commandTypeBuilderClass.getMethod("set" + paramNameUpperCamel, paramClass)
+									.invoke(commandTypeBuilderObject, paramValue);
 						} else if (paramClass.isPrimitive()) {
 							Class<?> wrepperClass = getWrepperClass(paramClass);
 							Object paramValueObject = null;
@@ -370,7 +363,7 @@ public class ProtobufATCommandAdapter {
 								} else {
 									throw new XMLParseException("Incorrect value for " + parameter.getName()
 											+ " parameter [expected true=" + parameter.getTrueValue() + ", false="
-											+ parameter.getFalseValue() + "]");
+											+ parameter.getFalseValue() + ", actual=" + paramValue + "]");
 								}
 								paramValueObject = wrepperClass.getMethod("valueOf", boolean.class).invoke(wrepperClass,
 										paramValueBoolean);

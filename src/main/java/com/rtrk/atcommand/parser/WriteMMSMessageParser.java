@@ -30,7 +30,7 @@ public class WriteMMSMessageParser implements Parser {
 			int function = Integer.parseInt(params.split(",")[0].trim());
 			if (function == 4) {
 				if (params.split(",").length == 1) {
-					throw new XMLParseException("Required parameter is misssing");
+					throw new XMLParseException("Required parameter operateFunction is misssing");
 				} else {
 					int operate = Integer.parseInt(params.split(",")[1].trim());
 					mmsCommandBuilder.setOperateWriteMMS(OperateWriteMMS.valueOf(operate));

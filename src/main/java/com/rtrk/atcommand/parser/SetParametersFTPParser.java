@@ -31,7 +31,7 @@ public class SetParametersFTPParser implements Parser {
 	public void decode(byte[] commandByteArray, Object commandBuilder) {
 		String params = new String(commandByteArray);
 		if (params.length() == 0) {
-			throw new XMLParseException("Required parameter missing");
+			throw new XMLParseException("Required parameter type is missing");
 		}
 		String typeString = params.split(",")[0].trim();
 		int type = Integer.parseInt(typeString);
