@@ -9,7 +9,7 @@ import com.rtrk.atcommand.adapter.ProtobufATCommandAdapter;
  */
 public class App {
 	public static void main(String[] args) throws InvalidProtocolBufferException {
-		byte[] decoded = ProtobufATCommandAdapter.decode("ATD1255g;".getBytes());
+		byte[] decoded = ProtobufATCommandAdapter.decode("ATH;".getBytes());
 		byte[] encoded=ProtobufATCommandAdapter.encode(decoded);
 		System.out.println(new String(encoded));
 		/*byte[] decoded1=ProtobufATCommandAdapter.decode("AT+QISEND= 1, 1459".getBytes());
