@@ -85,7 +85,7 @@
 		</type>
 	</cmd>
 	<cmd name="generalCommand">
-		<type name="SET_ALL_CURRENT_PARAMETERS_TO_MANUFACTURER_DEFAULTS"
+		<type name="SET_ALL_PARAMETERS_TO_MANUFACTURER_DEFAULTS"
 			prefix="AT&amp;F">
 			<class name="EXECUTION">
 				<order>

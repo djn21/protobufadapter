@@ -39,7 +39,7 @@ public class ProtobufATCommandAdapter {
 	public static Map<String, byte[]> environmentVariables = new HashMap<String, byte[]>();
 
 	private static String regexp;
-	
+
 	private static Map<String, ATCommand> decodeMap = new HashMap<String, ATCommand>();
 	private static Map<String, Map<String, ATCommand>> encodeMap = new HashMap<String, Map<String, ATCommand>>();
 
@@ -48,7 +48,7 @@ public class ProtobufATCommandAdapter {
 	}
 
 	public static void init() {
-		
+
 		File commandDescriptionFile = new File("commands.xml");
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder;
@@ -57,11 +57,11 @@ public class ProtobufATCommandAdapter {
 			documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			document = documentBuilder.parse(commandDescriptionFile);
 			document.getDocumentElement().normalize();
-			
+
 			// cmds element
 			Element cmdsElement = document.getDocumentElement();
-			regexp = cmdsElement.getAttribute("regex").trim();
-			
+			regexp = cmdsElement.getAttribute("regex");
+
 			// cmd node list
 			NodeList cmdNodeList = cmdsElement.getElementsByTagName("cmd");
 			for (int i = 0; i < cmdNodeList.getLength(); i++) {
@@ -71,17 +71,17 @@ public class ProtobufATCommandAdapter {
 				String cmdPrefix = cmdElement.getAttribute("prefix");
 				String cmdSufix = cmdElement.getAttribute("sufix");
 				String cmdDelimiter = cmdElement.getAttribute("delimiter");
-				
+
 				// type node list
 				NodeList typeNodeList = cmdElement.getElementsByTagName("type");
 				for (int j = 0; j < typeNodeList.getLength(); j++) {
 					Map<String, ATCommand> classMap = new HashMap<String, ATCommand>();
-					
+
 					// type element
 					Element typeElement = (Element) typeNodeList.item(j);
 					String typeName = typeElement.getAttribute("name");
 					String typePrefix = typeElement.getAttribute("prefix");
-					
+
 					// class node list
 					NodeList classNodeList = typeElement.getElementsByTagName("class");
 					for (int k = 0; k < classNodeList.getLength(); k++) {
@@ -91,7 +91,7 @@ public class ProtobufATCommandAdapter {
 						String classPrefix = classElement.getAttribute("prefix");
 						String classOptional = classElement.getAttribute("optional");
 						String classParser = classElement.getAttribute("parser");
-						
+
 						// order node list
 						Vector<Parameter> parameters = new Vector<Parameter>();
 						if (classElement.hasChildNodes()) {
@@ -99,12 +99,12 @@ public class ProtobufATCommandAdapter {
 							for (int m = 0; m < orderNodeList.getLength(); m++) {
 								// order element
 								Element orderElement = (Element) orderNodeList.item(m);
-								
+
 								// param node list
 								NodeList paramNodeList = orderElement.getElementsByTagName("param");
 								for (int n = 0; n < paramNodeList.getLength(); n++) {
 									Parameter parameter = new Parameter();
-									
+
 									// param element
 									Element paramElement = (Element) paramNodeList.item(n);
 									String paramName = paramElement.getAttribute("name");
@@ -119,7 +119,7 @@ public class ProtobufATCommandAdapter {
 									if (paramEnvironment.equals("true")) {
 										environment = true;
 									}
-									
+
 									// set parameter attributes
 									parameter.setName(paramName);
 									parameter.setOptional(optional);
@@ -153,20 +153,20 @@ public class ProtobufATCommandAdapter {
 								}
 							}
 						}
-						
+
 						boolean optional = false;
-						
+
 						if (!"".equals(classOptional)) {
 							optional = Boolean.parseBoolean(classOptional);
 						}
-						
+
 						if (optional) {
 							String fullPrefix = cmdPrefix + typePrefix;
 							ATCommand command = new ATCommand(cmdName, typeName, className, fullPrefix, cmdSufix,
 									cmdDelimiter, classParser, parameters);
 							decodeMap.put(command.getPrefix(), command);
 						}
-						
+
 						String fullPrefix = cmdPrefix + typePrefix + classPrefix;
 						ATCommand command = new ATCommand(cmdName, typeName, className, fullPrefix, cmdSufix,
 								cmdDelimiter, classParser, parameters);
@@ -201,18 +201,18 @@ public class ProtobufATCommandAdapter {
 			Class<?> commandClass = command.getClass();
 			String commandTypeUpperCamle = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL,
 					command.getCommandType().toString());
-			
+
 			// message and message class
 			Class<?> messageClass = commandClass.getMethod("get" + commandTypeUpperCamle).getReturnType();
 			Object message = commandClass.getMethod("get" + commandTypeUpperCamle).invoke(command);
-			
+
 			// message type
 			String messageType = messageClass.getMethod("getMessageType").invoke(message).toString();
-			
+
 			// message action
 			String messageAction = messageClass.getMethod("getAction").invoke(message).toString();
 			ATCommand atCommand = encodeMap.get(messageType).get(messageAction);
-			
+
 			// set prefix
 			commandString += atCommand.getPrefix();
 			// parser encode
@@ -221,8 +221,8 @@ public class ProtobufATCommandAdapter {
 				Parser parser = (Parser) parserClass.newInstance();
 				return parser.encode(command);
 			}
-			
-			// set parameters
+
+			// get parameters
 			Vector<Parameter> parameters = atCommand.getParameters();
 			for (int i = 0; i < parameters.size(); i++) {
 				Parameter parameter = parameters.get(i);
@@ -240,13 +240,13 @@ public class ProtobufATCommandAdapter {
 						if (paramClass.equals(boolean.class)) {
 							paramValue = paramValue.equals("true") ? parameter.getTrueValue() + ""
 									: parameter.getFalseValue() + "";
-						} else if (!paramClass.isPrimitive()) {
+						} else if (!paramClass.isPrimitive() && !paramClass.equals(String.class)) {
 							Object paramObject = messageClass.getMethod("get" + paramNameUpperCamel).invoke(message);
 							paramValue = paramClass.getMethod("getNumber").invoke(paramObject).toString();
 						}
 					}
-					
-					// set parameter
+
+					// set parameters
 					if (i == 0) {
 						commandString += paramValue;
 					} else {
@@ -254,7 +254,7 @@ public class ProtobufATCommandAdapter {
 					}
 				}
 			}
-			
+
 			// set sufix
 			if (atCommand.hasSufix()) {
 				commandString += atCommand.getSufix();
@@ -281,11 +281,11 @@ public class ProtobufATCommandAdapter {
 	 */
 	public static byte[] decode(byte[] commandByteArray) {
 		String commandString = new String(commandByteArray);
-		
+
 		// command builder and class
 		Command.Builder commandBuilder = Command.newBuilder();
 		Class<?> commandBuilderClass = commandBuilder.getClass();
-		
+
 		// command prefix
 		String prefix = "";
 		Pattern pattern = Pattern.compile(regexp);
@@ -293,55 +293,67 @@ public class ProtobufATCommandAdapter {
 		if (matcher.find()) {
 			prefix = matcher.group(0);
 		}
-		
-		// command with prefix
+
+		// get command with prefix
 		ATCommand atCommand = decodeMap.get(prefix);
 		if (atCommand == null) {
 			throw new XMLParseException("Can't find description for command with " + prefix + " prefix");
 		}
-		
+
 		// name to upper camel
 		String cmdNameUpperCamel = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, atCommand.getName());
+
 		try {
 			// command type class, builder and builder class
 			Class<?> commandTypeClass = commandBuilderClass.getMethod("get" + cmdNameUpperCamel).getReturnType();
 			Object commandTypeBuilderObject = commandTypeClass.getMethod("newBuilder").invoke(commandTypeClass);
 			Class<?> commandTypeBuilderClass = commandTypeBuilderObject.getClass();
-			
+
 			// set command type
 			Class<?> commandMessageTypeClass = commandTypeBuilderClass.getMethod("getMessageType").getReturnType();
 			Object commandMessageTypeObject = commandMessageTypeClass.getMethod("valueOf", String.class)
 					.invoke(commandMessageTypeClass, atCommand.getType());
 			commandTypeBuilderClass.getMethod("setMessageType", commandMessageTypeClass)
 					.invoke(commandTypeBuilderObject, commandMessageTypeObject);
-			
+
 			// set command action
 			Class<?> actionClass = commandTypeBuilderClass.getMethod("getAction").getReturnType();
 			Object actionObject = actionClass.getMethod("valueOf", String.class).invoke(actionClass,
 					atCommand.getClazz());
 			commandTypeBuilderClass.getMethod("setAction", actionClass).invoke(commandTypeBuilderObject, actionObject);
-			
+
 			// sufix check
 			if (!commandString.endsWith(atCommand.getSufix())) {
 				throw new XMLParseException(
 						"Command " + commandString + " must have " + atCommand.getSufix() + " sufix");
 			}
-			
-			// params
+
+			// get params
 			String params = commandString.substring(atCommand.getPrefix().length(),
 					commandString.length() - atCommand.getSufix().length());
-			
+
+			// number of parameters check
+			if (!atCommand.getDelimiter().equals("")
+					&& params.split(atCommand.getDelimiter()).length > atCommand.getParameters().size()) {
+				throw new XMLParseException(
+						"Number of parameters must be less or equals to " + atCommand.getParameters().size());
+			}
+
 			// decode command with parser
 			if (!atCommand.getParser().equals("")) {
 				Class<?> parserClass = Class.forName(atCommand.getParser());
 				Parser parser = (Parser) parserClass.newInstance();
 				parser.decode(params.getBytes(), commandTypeBuilderObject);
 			} else {
+
+				// standard decode
 				for (int i = 0; i < atCommand.getParameters().size(); i++) {
+
+					// get parameter name
 					Parameter parameter = atCommand.getParameters().get(i);
 					String paramNameUpperCamel = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, parameter.getName());
 					String paramValue = "";
-					
+
 					// parameters syntax check
 					if (i == 0) {
 						if (params.length() == 0) {
@@ -364,35 +376,35 @@ public class ProtobufATCommandAdapter {
 							}
 						}
 					}
-					
+
 					// param class
 					Class<?> paramClass = commandTypeBuilderClass.getMethod("get" + paramNameUpperCamel)
 							.getReturnType();
-					
+
 					// param value
 					if (atCommand.hasDelimiter()) {
 						paramValue = params.split(atCommand.getDelimiter())[i].trim();
 					} else {
 						paramValue = params.trim();
 					}
-					
+
 					// decode parameter
 					if (!parameter.getParser().equals("")) {
 						Class<?> parserClass = Class.forName(parameter.getParser());
 						Parser parser = (Parser) parserClass.newInstance();
 						parser.decode(paramValue.getBytes(), commandTypeBuilderObject);
 					} else {
-						
+
 						// param is string
 						if (paramClass.equals(String.class)) {
 							commandTypeBuilderClass.getMethod("set" + paramNameUpperCamel, paramClass)
 									.invoke(commandTypeBuilderObject, paramValue);
-							
-						// param is primitive
+
+							// param is primitive
 						} else if (paramClass.isPrimitive()) {
 							Class<?> wrepperClass = getWrepperClass(paramClass);
 							Object paramValueObject = null;
-							
+
 							// param is boolean
 							if (boolean.class.equals(paramClass)) {
 								boolean paramValueBoolean = false;
@@ -408,8 +420,8 @@ public class ProtobufATCommandAdapter {
 								}
 								paramValueObject = wrepperClass.getMethod("valueOf", boolean.class).invoke(wrepperClass,
 										paramValueBoolean);
-							
-							// others primitive types
+
+								// others primitive types
 							} else {
 								paramValueObject = wrepperClass.getMethod("valueOf", String.class).invoke(wrepperClass,
 										paramValue);
@@ -425,8 +437,8 @@ public class ProtobufATCommandAdapter {
 							}
 							commandTypeBuilderClass.getMethod("set" + paramNameUpperCamel, paramClass)
 									.invoke(commandTypeBuilderObject, paramValueObject);
-							
-						//param is enum
+
+							// param is enumeration
 						} else {
 							int paramValueInt = Integer.parseInt(paramValue);
 							Object paramValueObject = paramClass.getMethod("valueOf", int.class).invoke(paramClass,
@@ -442,7 +454,7 @@ public class ProtobufATCommandAdapter {
 					}
 				}
 			}
-			
+
 			// set environment
 			for (Parameter parameter : atCommand.getParameters()) {
 				if (parameter.isEnvironment()) {
@@ -453,12 +465,12 @@ public class ProtobufATCommandAdapter {
 					environmentVariables.put(key, value);
 				}
 			}
-			
-			// set command type
+
+			// build command type
 			Object commandTypeObject = commandTypeBuilderClass.getMethod("build").invoke(commandTypeBuilderObject);
 			commandBuilderClass.getMethod("set" + cmdNameUpperCamel, commandTypeClass).invoke(commandBuilder,
 					commandTypeObject);
-			
+
 			// set command type enumeration
 			Class<?> commandTypeEnumClass = commandBuilderClass.getMethod("getCommandType").getReturnType();
 			String commandTypeEnum = CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, atCommand.getName());
@@ -466,12 +478,12 @@ public class ProtobufATCommandAdapter {
 					.invoke(commandTypeEnumClass, commandTypeEnum);
 			commandBuilderClass.getMethod("setCommandType", commandTypeEnumClass).invoke(commandBuilder,
 					commandTypeEnumObject);
-		} catch (NoSuchMethodException | IllegalAccessException | java.lang.IllegalArgumentException
-				| InvocationTargetException |
 
-				SecurityException | ClassNotFoundException | InstantiationException e) {
+		} catch (NoSuchMethodException | IllegalAccessException | java.lang.IllegalArgumentException
+				| InvocationTargetException | SecurityException | ClassNotFoundException | InstantiationException e) {
 			e.printStackTrace();
 		}
+
 		return commandBuilder.build().toByteArray();
 	}
 
