@@ -1,6 +1,7 @@
 package com.rtrk.atcommand.adapter;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,10 +11,12 @@ import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import com.google.common.base.CaseFormat;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -49,7 +52,7 @@ public class ProtobufATCommandAdapter {
 
 	public static void init() {
 
-		File commandDescriptionFile = new File("commands.xml");
+		File commandDescriptionFile = new File("resources/commands.xml");
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder;
 		Document document;
@@ -143,10 +146,14 @@ public class ProtobufATCommandAdapter {
 										if (trueElement != null) {
 											int trueValue = Integer.valueOf(trueElement.getTextContent());
 											parameter.setTrueValue(trueValue);
+										}else{
+											parameter.setTrueValue(1);
 										}
 										if (falseElement != null) {
 											int falseValue = Integer.valueOf(falseElement.getTextContent());
 											parameter.setFalseValue(falseValue);
+										}else{
+											parameter.setFalseValue(0);
 										}
 									}
 									parameters.add(parameter);
@@ -176,7 +183,7 @@ public class ProtobufATCommandAdapter {
 					encodeMap.put(typeName, classMap);
 				}
 			}
-		} catch (Exception e) {
+		} catch (ParserConfigurationException | SAXException | IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -338,6 +345,7 @@ public class ProtobufATCommandAdapter {
 
 			// number of parameters check
 			if (!atCommand.getDelimiter().equals("")
+					&& params.length()!=0
 					&& params.split(atCommand.getDelimiter()).length > atCommand.getParameters().size()) {
 				throw new XMLParseException(
 						"Number of parameters must be less or equals to " + atCommand.getParameters().size());

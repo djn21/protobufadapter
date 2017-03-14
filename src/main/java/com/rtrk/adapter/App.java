@@ -9,9 +9,11 @@ import com.rtrk.atcommand.adapter.ProtobufATCommandAdapter;
  */
 public class App {
 	public static void main(String[] args) throws InvalidProtocolBufferException {
-		byte[] decoded = ProtobufATCommandAdapter.decode("AT+QHTTPDL= 'file.txt', 1, 65536".getBytes());
+		byte[] decoded = ProtobufATCommandAdapter.decode("AT+QIMUX=1".getBytes());
 		byte[] encoded=ProtobufATCommandAdapter.encode(decoded);
 		System.out.println(new String(encoded));
+		String str=new String(ProtobufATCommandAdapter.environmentVariables.get("tcpipCommand.ENABLE_MULTIPLE_TCPIP_SESSION.enableMultipleTCPIPSession"));
+		System.out.println(str);
 	}
 
 }

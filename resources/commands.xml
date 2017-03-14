@@ -32,6 +32,16 @@
 		</type>
 	</cmd>
 	<cmd name="fileCommand" prefix="AT+QF" delimiter=",">
+		<type name="GET_STORAGE_DATE_SIZE" prefix="LDS">
+			<class name="TEST" prefix="=?"></class>
+			<class name="READ" prefix="?"></class>
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="namePattern"></param>
+				</order>
+			</class>
+			<class name="EXECUTION"></class>
+		</type>
 		<type name="UPLOAD_FILE_TO_STORAGE" prefix="UPL">
 			<class name="TEST" prefix="=?"></class>
 			<class name="WRITE" prefix="=">
@@ -85,8 +95,7 @@
 		</type>
 	</cmd>
 	<cmd name="generalCommand">
-		<type name="SET_ALL_PARAMETERS_TO_MANUFACTURER_DEFAULTS"
-			prefix="AT&amp;F">
+		<type name="SET_ALL_PARAMETERS_TO_MANUFACTURER_DEFAULTS" prefix="AT&amp;F">
 			<class name="EXECUTION">
 				<order>
 					<param name="default" optional="true"></param>
