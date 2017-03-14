@@ -154,12 +154,11 @@ public class ProtobufATCommandAdapter {
 							}
 						}
 
+						// set full prefix for command where = is optional
 						boolean optional = false;
-
 						if (!"".equals(classOptional)) {
 							optional = Boolean.parseBoolean(classOptional);
 						}
-
 						if (optional) {
 							String fullPrefix = cmdPrefix + typePrefix;
 							ATCommand command = new ATCommand(cmdName, typeName, className, fullPrefix, cmdSufix,
@@ -167,6 +166,7 @@ public class ProtobufATCommandAdapter {
 							decodeMap.put(command.getPrefix(), command);
 						}
 
+						// set full prefix 
 						String fullPrefix = cmdPrefix + typePrefix + classPrefix;
 						ATCommand command = new ATCommand(cmdName, typeName, className, fullPrefix, cmdSufix,
 								cmdDelimiter, classParser, parameters);
@@ -230,11 +230,15 @@ public class ProtobufATCommandAdapter {
 				boolean hasParemeter = (boolean) messageClass.getMethod("has" + paramNameUpperCamel).invoke(message);
 				if (hasParemeter) {
 					String paramValue = "";
+					
+					// encode with parser if exists
 					if (!parameter.getParser().equals("")) {
 						Class<?> parserClass = Class.forName(parameter.getParser());
 						Parser parser = (Parser) parserClass.newInstance();
 						paramValue = new String(parser.encode(command));
 					} else {
+						
+						//standard encode
 						Class<?> paramClass = messageClass.getMethod("get" + paramNameUpperCamel).getReturnType();
 						paramValue = messageClass.getMethod("get" + paramNameUpperCamel).invoke(message).toString();
 						if (paramClass.equals(boolean.class)) {
