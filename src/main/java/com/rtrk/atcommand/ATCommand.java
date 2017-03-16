@@ -101,6 +101,10 @@ public class ATCommand {
 		this.parser = parser;
 	}
 
+	public boolean hasParser() {
+		return !"".equals(parser);
+	}
+
 	public Vector<Parameter> getParameters() {
 		return parameters;
 	}

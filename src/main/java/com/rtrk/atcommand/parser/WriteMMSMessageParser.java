@@ -17,7 +17,7 @@ public class WriteMMSMessageParser implements Parser {
 			commandString += "," + mmsCommand.getOperateWriteMMS().getNumber();
 		}
 		if (mmsCommand.hasOpstring()) {
-			commandString += "," + "\"" + mmsCommand.getOpstring() + "\"";
+			commandString += "," + mmsCommand.getOpstring();
 		}
 		return commandString.getBytes();
 	}
@@ -42,12 +42,7 @@ public class WriteMMSMessageParser implements Parser {
 				}
 				if (params.split(",").length >= 3) {
 					String opstring = params.split(",")[2].trim();
-					if (opstring.startsWith("\"") && opstring.endsWith("\"")) {
-						opstring = opstring.substring(1, opstring.length() - 1);
-						mmsCommandBuilder.setOpstring(opstring);
-					} else {
-						throw new XMLParseException("String format exception for input: " + opstring);
-					}
+					mmsCommandBuilder.setOpstring(opstring);
 				}
 			}
 			mmsCommandBuilder.setOperateFunction(OperateFunction.valueOf(function));

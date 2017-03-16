@@ -40,6 +40,7 @@ import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 public class ProtobufATCommandAdapter {
 
 	public static Map<String, byte[]> environmentVariables = new HashMap<String, byte[]>();
+	public static Map<Class<?>, Class<?>> wrepperTypes = new HashMap<Class<?>, Class<?>>();
 
 	private static String regexp;
 
@@ -47,6 +48,16 @@ public class ProtobufATCommandAdapter {
 	private static Map<String, Map<String, ATCommand>> encodeMap = new HashMap<String, Map<String, ATCommand>>();
 
 	static {
+		// fill types map
+		wrepperTypes.put(byte.class, Byte.class);
+		wrepperTypes.put(short.class, Short.class);
+		wrepperTypes.put(int.class, Integer.class);
+		wrepperTypes.put(long.class, Long.class);
+		wrepperTypes.put(float.class, Float.class);
+		wrepperTypes.put(double.class, Double.class);
+		wrepperTypes.put(char.class, Character.class);
+		wrepperTypes.put(boolean.class, Boolean.class);
+
 		init();
 	}
 
@@ -128,34 +139,52 @@ public class ProtobufATCommandAdapter {
 									parameter.setOptional(optional);
 									parameter.setParser(paramParser);
 									parameter.setEnvironment(environment);
+
+									Element trueElement = null;
+									Element falseElement = null;
 									if (paramElement.hasChildNodes()) {
+
+										// set min and max values
 										Element minElement = (Element) paramElement.getElementsByTagName("min").item(0);
 										Element maxElement = (Element) paramElement.getElementsByTagName("max").item(0);
-										Element trueElement = (Element) paramElement.getElementsByTagName("true")
-												.item(0);
-										Element falseElement = (Element) paramElement.getElementsByTagName("false")
-												.item(0);
 										if (minElement != null) {
-											int minValue = Integer.valueOf(minElement.getTextContent());
+											double minValue = Double.valueOf(minElement.getTextContent());
 											parameter.setMinValue(minValue);
 										}
 										if (maxElement != null) {
-											int maxValue = Integer.valueOf(maxElement.getTextContent());
+											double maxValue = Double.valueOf(maxElement.getTextContent());
 											parameter.setMaxValue(maxValue);
 										}
+
+										// set true and false values
+										trueElement = (Element) paramElement.getElementsByTagName("true").item(0);
+										falseElement = (Element) paramElement.getElementsByTagName("false").item(0);
 										if (trueElement != null) {
 											int trueValue = Integer.valueOf(trueElement.getTextContent());
 											parameter.setTrueValue(trueValue);
-										}else{
-											parameter.setTrueValue(1);
 										}
 										if (falseElement != null) {
 											int falseValue = Integer.valueOf(falseElement.getTextContent());
 											parameter.setFalseValue(falseValue);
-										}else{
-											parameter.setFalseValue(0);
+										}
+
+										// set paramter pattern
+										Element patternElement = (Element) paramElement.getElementsByTagName("pattern")
+												.item(0);
+										if (patternElement != null) {
+											String pattern = patternElement.getTextContent();
+											parameter.setPattern(pattern);
 										}
 									}
+
+									// set default true and false values
+									if (trueElement == null) {
+										parameter.setTrueValue(1);
+									}
+									if (falseElement == null) {
+										parameter.setFalseValue(0);
+									}
+
 									parameters.add(parameter);
 								}
 							}
@@ -173,7 +202,7 @@ public class ProtobufATCommandAdapter {
 							decodeMap.put(command.getPrefix(), command);
 						}
 
-						// set full prefix 
+						// set full prefix
 						String fullPrefix = cmdPrefix + typePrefix + classPrefix;
 						ATCommand command = new ATCommand(cmdName, typeName, className, fullPrefix, cmdSufix,
 								cmdDelimiter, classParser, parameters);
@@ -222,6 +251,7 @@ public class ProtobufATCommandAdapter {
 
 			// set prefix
 			commandString += atCommand.getPrefix();
+
 			// parser encode
 			if (!atCommand.getParser().equals("")) {
 				Class<?> parserClass = Class.forName(atCommand.getParser());
@@ -237,15 +267,15 @@ public class ProtobufATCommandAdapter {
 				boolean hasParemeter = (boolean) messageClass.getMethod("has" + paramNameUpperCamel).invoke(message);
 				if (hasParemeter) {
 					String paramValue = "";
-					
+
 					// encode with parser if exists
 					if (!parameter.getParser().equals("")) {
 						Class<?> parserClass = Class.forName(parameter.getParser());
 						Parser parser = (Parser) parserClass.newInstance();
 						paramValue = new String(parser.encode(command));
 					} else {
-						
-						//standard encode
+
+						// standard encode
 						Class<?> paramClass = messageClass.getMethod("get" + paramNameUpperCamel).getReturnType();
 						paramValue = messageClass.getMethod("get" + paramNameUpperCamel).invoke(message).toString();
 						if (paramClass.equals(boolean.class)) {
@@ -344,21 +374,20 @@ public class ProtobufATCommandAdapter {
 					commandString.length() - atCommand.getSufix().length());
 
 			// number of parameters check
-			if (!atCommand.getDelimiter().equals("")
-					&& params.length()!=0
+			if (atCommand.hasDelimiter() && !atCommand.hasParser() && params.length() != 0
 					&& params.split(atCommand.getDelimiter()).length > atCommand.getParameters().size()) {
 				throw new XMLParseException(
 						"Number of parameters must be less or equals to " + atCommand.getParameters().size());
 			}
 
 			// decode command with parser
-			if (!atCommand.getParser().equals("")) {
+			if (atCommand.hasParser()) {
 				Class<?> parserClass = Class.forName(atCommand.getParser());
 				Parser parser = (Parser) parserClass.newInstance();
 				parser.decode(params.getBytes(), commandTypeBuilderObject);
-			} else {
 
-				// standard decode
+				// standard command decode
+			} else {
 				for (int i = 0; i < atCommand.getParameters().size(); i++) {
 
 					// get parameter name
@@ -400,15 +429,29 @@ public class ProtobufATCommandAdapter {
 						paramValue = params.trim();
 					}
 
-					// decode parameter
-					if (!parameter.getParser().equals("")) {
+					// decode parameter with parser
+					if (parameter.hasParser()) {
 						Class<?> parserClass = Class.forName(parameter.getParser());
 						Parser parser = (Parser) parserClass.newInstance();
 						parser.decode(paramValue.getBytes(), commandTypeBuilderObject);
+
+						// standard parameter decode
 					} else {
 
 						// param is string
 						if (paramClass.equals(String.class)) {
+
+							// check param pattern
+							if (parameter.hasPattern()) {
+								Pattern paramPattern = Pattern.compile(parameter.getPattern());
+								Matcher paramMatcher = paramPattern.matcher(paramValue);
+								if (!paramMatcher.find()) {
+									throw new XMLParseException("Parameter " + parameter.getName() + " must match "
+											+ parameter.getPattern() + " pattern");
+								}
+							}
+
+							// set string param
 							commandTypeBuilderClass.getMethod("set" + paramNameUpperCamel, paramClass)
 									.invoke(commandTypeBuilderObject, paramValue);
 
@@ -427,11 +470,10 @@ public class ProtobufATCommandAdapter {
 									paramValueBoolean = false;
 								} else {
 									throw new XMLParseException("Incorrect value for " + parameter.getName()
-											+ " parameter [expected true=" + parameter.getTrueValue() + ", false="
+											+ " parameter [expected true=" + parameter.getTrueValue() + " false="
 											+ parameter.getFalseValue() + ", actual=" + paramValue + "]");
 								}
-								paramValueObject = wrepperClass.getMethod("valueOf", boolean.class).invoke(wrepperClass,
-										paramValueBoolean);
+								paramValueObject = Boolean.valueOf(paramValueBoolean);
 
 								// others primitive types
 							} else {
@@ -440,11 +482,11 @@ public class ProtobufATCommandAdapter {
 								double paramValueDouble = Double.valueOf(paramValueObject.toString());
 								if (parameter.hasMinValue() && paramValueDouble < parameter.getMinValue()) {
 									throw new XMLParseException("Parameter " + parameter.getName()
-											+ " must be greater or equals to " + (int) parameter.getMinValue());
+											+ " must be greater or equals to " + parameter.getMinValue());
 								}
 								if (parameter.hasMaxValue() && paramValueDouble > parameter.getMaxValue()) {
 									throw new XMLParseException("Parameter " + parameter.getName()
-											+ " must be less or equals to " + (int) parameter.getMaxValue());
+											+ " must be less or equals to " + parameter.getMaxValue());
 								}
 							}
 							commandTypeBuilderClass.getMethod("set" + paramNameUpperCamel, paramClass)
@@ -510,16 +552,7 @@ public class ProtobufATCommandAdapter {
 	 * 
 	 */
 	private static Class<?> getWrepperClass(Class<?> primitiveClass) {
-		HashMap<Class<?>, Class<?>> map = new HashMap<Class<?>, Class<?>>();
-		map.put(byte.class, Byte.class);
-		map.put(short.class, Short.class);
-		map.put(int.class, Integer.class);
-		map.put(long.class, Long.class);
-		map.put(float.class, Float.class);
-		map.put(double.class, Double.class);
-		map.put(char.class, Character.class);
-		map.put(boolean.class, Boolean.class);
-		return map.get(primitiveClass);
+		return wrepperTypes.get(primitiveClass);
 	}
 
 }
