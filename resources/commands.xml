@@ -1,0 +1,690 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<cmds regex="(AT)?\+?[&amp;]?[A-Z]*=?\??[\+]*">
+
+	<cmd delimiter="," name="fileCommand" prefix="AT+QF">
+		<type name="GET_STORAGE_DATE_SIZE" prefix="LDS">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="namePattern" />
+				</order>
+			</class>
+			<class name="EXECUTION" />
+		</type>
+		<type name="LIST_FILES" prefix="LST">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="namePattern" />
+				</order>
+			</class>
+			<class name="EXECUTION" />
+		</type>
+		<type name="UPLOAD_FILE_TO_STORAGE" prefix="UPL">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="fileName" />
+					<param name="fileSize" optional="true" />
+					<param name="timeout" optional="true">
+						<min>1</min>
+						<max>65536</max>
+					</param>
+					<param name="turnOnACTMode" optional="true"/>
+				</order>
+			</class>
+		</type>
+		<type name="DOWNLOAD_FILE_FROM_STORAGE" prefix="DWL">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="fileName" />
+				</order>
+			</class>
+		</type>
+		<type name="DELETE_FILE_IN_STORAGE" prefix="DEL">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="fileName" />
+				</order>
+			</class>
+		</type>
+		<type name="MOVE_FILE" prefix="MOV">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="sourceFileName" />
+					<param name="destinationFileName" />
+					<param name="copy"/>
+					<param name="owerwrite"/>
+				</order>
+			</class>
+		</type>
+		<type name="OPEN_FILE" prefix="OPEN">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="fileName" />
+					<param name="fileOpenMode" optional="true">
+						<min>0</min>
+						<max>2</max>
+					</param>
+					<param name="length" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="READ_FILE" prefix="READ">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="fileHandle" />
+					<param name="length" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="WRITE_FILE" prefix="WRITE">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="fileHandle" />
+					<param name="length" optional="true" />
+					<param name="timeout" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="SEEK_FILE" prefix="SEEK">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="fileHandle" />
+					<param name="offset" />
+					<param name="pointerMovementMode" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="CLOSE_FILE" prefix="CLOSE">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="fileHandle" />
+				</order>
+			</class>
+		</type>
+		<type name="GET_FILE_POINTER_OFFSET" prefix="POSITION">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="fileHandle" />
+				</order>
+			</class>
+		</type>
+		<type name="FORCE_TO_WRITE_DATA_IN_BUFFER" prefix="FLUSH">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="fileHandle" />
+				</order>
+			</class>
+		</type>
+		<type name="TRUNCATE_FILE_FROM_FILE_POINTER" prefix="TUCAT">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="fileHandle" />
+				</order>
+			</class>
+		</type>
+	</cmd>
+
+	<cmd delimiter="," name="ftpCommand" prefix="AT+QFTP">
+		<type name="OPEN_FTP_SERVICE" prefix="OPEN">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="hostName" />
+					<param name="port">
+						<min>1</min>
+						<max>65536</max>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="CLOSE_FTP_SERVICE" prefix="CLOSE">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="UPLOAD_FILE_TO_FTP_SERVER" prefix="PUT">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="fileName" />
+					<param name="fileSize" />
+					<param name="time" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="DOWNLOAD_FILE_FROM_FTP_SERVER" prefix="GET">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="fileName" />
+					<param name="fileSize" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="SET_UPLOAD_DOWNLOAD_PATH" prefix="PATH">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="pathName" />
+				</order>
+			</class>
+		</type>
+		<type name="SET_USER_NAME" prefix="USER">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="username" />
+				</order>
+			</class>
+		</type>
+		<type name="SET_PASSWORD" prefix="PASS">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="password" />
+				</order>
+			</class>
+		</type>
+		<type name="SET_PARAMETERS" prefix="CFG">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="="
+				parser="com.rtrk.atcommand.parser.SetParametersFTPParser" />
+		</type>
+		<type name="QUERY_STATUS_OF_FTP_SERVICE" prefix="STAT">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="LATEST_TRANSFER_REAL_SIZE" prefix="LEN">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="RENAME_FILE_OR_FOLDER_NAME" prefix="RENAME">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" prefix="=">
+				<order>
+					<param name="sourceName" />
+					<param name="targetName" />
+				</order>
+			</class>
+		</type>
+		<type name="QUERY_SIZE_OF_APPOINTED_FILE" prefix="SIZE">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" prefix="=">
+				<order>
+					<param name="fileName" />
+				</order>
+			</class>
+		</type>
+		<type name="DELETE_FILE" prefix="DELETE">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" prefix="=">
+				<order>
+					<param name="fileName" />
+				</order>
+			</class>
+		</type>
+		<type name="ESTABLISH_NEW_FILEFOLDER" prefix="MKDIR">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" prefix="=">
+				<order>
+					<param name="pathName" />
+				</order>
+			</class>
+		</type>
+		<type name="REMOVE_FILE_FOLDER" prefix="RMDIR">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" prefix="=">
+				<order>
+					<param name="pathName" />
+				</order>
+			</class>
+		</type>
+		<type name="LIST_CONTENTS_OF_DIRECTORY_OR_FILE" prefix="LIST">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=" optional="true"
+				parser="com.rtrk.atcommand.parser.ListDirectoryContentParser" />
+		</type>
+		<type name="LIST_FILE_NAMES" prefix="NLST">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=" optional="true"
+				parser="com.rtrk.atcommand.parser.ListFileNamesParser" />
+		</type>
+	</cmd>
+
+	<cmd delimiter="," name="httpCommand" prefix="AT+QHTTP">
+		<type name="SET_HTTP_SERVER_URL" prefix="URL">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="URLLength">
+						<min>1</min>
+						<max>450</max>
+					</param>
+					<param name="inputTime">
+						<min>1</min>
+						<max>65535</max>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="SEND_HTTP_GET_REQUEST" prefix="GET">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="toReadTime">
+						<min>1</min>
+						<max>65535</max>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="READ_HTTP_SERVER_RESPONSE" prefix="READ">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="waitTime">
+						<min>1</min>
+						<max>65535</max>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="SEND_HTTP_POST_REQUEST" prefix="POST">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="bodySize">
+						<min>1</min>
+						<max>29696</max>
+					</param>
+					<param name="inputTime">
+						<min>1</min>
+						<max>65535</max>
+					</param>
+					<param name="toReadTime">
+						<min>1</min>
+						<max>65535</max>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="DOWNLOAD_FILE_FROM_HTTP_SERVER" prefix="DL">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="fileName" />
+					<param name="length" optional="true" />
+					<param name="waitTime" optional="true">
+						<min>1</min>
+						<max>65535</max>
+					</param>
+				</order>
+			</class>
+		</type>
+	</cmd>
+
+	<cmd delimiter="," name="mmsCommand" prefix="AT+QMM">
+		<type name="SET_URL_OF_MMSC" prefix="URL">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="MMSCURL" />
+				</order>
+			</class>
+		</type>
+		<type name="SET_MMS_PROXY" prefix="PROXY">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="protocolType" />
+					<param name="gateway">
+						<pattern>.[0-255]\.[0-255]\.[0-255]\.[0-255].</pattern>
+					</param>
+					<param name="port" optional="true">
+						<min>0</min>
+						<max>65535</max>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="SET_PARAMETER_FOR_SENDING_MMS_MESSAGE" prefix="CFG">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="validityPeriod">
+						<min>0</min>
+						<max>6</max>
+					</param>
+					<param name="priority" optional="true">
+						<min>0</min>
+						<max>3</max>
+					</param>
+					<param name="sendReport" optional="true"/>
+					<param name="readReport" optional="true"/>
+					<param name="addressVisible" optional="true">
+						<min>0</min>
+						<max>2</max>
+					</param>
+					<param name="mmsClass" optional="true">
+						<min>0</min>
+						<max>4</max>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="SET_CHARACTER_SETS_AND_INPUT_MODE" prefix="SCS">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="charset" />
+					<param name="titleInputMode" optional="true">
+						<min>0</min>
+						<max>1</max>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="WRITE_MMS_MESSAGE" prefix="SW">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="="
+				parser="com.rtrk.atcommand.parser.WriteMMSMessageParser" />
+		</type>
+		<type name="SEND_MMS_MESSAGE" prefix="SEND">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="operateSendMMS">
+						<min>1</min>
+						<max>1</max>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="MENAGE_RECEIVED_MMS_MESSAGE" prefix="RM">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="operateManageMMS">
+						<min>0</min>
+						<max>1</max>
+					</param>
+					<param name="from" optional="true" />
+					<param name="to" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="READ_RECEIVED_MMS_MESSAGE" prefix="RR">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="operateReadMMS">
+						<min>1</min>
+						<max>5</max>
+					</param>
+					<param name="MMSIndex" optional="true" />
+					<param name="para" optional="true" />
+					<param name="fileName" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="RECEIVE_MMS_MESSAGE_FROM_MMSC" prefix="RECV">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="MMSIndex" />
+					<param name="operateReceiveMMS" />
+				</order>
+			</class>
+		</type>
+		<type name="SET_PRIORITY_OF_MMS_MESSAGE_AND_CALL" prefix="PRI">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="callPriorityHigher">
+						<true>0</true>
+						<false>1</false>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="SET_DUR_ATTRIBUTE_VALUE_IN_SMIL_SCRIPT" prefix="DUR">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="DURAttribute">
+						<min>0</min>
+						<max>4294967295</max>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="SET_MMS_SMS_TRANSACTOR" prefix="SMS">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="SMSMessageHandling"/>
+				</order>
+			</class>
+		</type>
+		<type name="ENABLE_OUTPUT_TEXT_IN_USC2" prefix="CTYP">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="enableUSC2"/>
+					<param name="bigEndian">
+						<true>0</true>
+						<false>1</false>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="OUTPUT_FILE_STYLE" prefix="FTYP">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="output"/>
+				</order>
+			</class>
+		</type>
+	</cmd>
+
+	<cmd delimiter="," name="quecCellCommand" prefix="AT+Q">
+		<type name="SCAN_BASIC_STATION_INFORMATION" prefix="OPS">
+			<class name="READ" prefix="?" />
+		</type>
+		<type name="SWITCH_ON_OR_OFF_ENGINEERING_MODE" prefix="ENG">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="engineeringMode"/>
+					<param name="dump" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="LOCK_BASE_STATION" prefix="LOCKF">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="lockFrequency"/>
+					<param name="band1900"/>
+					<param name="arcfn1">
+						<min>0</min>
+						<max>1024</max>
+					</param>
+					<param name="arcfn2" optional="true">
+						<min>0</min>
+						<max>1024</max>
+					</param>
+					<param name="arcfn3" optional="true">
+						<min>0</min>
+						<max>1024</max>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="SCAN_ARFCN_RECEIVING_LEVEL" prefix="SCANF">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="band" />
+					<param name="absoluteRadioFrequencyChannelNumber">
+						<min>0</min>
+						<max>9999</max>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="GET_CHANNEL_INFORMATION" prefix="CHINFO">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="automaticReport">
+						<true>0</true>
+						<false>1</false>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="GET_LAST_VALID_TA_VALUE" prefix="LASTTA">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="FORBID_OPERATOR" prefix="FORBIDMNC">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" prefix="=">
+				<order>
+					<param name="forbidOperatorMode" />
+					<param name="line" optional="true" parser="" />
+					<param name="forbiddenData" optional="true" />
+				</order>
+			</class>
+		</type>
+	</cmd>
+
+	<cmd delimiter="," name="recordingCommand" prefix="AT+QAUD">
+		<type name="RECORD_MEDIA_FILE" prefix="RD">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="recordingState" />
+					<param name="fileName" optional="true" />
+					<param name="format" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="PLAY_MEDIA_FILE" prefix="PLAY">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="fileName" />
+					<param name="repeat"/>
+					<param name="volume" />
+					<param name="channel" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="STOP_PLAYING_MEDIA_FILE" prefix="STOP">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" prefix="" />
+		</type>
+	</cmd>
+
+	<cmd name="generalCommand" delimiter=",">
+		<type name="DISPLAY_PRODUCT_IDENTIFICATION_INFORMATION" prefix="ATI">
+			<class name="EXECUTION"></class>
+		</type>
+	</cmd>
+
+	<cmd name="smsCommand" prefix="AT+" delimiter=",">
+		<type name="DELETE_SMS_MESSAGE" prefix="CMGD">
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="index"
+						parser="com.rtrk.atcommand.parser.DeleteSMSMessageIndexParser"></param>
+					<param name="delFlag" optional="true"></param>
+				</order>
+			</class>
+		</type>
+		<type name="SELECT_SMS_MESSAGE_FORMAT" prefix="CMGF">
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="messageFormat" optional="true" environment="true"></param>
+				</order>
+			</class>
+		</type>
+		<type name="SEND_SMS_MESSAGE" prefix="CMGS">
+			<class name="WRITE" prefix="="
+				parser="com.rtrk.atcommand.parser.SendSMSMessageParser"></class>
+		</type>
+		<type name="RESTORE_SMS_SETTINGS" prefix="CRES">
+			<class name="WRITE" prefix="=" optional="true"
+				parser="com.rtrk.atcommand.parser.RestoreSMSSettingsParser"></class>
+		</type>
+	</cmd>
+
+	<cmd name="generalCommand">
+		<type name="SET_ALL_PARAMETERS_TO_MANUFACTURER_DEFAULTS" prefix="AT&amp;F">
+			<class name="EXECUTION">
+				<order>
+					<param name="default" optional="true"></param>
+				</order>
+			</class>
+		</type>
+	</cmd>
+
+	<cmd name="callRelatedCommand">
+		<type name="SWITCH_FROM_DATA_MODE_TO_COMMAND_MODE" prefix="+++">
+			<class name="EXECUTION"></class>
+		</type>
+		<type name="MOBILE_ORIGINATED_CALL_TO_DIAL_A_NUMBER" prefix="ATD">
+			<class name="EXECUTION"
+				parser="com.rtrk.atcommand.parser.MobileOriginatedCallParser"></class>
+		</type>
+	</cmd>
+
+	<cmd name="tcpipCommand" prefix="AT+Q">
+		<type name="ENABLE_MULTIPLE_TCPIP_SESSION" prefix="IMUX">
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="enableMultipleTCPIPSession" environment="true"/>
+				</order>
+			</class>
+		</type>
+		<type name="SEND_DATA_THROUGH_TCP_OR_UDP_CONNECTION" prefix="ISEND">
+			<class name="WRITE" prefix="="
+				parser="com.rtrk.atcommand.parser.SendDataTCPUDPParser"></class>
+		</type>
+	</cmd>
+
+</cmds>
