@@ -31,7 +31,7 @@
 						<min>1</min>
 						<max>65536</max>
 					</param>
-					<param name="turnOnACTMode" optional="true"/>
+					<param name="turnOnACTMode" optional="true" />
 				</order>
 			</class>
 		</type>
@@ -57,8 +57,8 @@
 				<order>
 					<param name="sourceFileName" />
 					<param name="destinationFileName" />
-					<param name="copy"/>
-					<param name="owerwrite"/>
+					<param name="copy" />
+					<param name="owerwrite" />
 				</order>
 			</class>
 		</type>
@@ -260,12 +260,20 @@
 		<type name="LIST_CONTENTS_OF_DIRECTORY_OR_FILE" prefix="LIST">
 			<class name="TEST" prefix="=?" />
 			<class name="WRITE" prefix="=" optional="true"
-				parser="com.rtrk.atcommand.parser.ListDirectoryContentParser" />
+				parser="com.rtrk.atcommand.parser.ListDirectoryContentParser">
+				<order>
+					<param name="name" optional="true" />
+				</order>
+			</class>
 		</type>
 		<type name="LIST_FILE_NAMES" prefix="NLST">
 			<class name="TEST" prefix="=?" />
 			<class name="WRITE" prefix="=" optional="true"
-				parser="com.rtrk.atcommand.parser.ListFileNamesParser" />
+				parser="com.rtrk.atcommand.parser.ListFileNamesParser">
+				<order>
+					<param name="directoryName" optional="true" />
+				</order>
+			</class>
 		</type>
 	</cmd>
 
@@ -358,7 +366,8 @@
 				<order>
 					<param name="protocolType" />
 					<param name="gateway">
-						<pattern>.[0-255]\.[0-255]\.[0-255]\.[0-255].</pattern>
+						<pattern>"((25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])(\.)){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])"
+						</pattern>
 					</param>
 					<param name="port" optional="true">
 						<min>0</min>
@@ -380,8 +389,8 @@
 						<min>0</min>
 						<max>3</max>
 					</param>
-					<param name="sendReport" optional="true"/>
-					<param name="readReport" optional="true"/>
+					<param name="sendReport" optional="true" />
+					<param name="readReport" optional="true" />
 					<param name="addressVisible" optional="true">
 						<min>0</min>
 						<max>2</max>
@@ -487,7 +496,7 @@
 			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="SMSMessageHandling"/>
+					<param name="SMSMessageHandling" />
 				</order>
 			</class>
 		</type>
@@ -496,7 +505,7 @@
 			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="enableUSC2"/>
+					<param name="enableUSC2" />
 					<param name="bigEndian">
 						<true>0</true>
 						<false>1</false>
@@ -509,7 +518,7 @@
 			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="output"/>
+					<param name="output" />
 				</order>
 			</class>
 		</type>
@@ -524,7 +533,7 @@
 			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="engineeringMode"/>
+					<param name="engineeringMode" />
 					<param name="dump" optional="true" />
 				</order>
 			</class>
@@ -534,8 +543,8 @@
 			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="lockFrequency"/>
-					<param name="band1900"/>
+					<param name="lockFrequency" />
+					<param name="band1900" />
 					<param name="arcfn1">
 						<min>0</min>
 						<max>1024</max>
@@ -608,7 +617,7 @@
 			<class name="WRITE" prefix="=">
 				<order>
 					<param name="fileName" />
-					<param name="repeat"/>
+					<param name="repeat" />
 					<param name="volume" />
 					<param name="channel" optional="true" />
 				</order>
@@ -620,70 +629,1173 @@
 		</type>
 	</cmd>
 
-	<cmd name="generalCommand" delimiter=",">
-		<type name="DISPLAY_PRODUCT_IDENTIFICATION_INFORMATION" prefix="ATI">
-			<class name="EXECUTION"></class>
+	<cmd delimiter="," name="smtpCommand" prefix="AT+QSMTP">
+		<type name="SET_USER_NAME_FOR_AUTHENTICATION" prefix="USER">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="user" />
+				</order>
+			</class>
+		</type>
+		<type name="SET_PASSWORD_FOR_AUTHENTICATION" prefix="PASS">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="password" />
+				</order>
+			</class>
+		</type>
+		<type name="SET_SENDER_EMAIL_ADDRESS" prefix="ADDR">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="emailAddress" />
+				</order>
+			</class>
+		</type>
+		<type name="SET_SENDERS_NAME" prefix="NAME">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="name" />
+				</order>
+			</class>
+		</type>
+		<type name="SET_SMTP_SERVER_ADDRESS_AND_PORT" prefix="SRV">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="serverAddress" />
+					<param name="port" />
+				</order>
+			</class>
+		</type>
+		<type name="ADD_OR_DELETE_RECIPIENTS" prefix="DST">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="recipientMode" />
+					<param name="recipientType" optional="true" />
+					<param name="emailAddress" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="EDIT_EMAIL_SUBJECT" prefix="SUB">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="charset" />
+					<param name="title" />
+				</order>
+			</class>
+		</type>
+		<type name="EDIT_EMAIL_CONTENT" prefix="BODY">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="charset" />
+					<param name="timeout" optional="true">
+						<min>0</min>
+						<max>48000</max>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="ADD_EMAIL_ATTACHMENT" prefix="ATT">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="fileName" />
+					<param name="fileSize" optional="true" />
+					<param name="timeout" optional="true">
+						<min>0</min>
+						<max>48000</max>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="DELETE_ATTACHMENT" prefix="DATT">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="fileIndex" />
+				</order>
+			</class>
+		</type>
+		<type name="CLEAR_ALL_CONFIGURATIONS_AND_CONTENTS" prefix="CLR">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="SMTP_CONFIGURATION" prefix="CFG">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="configureNeedAuthentication" />
+					<param name="needAuthentication" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="SEND_EMAIL" prefix="">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="timeout" optional="true">
+						<min>0</min>
+						<max>48000</max>
+					</param>
+				</order>
+			</class>
 		</type>
 	</cmd>
 
-	<cmd name="smsCommand" prefix="AT+" delimiter=",">
-		<type name="DELETE_SMS_MESSAGE" prefix="CMGD">
+	<cmd delimiter="," name="stkCommand" prefix="AT+">
+		<type name="TURN_ON_OFF_STK_FUNCTION" prefix="QSTK">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="index"
-						parser="com.rtrk.atcommand.parser.DeleteSMSMessageIndexParser"></param>
-					<param name="delFlag" optional="true"></param>
+					<param name="turnOnSTK" />
+				</order>
+			</class>
+		</type>
+		<type name="STK_PROFILE_DOWNLOAD" prefix="STKPD">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+			<class name="READ" prefix="?" />
+		</type>
+		<type name="STK_ENVELOPE_COMMAND" prefix="STKENV">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="satCommand" />
+				</order>
+			</class>
+		</type>
+		<type name="STK_TERMINAL_RESPONSE" prefix="STKTR">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="terminalResponse" />
+				</order>
+			</class>
+		</type>
+		<type name="TRIGGER_STK_CALL" prefix="STKCALL">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="stk" />
+				</order>
+			</class>
+		</type>
+		<type name="TRIGGER_STK_SMS" prefix="STKSMS">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="stk" />
+				</order>
+			</class>
+		</type>
+		<type name="TRIGGER_STK_SS" prefix="STKSS">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="stk" />
+				</order>
+			</class>
+		</type>
+		<type name="TRIGGER_STK_USSD" prefix="STKUSSD">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="stk" />
+				</order>
+			</class>
+		</type>
+		<type name="TRIGGER_STK_DTMF" prefix="STKDTMF">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="stk" />
+				</order>
+			</class>
+		</type>
+	</cmd>
+
+    <cmd delimiter="," name="generalCommand" prefix="AT">
+		<type name="DISPLAY_PRODUCT_IDENTIFICATION_INFORMATION" prefix="I">
+			<class name="EXECUTION" />
+		</type>
+		<type name="REQUEST_MANUFACTURER_IDENTIFICATION" prefix="+GMI">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="REQUEST_TA_MODEL_IDENTIFICATION" prefix="+GMM">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="REQUEST_TA_REVISION_IDENTIFICATION" prefix="+GMR">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="REQUEST_GLOBAL_OBJECT_IDENTIFICATION" prefix="+GOI">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="REQUEST_MANUFACTURER_IDENTIFICATION_CGMI" prefix="+CGMI">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="REQUEST_MODEL_IDENTIFICATION" prefix="+CGMM">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="REQUEST_TA_REVISION_IDENTIFICATION_CGMR" prefix="+CGMR">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="REQUEST_IMEI" prefix="+GSN">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="REQUEST_PRODUCT_SERIAL_NUMBER_IDENTIFICATION" prefix="+CGSN">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="REQUEST_IMEI_QGSN" prefix="+QGSN">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="SET_ALL_PARAMETERS_TO_MANUFACTURER_DEFAULTS" prefix="&amp;F">
+			<class name="EXECUTION">
+				<order>
+					<param name="default" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="DISPLAY_CURRENT_CONFIGURATION" prefix="&amp;V">
+			<class name="EXECUTION">
+				<order>
+					<param name="profileNumber" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="STORE_CURRENT_PARAMETERS_TO_USER_DEFINED_PROFILE"
+			prefix="&amp;W">
+			<class name="EXECUTION">
+				<order>
+					<param name="profileNumber" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="SET_RESULT_CODE_PRESENTATION_CODE" prefix="Q">
+			<class name="EXECUTION">
+				<order>
+					<param name="resultCode" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="TA_RESPONSE_FORMAT" prefix="V">
+			<class name="EXECUTION">
+				<order>
+					<param name="informationResponse" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="SET_CONNECT_RESULT_CODE_FORMAT" prefix="X">
+			<class name="EXECUTION">
+				<order>
+					<param name="connectResultCode" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="SET_ALL_CURRENT_PARAMETERS_TO_USER_DEFINED_PROFILE"
+			prefix="Z">
+			<class name="EXECUTION">
+				<order>
+					<param name="resetToProfileNumber" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="SET_PHONE_FUNCTIONALITY" prefix="+CFUN">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="functionality" />
+					<param name="reset" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="POWER_OFF" prefix="+QPOWD">
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="powerOffMode" />
+				</order>
+			</class>
+		</type>
+		<type name="REPORT_MOBILE_EQUIPMENT_ERROR" prefix="+CMEE">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="disableResultCode" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="SET_TE_CHARACTER_SET" prefix="+CSCS">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="characterSet" />
+				</order>
+			</class>
+		</type>
+		<type name="REQUEST_COMPLETE_TA_CAPABILITIES_LIST" prefix="+GCAP">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+	</cmd>
+
+	<cmd delimiter="," name="serialInterfaceControlCommand" prefix="AT">
+		<type name="SET_DCD_FUNCTION_MODE" prefix="&amp;C">
+			<class name="EXECUTION">
+				<order>
+					<param name="dcdLineStatus" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="SET_DTR_FUNCTION_MODE" prefix="&amp;D">
+			<class name="EXECUTION">
+				<order>
+					<param name="dtrStatus" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="SET_TE_TA_CONTROL_CHARACTER_FRAMING" prefix="+ICF">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="framingFormat" />
+					<param name="parity" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="SET_TE_TA_LOCAL_DATA_FLOW_CONTROL" prefix="+IFC">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="dceByDte" />
+					<param name="dteByDce" />
+				</order>
+			</class>
+		</type>
+		<type name="SET_TE_TA_LOCAL_DATA_RATE_REPORTING_MODE" prefix="+ILRR">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="enableReportingLocalPortRate" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="SET_TE_TA_FIXED_LOCAL_RATE" prefix="+IPR">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="rate" />
+				</order>
+			</class>
+		</type>
+		<type name="MULTIPLEXER_CONTROL" prefix="+CMUX">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="mtm" optional="true" />
+					<param name="mcc" optional="true" />
+					<param name="transmissionRate" optional="true" />
+					<param name="maximumFrameSize" optional="true" />
+					<param name="acknowledmentTimer" optional="true" />
+					<param name="maximumNumberOfRetransmissions"
+						optional="true" />
+					<param name="responseTimer" optional="true" />
+					<param name="wakeUpResponseTimer" optional="true"/>
+					<param name="windowsSize" optional="true"/>
+				</order>
+			</class>
+		</type>
+		<type name="CONFIGURE_DUAL_UART_FUNCTION" prefix="+QEAUART">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="enableDualUART" />
+				</order>
+			</class>
+		</type>
+		<type name="CONFIGURE_PARAMETERS_OF_THE_DUAL_UART" prefix="+QSEDCB">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="rate" />
+					<param name="dataBits" />
+					<param name="stopBits" />
+					<param name="parity" />
+				</order>
+			</class>
+		</type>
+	</cmd>
+
+	<cmd delimiter="," name="statusControlCommand" prefix="AT+">
+		<type name="EXTENDED_ERROR_REPORT" prefix="CEER">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="MOBILE_EQUIPMENT_ACTIVITY_STATUS" prefix="CPAS">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="INDICATE_RI_WHEN_USING_URC" prefix="QINDRI">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="status" />
+				</order>
+			</class>
+		</type>
+		<type name="SHOW_STATE_OF_MOBILE_ORIGINATED_CELL" prefix="QMOSTAT">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="showCallState" />
+				</order>
+			</class>
+		</type>
+		<type name="REFUSE_TO_RECEIVE_SMS_INCOMING_CALL_OR_NOT" prefix="QREFUSECS">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="refuseSMS" />
+					<param name="refuseCall" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="ENABLE_OR_DISABLE_INITIAL_URC_PRESENTATION" prefix="QIURC">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="EnableURCPresentation" />
+				</order>
+			</class>
+		</type>
+		<type name="ENABLE_OR_DISABLE_PROPRIETARY_UNSOLICITED_INDICATIONS"
+			prefix="QEXTUNSOL">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="extunsol" />
+					<param name="pui" />
+				</order>
+			</class>
+		</type>
+		<type name="QUERY_STATE_OF_INITIALIZATION" prefix="QINISTAT">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="QUERY_GSM_NETWORK_STATUS" prefix="QNSTATUS">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="NETWORK_TIME_SYNCHRONIZATION" prefix="QNITZ">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="enableToSynchronizeTime" />
+				</order>
+			</class>
+		</type>
+		<type name="OBTAIN_LATEST_NETWORK_TIME_SYNCHRONIZED" prefix="QLTS">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="NETWORK_TIME_SYNCHRONIZATION_AND_UPDATE_RTC_TIME"
+			prefix="CTZU">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="rtcTime" />
+				</order>
+			</class>
+		</type>
+		<type name="NETWORK_TIME_SYNCHRONIZATION_REPORT" prefix="CTZR">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="tzcer" />
+				</order>
+			</class>
+		</type>
+		<type name="SWITCH_ON_OR_OFF_DETECTING_SIM_CARD" prefix="QSIMDET">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="switchONDetectingSIMCard" />
+					<param name="simInsertStatus" />
+					<param name="pinChoice" />
+				</order>
+			</class>
+		</type>
+		<type name="SIM_INSERTED_STATUS_REPORTING" prefix="QSIMSTAT">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="switchONDetectingSIMCard" />
+				</order>
+			</class>
+		</type>
+		<type name="CSC_CALL_OR_GPRS_PDP_CONTEXT_TERMINAL_INDICATION"
+			prefix="QCGTIND">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="enableCircuitSwitchedVoiceCall" />
+				</order>
+			</class>
+		</type>
+	</cmd>
+
+	<cmd delimiter="," name="simRelatedCommand" prefix="AT+">
+		<type name="REQUEST_IMSI" prefix="CIMI">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="FACILITY_LOCK" prefix="CLCK">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="fac" />
+					<param name="lockMode" />
+					<param name="password" />
+					<param name="class" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="ENTER_PIN" prefix="CPIN">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="pin" />
+					<param name="newPin" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="CHANGE_PASSWORD" prefix="CPWD">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="fac" />
+					<param name="oldPwd" />
+					<param name="newPwd" />
+				</order>
+			</class>
+		</type>
+		<type name="RESTRICTED_SIM_ACCESS" prefix="CRSM">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="commandSIM" />
+					<param name="fileID" optional="true" />
+					<param name="P1" optional="true" />
+					<param name="P2" optional="true" />
+					<param name="P3" optional="true" />
+					<param name="data" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="GENERIC_SIM_ACCESS" prefix="CSIM">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="length" />
+					<param name="command" />
+				</order>
+			</class>
+		</type>
+		<type name="CHANGE_PS_SUPER_PASSWORD" prefix="QCSPWD">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="oldPwd" />
+					<param name="newPwd" />
+				</order>
+			</class>
+		</type>
+		<type name="SHOW_CCID" prefix="CCID">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="SHOW_CCID_QCCID" prefix="QCCID">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="GET_SIM_CARD_GROUP_IDENTIFIER" prefix="QGID">
+			<class name="EXECUTION" />
+		</type>
+		<type name="SELECT_SIM_CARD_OPERATING_VOLTAGE" prefix="QSIMVOL">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="voltageMode" />
+				</order>
+			</class>
+		</type>
+		<type name="GET_SERVICE_PROVIDER_NAME" prefix="QSPN">
+			<class name="READ" prefix="?" />
+		</type>
+		<type name="TIME_REMAINING_TO_INPUT_SIM_PIN_PUK" prefix="QTRPIN">
+			<class name="EXECUTION" />
+		</type>
+	</cmd>
+
+	<cmd delimiter="," name="networkServiceCommand" prefix="AT+">
+		<type name="OPERATOR_SELECTION" prefix="COPS">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="operatorMode" />
+					<param name="operatorFormat" optional="true"
+						parser="" />
+					<param environmet="true" name="operator" optional="true"
+						parser=""/>
+				</order>
+			</class>
+		</type>
+		<type name="NETWORK_REGISTRATION" prefix="CREG">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="networkRegistrationMode" />
+				</order>
+			</class>
+		</type>
+		<type name="SIGNAL_QUALITY_REPORT" prefix="CSQ">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="PREFERRED_OPERATOR_LIST" prefix="CPOL">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<!--// TODO Auto-generated XML - Copy command params here -->
+				</order>
+			</class>
+		</type>
+		<type name="READ_OPEARATR_NAMES" prefix="CPON">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="GET_AND_SET_MOBILE_OPERATION_BAND" prefix="">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="opBand" />
+				</order>
+			</class>
+		</type>
+		<type name="NETWORK_SERVICE_SWITCH_ON_OR_OFF_ENGINEERING_MODE"
+			prefix="QENG">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="engineeringMode" />
+					<param name="engModeDump" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="SCAN_POWER_OF_GSM_FREQUENCY" prefix="QSCANF">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="band" />
+					<param name="frequency" />
+				</order>
+			</class>
+		</type>
+		<type name="LOCK_GSM_FREQUENCY" prefix="">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="lockFreqMode" />
+					<param name="band1900" />
+					<param name="arfcn1" />
+					<param name="arfcn2" optional="true" />
+					<param name="arfcn3" optional="true" />
+				</order>
+			</class>
+		</type>
+	</cmd>
+
+	<cmd delimiter="," name="callRelatedCommand">
+		<type name="ANSWER_AN_INCOMING_CALL" prefix="ATA">
+			<class name="EXECUTION" />
+		</type>	
+		<type name="MOBILE_ORIGINATED_CALL_TO_DIAL_A_NUMBER" prefix="ATD">
+			<class name="EXECUTION">
+				<order>
+					<!--// TODO Auto-generated XML - Copy command params here -->
+				</order>
+			</class>
+		</type>
+		<type name="DISCONNECT_EXISTING_CONNECTION" prefix="ATH">
+			<class name="EXECUTION">
+				<order>
+					<param name="disconnect" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="SWITCH_FROM_DATA_MODE_TO_COMMAND_MODE" prefix="+++">
+			<class name="EXECUTION" />
+		</type>
+		<type name="SWITCH_FROM_COMMAND_MODE_TO_DATA_MODE" prefix="ATO">
+			<class name="EXECUTION">
+				<order>
+					<param name="dataMode" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="SELECT_PULSE_DIALING" prefix="ATP">
+			<class name="EXECUTION" />
+		</type>
+		<type name="SET_NUMBER_OF_RINGS_BEFORE_AUTOMATICLY_ANSWERING_CALL"
+			prefix="ATS0">
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="ringNumber">
+						<min>0</min>
+						<max>255</max>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="SET_PAUSE_BEFORE_BLIND_DIALING" prefix="ATS6">
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="blindDialingMode">
+						<min>0</min>
+						<max>10</max>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="SET_NUMBER_OF_SECONDS_TO_WAIT_FOR_CONNECTION_COMPLETION"
+			prefix="ATS7">
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="connectionCompletionWait">
+						<min>1</min>
+						<max>255</max>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="SET_NUMBER_OF_SECONDS_TO_WAIT_FOR_COMMA_DIAL_MODIFIER"
+			prefix="ATS8">
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="commaDialModifierWait">
+						<min>0</min>
+						<max>255</max>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="SET_DISCONNECT_DELAY_AFTER_INDICATING_ABSENCE_OF_DATA_CARRIER"
+			prefix="ATS10">
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="delay">
+						<min>1</min>
+						<max>254</max>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="SELECT_TONE_DIALING" prefix="ATT">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+		</type>
+		<type name="SELECT_TYPE_OF_ADDRESS" prefix="AT+CSTA">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+		</type>
+		<type name="LIST_CURRENT_CALLS_OF_ME" prefix="AT+CLCC">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="SERVICE_REPORTING_CONTROL" prefix="AT+CR">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="serviceReportingControlEnabled" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="SET_CELLULAR_RESULT_CODE_FOR_INCOMING_CALL_INDICATION"
+			prefix="AT+CRC">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="enableExtendedFormat" optional="true"/>
+				</order>
+			</class>
+		</type>
+		<type name="SELECT_RADIO_LINK_PROTOCOL_PARAMETER" prefix="AT+CRLP">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="interworkinWindowsSize" optional="true">
+						<min>0</min>
+						<max>61</max>
+					</param>
+					<param name="mobileWindowSize" optional="true">
+						<min>0</min>
+						<max>61</max>
+					</param>
+					<param name="acknowledmentTimer" optional="true">
+						<min>39</min>
+						<max>255</max>
+					</param>
+					<param name="retransimissionAttempts" optional="true">
+						<min>1</min>
+						<max>255</max>
+					</param>
+					<param name="RPLVersion" optional="true" />
+					<param name="resequencingPeriod" optional="true">
+						<min>3</min>
+						<max>255</max>
+					</param>
+				</order>
+			</class>
+		</type>
+		<type name="SINGLE_NUMBERING_SCHEME" prefix="AT+CSNS">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="schemeMode" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="CONFIGURE_ALTERNATING_MODE_CALLS" prefix="AT+CMOD">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+						<param name="alternatingMode" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="PREFERENCE_SPEACH_CODING" prefix="AT+QSFR">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="speechMode" optional="true" />
+				</order>
+			</class>
+		</type>
+		<!--// TODO Auto-generated XML - Set command type prefix -->
+		<type name="SPEECH_CHANNEL_TYPE_REPORT" prefix="AT+QSPCH">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="enableReportSpeechChannelType" />
+				</order>
+			</class>
+		</type>
+		<type name="DISABLE_ATH" prefix="AT+QDISH">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="disableATH" />
+				</order>
+			</class>
+		</type>
+	</cmd>
+
+	<cmd delimiter="," name="smsCommand" prefix="AT+">
+		<type name="SELECT_MESSAGE_SERVICE" prefix="CSMS">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="messageService" />
 				</order>
 			</class>
 		</type>
 		<type name="SELECT_SMS_MESSAGE_FORMAT" prefix="CMGF">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="messageFormat" optional="true" environment="true"></param>
+					<param name="messageFormat" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="SMS_SERVICE_CENTER_ADDRESS" prefix="CSCA">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="SCAddress" />
+					<param name="toSCAddress" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="PREFERRED_SMS_MESSAGE_STORAGE" prefix="CPMS">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="mem1" />
+					<param name="mem2" optional="true" />
+					<param name="mem3" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="DELETE_SMS_MESSAGE" prefix="CMGD">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="index" />
+					<param name="delFlag" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="LIST_SMS_MESSAGE_FROM_PREFERRED_STORAGE" prefix="CMGL">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<!--// TODO Auto-generated XML - Copy command params here -->
+				</order>
+			</class>
+		</type>
+		<type name="READ_SMS_MESSAGE" prefix="CMGR">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="index" />
+					<param name="messageMode" optional="true" />
 				</order>
 			</class>
 		</type>
 		<type name="SEND_SMS_MESSAGE" prefix="CMGS">
-			<class name="WRITE" prefix="="
-				parser="com.rtrk.atcommand.parser.SendSMSMessageParser"></class>
-		</type>
-		<type name="RESTORE_SMS_SETTINGS" prefix="CRES">
-			<class name="WRITE" prefix="=" optional="true"
-				parser="com.rtrk.atcommand.parser.RestoreSMSSettingsParser"></class>
-		</type>
-	</cmd>
-
-	<cmd name="generalCommand">
-		<type name="SET_ALL_PARAMETERS_TO_MANUFACTURER_DEFAULTS" prefix="AT&amp;F">
-			<class name="EXECUTION">
-				<order>
-					<param name="default" optional="true"></param>
-				</order>
-			</class>
-		</type>
-	</cmd>
-
-	<cmd name="callRelatedCommand">
-		<type name="SWITCH_FROM_DATA_MODE_TO_COMMAND_MODE" prefix="+++">
-			<class name="EXECUTION"></class>
-		</type>
-		<type name="MOBILE_ORIGINATED_CALL_TO_DIAL_A_NUMBER" prefix="ATD">
-			<class name="EXECUTION"
-				parser="com.rtrk.atcommand.parser.MobileOriginatedCallParser"></class>
-		</type>
-	</cmd>
-
-	<cmd name="tcpipCommand" prefix="AT+Q">
-		<type name="ENABLE_MULTIPLE_TCPIP_SESSION" prefix="IMUX">
+			<class name="TEST" prefix="=?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="enableMultipleTCPIPSession" environment="true"/>
+					<!--// TODO Auto-generated XML - Copy command params here -->
 				</order>
 			</class>
 		</type>
-		<type name="SEND_DATA_THROUGH_TCP_OR_UDP_CONNECTION" prefix="ISEND">
-			<class name="WRITE" prefix="="
-				parser="com.rtrk.atcommand.parser.SendDataTCPUDPParser"></class>
+		<type name="WRITE_SMS_MESSAGE_TO_MEMORY" prefix="CMGW">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<!--// TODO Auto-generated XML - Copy command params here -->
+				</order>
+			</class>
+		</type>
+		<type name="SEND_SMS_MESSAGE_FROM_STORAGE" prefix="CMSS">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="index" />
+					<param name="destinationAddress" optional="true" />
+					<param name="typeOfDestinationAddress" optional="true"/>
+				</order>
+			</class>
+		</type>
+		<type name="SEND_SMS_COMMAND" prefix="CMGC">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<!--// TODO Auto-generated XML - Copy command params here -->
+				</order>
+			</class>
+		</type>
+		<type name="NEW_SMS_MESSAGE_INDICATION" prefix="CNMI">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="messageIndication" optional="true" />
+					<param name="storeSMSRule" optional="true" />
+					<param name="storeCMBRule" optional="true" />
+					<param name="ds" optional="true" />
+					<param name="bufferMode" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="RESTORE_SMS_SETTINGS" prefix="CRES">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<!--// TODO Auto-generated XML - Copy command params here -->
+				</order>
+			</class>
+		</type>
+		<type name="SAVE_SMS_SETTINGS" prefix="CSAS">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<!--// TODO Auto-generated XML - Copy command params here -->
+				</order>
+			</class>
+		</type>
+		<type name="SELECT_CELL_BROADCAST_SMS_MESSAGE" prefix="CSCB">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="messageTypeNotAccepted" />
+					<param name="messageIdentifiers" optional="true" />
+					<param name="dcss" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="SHOW_SMS_TEXT_MODE_PARAMETERS" prefix="CSDH">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="showValuesResultCode" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="SET_SMS_TEXT_MODE_PARAMETERS" prefix="CSMP">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="firstOctet" optional="true" />
+					<param name="validityPeriod" optional="true" />
+					<param name="protocolIdentifier" optional="true" />
+					<param name="dataCodingScheme" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="STRORE_CLASS0_SMS_TO_SIM_WHEN_RECEIVING_CLASS0_SMS"
+			prefix="QCLASS0">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="enableToStoreClass0" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="DELETE_ALL_SMS" prefix="QMGDA">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<!--// TODO Auto-generated XML - Copy command params here -->
+				</order>
+			</class>
+		</type>
+		<type name="CONFIGURE_SMS_CODE_MODE" prefix="QSMSCODE">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="codeMode" />
+				</order>
+			</class>
+		</type>
+	</cmd>
+	
+	<cmd delimiter="," name="phonebookCommand" prefix="AT+C">
+		<type name="SELECT_PHONEBOOK_MEMORY_STORAGE" prefix="PBS">
+			<class name="WRITE" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="storage"/>
+				</order>
+			</class>
+		</type>	
+		<type name="WRITE_PHONEBOOK_ENTRY" prefix="PBW">
+			<class name="WRITE" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="index" />
+					<param name="number" optional="true" />
+					<param name="numberType" optional="true" />
+					<param name="text" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="READ_CURRENT_PHONEBOOK_ENTRIES" prefix="PBR">
+			<class name="WRITE" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="firstPhoneBookRecord" />
+					<param name="lastPhoneBookRecord" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="FIND_PHONEBOOK_ENTRIES" prefix="PBF">
+			<class name="WRITE" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="findText" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="SUBSCRIBER_NUMBER" prefix="NUM">
+			<class name="WRITE" prefix="=?" />
+			<class name="EXECUTION" />
 		</type>
 	</cmd>
 

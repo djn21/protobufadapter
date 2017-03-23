@@ -25,7 +25,6 @@
 			<groupId>com.rtrk</groupId>
 			<artifactId>protobuf</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-			<scope>import</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.w3c</groupId>

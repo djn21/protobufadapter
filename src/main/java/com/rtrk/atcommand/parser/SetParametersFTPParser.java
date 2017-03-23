@@ -7,7 +7,7 @@ import com.rtrk.atcommand.protobuf.ProtobufATCommand.FTPCommand;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.TransferType;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.TypeOfConfigurableParameters;
 
-public class SetParametersFTPParser implements Parser {
+public class SetParametersFTPParser implements ProtobufParser {
 
 	@Override
 	public byte[] encode(Command command) {

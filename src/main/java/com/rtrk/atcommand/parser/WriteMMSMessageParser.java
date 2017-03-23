@@ -6,7 +6,7 @@ import com.rtrk.atcommand.protobuf.ProtobufATCommand.MMSCommand;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.OperateFunction;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.OperateWriteMMS;
 
-public class WriteMMSMessageParser implements Parser {
+public class WriteMMSMessageParser implements ProtobufParser {
 
 	@Override
 	public byte[] encode(Command command) {
@@ -26,7 +26,7 @@ public class WriteMMSMessageParser implements Parser {
 	public void decode(byte[] commandByteArray, Object commandBuilder) {
 		String params = new String(commandByteArray);
 		MMSCommand.Builder mmsCommandBuilder = (MMSCommand.Builder) commandBuilder;
-		if (!"".contentEquals(params)) {
+		if (!"".equals(params)) {
 			int function = Integer.parseInt(params.split(",")[0].trim());
 			if (function == 4) {
 				if (params.split(",").length == 1) {

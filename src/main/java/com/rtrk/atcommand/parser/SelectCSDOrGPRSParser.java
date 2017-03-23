@@ -6,7 +6,7 @@ import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Rate;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.TCPIPCommand;
 
-public class SelectCSDOrGPRSParser implements Parser {
+public class SelectCSDOrGPRSParser implements ProtobufParser {
 
 	@Override
 	public byte[] encode(Command command) {

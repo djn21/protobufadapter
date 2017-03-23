@@ -2,7 +2,7 @@ package com.rtrk.atcommand.parser;
 
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 
-public interface Parser {
+public interface ProtobufParser {
 
 	byte[] encode(Command command);
 
