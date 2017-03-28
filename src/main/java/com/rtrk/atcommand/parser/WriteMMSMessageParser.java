@@ -6,7 +6,7 @@ import com.rtrk.atcommand.protobuf.ProtobufATCommand.MMSCommand;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.OperateFunction;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.OperateWriteMMS;
 
-public class WriteMMSMessageParser implements ProtobufParser {
+public class WriteMMSMessageParser implements Parser {
 
 	@Override
 	public byte[] encode(Command command) {

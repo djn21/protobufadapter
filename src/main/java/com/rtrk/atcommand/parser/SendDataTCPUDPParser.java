@@ -5,7 +5,7 @@ import com.rtrk.atcommand.exception.XMLParseException;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.TCPIPCommand;
 
-public class SendDataTCPUDPParser implements ProtobufParser {
+public class SendDataTCPUDPParser implements Parser {
 
 	@Override
 	public byte[] encode(Command command) {

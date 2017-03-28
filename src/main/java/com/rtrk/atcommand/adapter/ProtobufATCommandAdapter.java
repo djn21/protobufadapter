@@ -24,7 +24,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.rtrk.atcommand.ATCommand;
 import com.rtrk.atcommand.Parameter;
 import com.rtrk.atcommand.exception.XMLParseException;
-import com.rtrk.atcommand.parser.ProtobufParser;
+import com.rtrk.atcommand.parser.Parser;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 
 /**
@@ -106,7 +106,8 @@ public class ProtobufATCommandAdapter {
 						String classPrefix = classElement.getAttribute("prefix").trim();
 						String classOptional = classElement.getAttribute("optional").trim();
 						String classParser = classElement.getAttribute("parser").trim();
-
+						String classGenerator = classElement.getAttribute("generator").trim();
+						
 						// order node list
 						Vector<Parameter> parameters = new Vector<Parameter>();
 						if (classElement.hasChildNodes()) {
@@ -199,14 +200,14 @@ public class ProtobufATCommandAdapter {
 						if (optional) {
 							String fullPrefix = cmdPrefix + typePrefix;
 							ATCommand command = new ATCommand(cmdName, typeName, className, fullPrefix, cmdSufix,
-									cmdDelimiter, classParser, parameters);
+									cmdDelimiter, classParser, classGenerator, parameters);
 							decodeMap.put(command.getPrefix(), command);
 						}
 
 						// set full prefix
 						String fullPrefix = cmdPrefix + typePrefix + classPrefix;
 						ATCommand command = new ATCommand(cmdName, typeName, className, fullPrefix, cmdSufix,
-								cmdDelimiter, classParser, parameters);
+								cmdDelimiter, classParser, classGenerator, parameters);
 						decodeMap.put(command.getPrefix(), command);
 						classMap.put(command.getClazz(), command);
 					}
@@ -260,7 +261,7 @@ public class ProtobufATCommandAdapter {
 			// parser encode
 			if (atCommand.hasParser()) {
 				Class<?> parserClass = Class.forName(atCommand.getParser());
-				ProtobufParser parser = (ProtobufParser) parserClass.newInstance();
+				Parser parser = (Parser) parserClass.newInstance();
 				return parser.encode(command);
 			}
 
@@ -276,7 +277,7 @@ public class ProtobufATCommandAdapter {
 					// encode with parser if exists
 					if (parameter.hasParser()) {
 						Class<?> parserClass = Class.forName(parameter.getParser());
-						ProtobufParser parser = (ProtobufParser) parserClass.newInstance();
+						Parser parser = (Parser) parserClass.newInstance();
 						paramValue = new String(parser.encode(command));
 					} else {
 
@@ -388,7 +389,7 @@ public class ProtobufATCommandAdapter {
 			// decode command with parser
 			if (atCommand.hasParser()) {
 				Class<?> parserClass = Class.forName(atCommand.getParser());
-				ProtobufParser parser = (ProtobufParser) parserClass.newInstance();
+				Parser parser = (Parser) parserClass.newInstance();
 				parser.decode(params.getBytes(), commandTypeBuilderObject);
 				
 				// standard command decode
@@ -437,7 +438,7 @@ public class ProtobufATCommandAdapter {
 					// decode parameter with parser
 					if (parameter.hasParser()) {
 						Class<?> parserClass = Class.forName(parameter.getParser());
-						ProtobufParser parser = (ProtobufParser) parserClass.newInstance();
+						Parser parser = (Parser) parserClass.newInstance();
 						parser.decode(paramValue.getBytes(), commandTypeBuilderObject);
 
 						// standard parameter decode

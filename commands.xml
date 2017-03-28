@@ -1562,7 +1562,6 @@
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
 		<type name="SPEECH_CHANNEL_TYPE_REPORT" prefix="AT+QSPCH">
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
@@ -1816,1391 +1815,885 @@
 		</type>
 	</cmd>
 	
+	<cmd delimiter="," name="gprsCommand" prefix="AT+">
+		<type name="ATTACH_DEATTACH_GPRS_SERVICE" prefix="CGATT">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="attached" />
+				</order>
+			</class>
+		</type>
+		<type name="DEFINE_PDP_CONTEXT" prefix="CGDCONT">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="cid" />
+					<param name="PDPType" optional="true" />
+					<param name="APN" optional="true" />
+					<param name="PDPAddress" optional="true" />
+					<param name="dComp" optional="true" />
+					<param name="hComp" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="QOS_PROFILE_REQUESTED" prefix="CGQREQ">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="cid" />
+					<param name="precedence" optional="true" />
+					<param name="delay" optional="true" />
+					<param name="reliability" optional="true" />
+					<param name="peak" optional="true" />
+					<param name="mean" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="QOS_PROFILE_MINIMUM_ACCEPTABLE" prefix="CGQMIN">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="cid" />
+					<param name="precedence" optional="true" />
+					<param name="delay" optional="true" />
+					<param name="reliability" optional="true" />
+					<param name="peak" optional="true" />
+					<param name="mean" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="PDP_CONTEXT_ACTIVATE_OR_DEACTIVATE" prefix="CGACT">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="activatePDP" />
+					<param name="cid" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="ENTER_DATA_STATE" prefix="CGDATA">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<!--// TODO Auto-generated XML - Copy command params here -->
+				</order>
+			</class>
+		</type>
+		<type name="SHOW_PDP_ADDRESS" prefix="CGPADDR">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="cid" />
+				</order>
+			</class>
+		</type>
+		<type name="GPRS_MOBILE_STATION_CLASS" prefix="CGCLASS">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="class" />
+				</order>
+			</class>
+		</type>
+		<type name="CONTROL_UNSOLICITED_GPRS_EVENT_REPORTING" prefix="CGEREP">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="eventReportingMode" />
+				</order>
+			</class>
+		</type>
+		<type name="NETWORK_REGISTRATION_STATUS" prefix="CGREG">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="networkRegistrationMode" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="SELECT_SERVICE_FOR_MO_SMS_MESSAGE" prefix="CGSMS">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="serviceType" optional="true" />
+				</order>
+			</class>
+		</type>
+		<type name="CHANGE_GPRS_MULTISLOT_CLASS" prefix="QGPCLASS">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="multislotClass" />
+				</order>
+			</class>
+		</type>
+	</cmd>
 	
-	<!--// TODO Auto-generated XML - Set command delimiter and prefix -->
-	<cmd delimiter="" name="gprsCommand" prefix="">
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="ATTACH_DEATTACH_GPRS_SERVICE" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+	<cmd delimiter="," name="tcpipCommand" prefix="AT+Q">
+		<type name="SET_UP_TCP_OR_UDP_CONNECTION" prefix="IOPEN">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Set param optionality and parser class 
-						Remove unused params and attributes -->
-					<param environmet="true" name="attached" optional="true"
-						parser="">
-						<min>
-							<!--// TODO Auto-generated XML - Set min value if exists -->
-						</min>
-						<max>
-							<!--// TODO Auto-generated XML - Set max value if exists -->
-						</max>
-					</param>
-					<param environmet="true" name="cid" optional="true" parser="">
-						<true>
-							<!--// TODO Auto-generated XML - Set true value if exists -->
-						</true>
-						<false>
-							<!--// TODO Auto-generated XML - Set false value if exists -->
-						</false>
-					</param>
-					<param environmet="true" name="PDPType" optional="true"
-						parser="" />
-					<param environmet="true" name="APN" optional="true" parser="" />
-					<param environmet="true" name="PDPAddress" optional="true"
-						parser="" />
-					<param environmet="true" name="dComp" optional="true" parser="" />
-					<param environmet="true" name="hComp" optional="true" parser="" />
-					<param environmet="true" name="precedence" optional="true"
-						parser="" />
-					<param environmet="true" name="delay" optional="true" parser="" />
-					<param environmet="true" name="reliability" optional="true"
-						parser="" />
-					<param environmet="true" name="peak" optional="true" parser="" />
-					<param environmet="true" name="mean" optional="true" parser="" />
-					<param environmet="true" name="L2P" optional="true" parser="" />
-					<param environmet="true" name="class" optional="true" parser="" />
-					<param environmet="true" name="eventReportingMode" optional="true"
-						parser="" />
-					<param environmet="true" name="networkRegistrationMode"
-						optional="true" parser="" />
-					<param environmet="true" name="networkRegistrationStatus"
-						optional="true" parser="" />
-					<param environmet="true" name="lac" optional="true" parser="" />
-					<param environmet="true" name="ci" optional="true" parser="" />
-					<param environmet="true" name="serviceType" optional="true"
-						parser="" />
-					<param environmet="true" name="multislotClass" optional="true"
-						parser="" />
-					<param environmet="true" name="isResponse" optional="true"
-						parser="" />
-					<param environmet="true" name="description" optional="true"
-						parser="" />
-					<param environmet="true" name="activatePDP" optional="true"
-						parser="" />
+					<param name="index" optional="true" />
+					<param name="mode" />
+					<param name="domainName" />
+					<param name="port" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="DEFINE_PDP_CONTEXT" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="SEND_DATA_THROUGH_TCP_OR_UDP_CONNECTION" prefix="ISEND">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<!--// TODO Auto-generated XML - Copy command params here -->	
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="QOS_PROFILE_REQUESTED" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="CLOSE_TCP_OR_UDP_CONNECTION" prefix="ICLOSE">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="index" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="QOS_PROFILE_MINIMUM_ACCEPTABLE" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="DEACTIVATE_GPRS_CSD_PDP_CONTEXT" prefix="IDEACT">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="SET_LOCAL_PORT" prefix="ILPORT">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="index" />
+					<param name="mode" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="PDP_CONTEXT_ACTIVATE_OR_DEACTIVATE" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="START_TCPIP_TASK_APN_USERNAME_AND_PASSWORD" prefix="IREGAPP">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="EXECUTION" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="APN" />
+					<param name="username" />
+					<param name="password" />
+					<param name="rate" optional="true" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="ENTER_DATA_STATE" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="ACTIVE_GPRS_CSD_CONTEXT" prefix="IACT">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="GET_LOCAL_IP_ADDRESS" prefix="ILOCIP">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="QUERY_CURRENT_CONNECTION_STATUS" prefix="ISTAT">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="QUERY_CONNECTION_STATUS_OF_CURRENT_ACCESS" prefix="ISTATE">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="QUERY_CURRENT_SERVER_STATUS" prefix="ISSTAT">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="CONFIGURE_DOMAIN_NAME_SERVER" prefix="IDNSCFG">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="primaryDNS" />
+					<param name="seondaryDNS" optional="true" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SHOW_PDP_ADDRESS" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="QUERY_IP_ADDRESS_OF_GIVEN_DOMAIN_NAME" prefix="IDNSGIP">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="domainName" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="GPRS_MOBILE_STATION_CLASS" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="CONTROL_UNSOLICITED_GPRS_EVENT_REPORTING" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="NETWORK_REGISTRATION_STATUS" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SELECT_SERVICE_FOR_MO_SMS_MESSAGE" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="CHANGE_GPRS_MULTISLOT_CLASS" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-	</cmd>
-	<!--// TODO Auto-generated XML - Set command delimiter and prefix -->
-	<cmd delimiter="" name="tcpipCommand" prefix="">
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SET_UP_TCP_OR_UDP_CONNECTION" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Set param optionality and parser class 
-						Remove unused params and attributes -->
-					<param environmet="true" name="index" optional="true" parser="">
-						<min>
-							<!--// TODO Auto-generated XML - Set min value if exists -->
-						</min>
-						<max>
-							<!--// TODO Auto-generated XML - Set max value if exists -->
-						</max>
-					</param>
-					<param environmet="true" name="mode" optional="true" parser="">
-						<true>
-							<!--// TODO Auto-generated XML - Set true value if exists -->
-						</true>
-						<false>
-							<!--// TODO Auto-generated XML - Set false value if exists -->
-						</false>
-					</param>
-					<param environmet="true" name="serverFormat" optional="true"
-						parser="" />
-					<param environmet="true" name="port" optional="true" parser="" />
-					<param environmet="true" name="domainName" optional="true"
-						parser="" />
-					<param environmet="true" name="length" optional="true"
-						parser="" />
-					<param environmet="true" name="APN" optional="true" parser="" />
-					<param environmet="true" name="username" optional="true"
-						parser="" />
-					<param environmet="true" name="password" optional="true"
-						parser="" />
-					<param environmet="true" name="rate" optional="true" parser="" />
-					<param environmet="true" name="state" optional="true" parser="" />
-					<param environmet="true" name="socketState" optional="true"
-						parser="" />
-					<param environmet="true" name="serverState" optional="true"
-						parser="" />
-					<param environmet="true" name="primaryDNS" optional="true"
-						parser="" />
-					<param environmet="true" name="seondaryDNS" optional="true"
-						parser="" />
-					<param environmet="true" name="time" optional="true" parser="" />
-					<param environmet="true" name="sendPrompt" optional="true"
-						parser="" />
-					<param environmet="true" name="num" optional="true" parser="" />
-					<param environmet="true" name="type" optional="true" parser="" />
-					<param environmet="true" name="max" optional="true" parser="" />
-					<param environmet="true" name="dialNumber" optional="true"
-						parser="" />
-					<param environmet="true" name="connection" optional="true"
-						parser="" />
-					<param environmet="true" name="numberOfRetry" optional="true"
-						parser="" />
-					<param environmet="true" name="waitTime" optional="true"
-						parser="" />
-					<param environmet="true" name="sendSize" optional="true"
-						parser="" />
-					<param environmet="true" name="escape" optional="true"
-						parser="" />
-					<param environmet="true" name="channel" optional="true"
-						parser="" />
-					<param environmet="true" name="n" optional="true" parser="" />
-					<param environmet="true" name="sent" optional="true" parser="" />
-					<param environmet="true" name="acked" optional="true" parser="" />
-					<param environmet="true" name="nAcked" optional="true"
-						parser="" />
-					<param environmet="true" name="receivedDataMode" optional="true"
-						parser="" />
-					<param environmet="true" name="id" optional="true" parser="" />
-					<param environmet="true" name="serverClinet" optional="true"
-						parser="" />
-					<param environmet="true" name="sid" optional="true" parser="" />
-					<param environmet="true" name="number" optional="true"
-						parser="" />
-					<param environmet="true" name="host" optional="true" parser="" />
-					<param environmet="true" name="timeout" optional="true"
-						parser="" />
-					<param environmet="true" name="pingNumber" optional="true"
-						parser="" />
-					<param environmet="true" name="pingResult" optional="true"
-						parser="" />
-					<param environmet="true" name="bytes" optional="true" parser="" />
-					<param environmet="true" name="ttl" optional="true" parser="" />
-					<param environmet="true" name="finalResult" optional="true"
-						parser="" />
-					<param environmet="true" name="received" optional="true"
-						parser="" />
-					<param environmet="true" name="lost" optional="true" parser="" />
-					<param environmet="true" name="min" optional="true" parser="" />
-					<param environmet="true" name="avg" optional="true" parser="" />
-					<param environmet="true" name="server" optional="true"
-						parser="" />
-					<param environmet="true" name="isResponse" optional="true"
-						parser="" />
-					<param environmet="true" name="description" optional="true"
-						parser="" />
-					<param environmet="true" name="ipHeader" optional="true"
-						parser="" />
-					<param environmet="true" name="timer" optional="true" parser="" />
-					<param environmet="true" name="configureAsServer" optional="true"
-						parser="" />
-					<param environmet="true" name="bearerType" optional="true"
-						parser="" />
-					<param environmet="true" name="showAddress" optional="true"
-						parser="" />
-					<param environmet="true" name="transferMode" optional="true"
-						parser="" />
-					<param environmet="true" name="showTransportProtocolType"
-						optional="true" parser="" />
-					<param environmet="true" name="enableMultipleTCPIPSession"
-						optional="true" parser="" />
-					<param environmet="true" name="echoData" optional="true"
-						parser="" />
-					<param environmet="true" name="synchronizationResult"
-						optional="true" parser="" />
-					<param environmet="true" name="CSDDataSpeed" optional="true"
-						parser="" />
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SEND_DATA_THROUGH_TCP_OR_UDP_CONNECTION" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="CLOSE_TCP_OR_UDP_CONNECTION" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="DEACTIVATE_GPRS_CSD_PDP_CONTEXT" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SET_LOCAL_PORT" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="START_TCPIP_TASK_APN_USERNAME_AND_PASSWORD" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="ACTIVE_GPRS_CSD_CONTEXT" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="GET_LOCAL_IP_ADDRESS" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="QUERY_CURRENT_CONNECTION_STATUS" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="QUERY_CONNECTION_STATUS_OF_CURRENT_ACCESS" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="QUERY_CURRENT_SERVER_STATUS" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="CONFIGURE_DOMAIN_NAME_SERVER" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="QUERY_IP_ADDRESS_OF_GIVEN_DOMAIN_NAME" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
 		<type name="CONNECT_WITH_IP_ADDRESS_OR_DOMAIN_NAME_SERVER"
-			prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+			prefix="IDNSIP">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="serverState" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="ADD_AN_IP_HEADER_WHEN_RECEIVING_DATE" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="ADD_AN_IP_HEADER_WHEN_RECEIVING_DATE" prefix="IHEAD">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="ipHeader" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SET_AUTO_SENDING_TIMER" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="SET_AUTO_SENDING_TIMER" prefix="IAUTOS">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="timer" />
+					<param name="time" optional="true" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SET_PROMPT_WHEN_SENDING_DATA" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="SET_PROMPT_WHEN_SENDING_DATA" prefix="IPROMPT">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="sendPrompt" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="CONFIGURE_AS_SERVER" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="CONFIGURE_AS_SERVER" prefix="ISERVER">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="EXECUTION" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="configureAsServer" />
+					<param name="max" optional="true">
+						<min>1</min>
+						<max>5</max>
+					</param>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SELECT_CSD_OR_GPRS_AS_THE_BEARER" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="SELECT_CSD_OR_GPRS_AS_THE_BEARER" prefix="ICSGP">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="bearerType" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="CHOOSE_CONNECTION" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="CHOOSE_CONNECTION" prefix="ISRVC">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="connection" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
 		<type name="SET_WHETHER_OR_NOT_TO_DISPLAY_ADDRESS_OF_SENDER"
-			prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+			prefix="ISHOWRA">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="showAddress" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SAVE_TCPIP_APPLICATION_CONTEXT" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="SAVE_TCPIP_APPLICATION_CONTEXT" prefix="ISCON">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="EXECUTION" />
+		</type>
+		<type name="SELECT_TCPIP_TRANSFER_MODE" prefix="IMODE">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="transferMode" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SELECT_TCPIP_TRANSFER_MODE" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="CONFIGURE_TRANSPARENT_TRANSFER_MODE" prefix="ITCFG">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="numberOfRetry" />
+					<param name="waitTime" />
+					<param name="sendSize" />
+					<param name="escape" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="CONFIGURE_TRANSPARENT_TRANSFER_MODE" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="CONTROL_WHETHER_OR_NOT_TO_SHOW_PROTOCOL_TYPE" prefix="ISHOWPT">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="showTransportProtocolType" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="CONTROL_WHETHER_OR_NOT_TO_SHOW_PROTOCOL_TYPE" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="ENABLE_MULTIPLE_TCPIP_SESSION" prefix="IMUX">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="enableMultipleTCPIPSession" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="ENABLE_MULTIPLE_TCPIP_SESSION" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
 		<type name="CONTROL_WHETHER_OR_NOT_TO_DISPLAY_LOCAL_IP_ADDRESS"
-			prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+			prefix="ISHOWLA">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="showAddress" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SELECT_A_CONTEXT_AS_FOREGROUND_CONTEXT" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="SELECT_A_CONTEXT_AS_FOREGROUND_CONTEXT" prefix="IFGCNT">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="id" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="QUERY_THE_DATA_INFORMATION_FOR_SENDING" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="QUERY_THE_DATA_INFORMATION_FOR_SENDING" prefix="ISACK">
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="n" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SET_METHOD_TO_HANDLE_RECEIVED_TCPIP_DATA" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="SET_METHOD_TO_HANDLE_RECEIVED_TCPIP_DATA" prefix="INDI">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="receivedDataMode" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="RETRIEVE_THE_RECEIVED_TCPIP_DATA" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="RETRIEVE_THE_RECEIVED_TCPIP_DATA" prefix="IRD">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="id" />
+					<param name="serverClinet" />
+					<param name="sid" />
+					<param name="length" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
 		<type name="CONTRO_WHETHER_OR_NOT_TO_ECHO_DATA_FOR_QISEND"
-			prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+			prefix="ISDE">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="echoData" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="PING_A_REMOTE_SERVER" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="PING_A_REMOTE_SERVER" prefix="PING">
+			<class name="TEST" prefix="=?" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="host" />
+					<param name="timeout" optional="true">
+						<min>1</min>
+						<max>255</max>
+					</param>
+					<param name="pingNumber" optional="true">
+						<min>1</min>
+						<max>10</max>
+					</param>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SYNCHRONIZE_LOCAL_TIME_VIA_NTP" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="SYNCHRONIZE_LOCAL_TIME_VIA_NTP" prefix="NTP">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
+			<class name="EXECUTION" />
+			<class name="WRITE" prefix="=" >
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="server" />
+					<param name="port" optional="true" />
 				</order>
 			</class>
 		</type>
 	</cmd>
-	<!--// TODO Auto-generated XML - Set command delimiter and prefix -->
-	<cmd delimiter="" name="supplementaryServiceCommand" prefix="">
-		<!--// TODO Auto-generated XML - Set command type prefix -->
+
+	<cmd delimiter="," name="supplementaryServiceCommand" prefix="AT+">
 		<type name="CALL_FORWARDING_NUMBER_AND_CONDITIONS_CONTROL"
-			prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+			prefix="CCFC">
+			<class name="TEST" prefix="=?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Set param optionality and parser class 
-						Remove unused params and attributes -->
-					<param environmet="true" name="reads" optional="true" parser="">
-						<min>
-							<!--// TODO Auto-generated XML - Set min value if exists -->
-						</min>
-						<max>
-							<!--// TODO Auto-generated XML - Set max value if exists -->
-						</max>
+					<param name="reads" />
+					<param name="forwardingMode"/>
+					<param name="number" optional="true"/>
+					<param name="type" optional="true"/>
+					<param name="class" optional="true"/>
+					<param name="subaddress" optional="true"/>
+					<param name="satype" optional="true"/>
+					<param name="time" optional="true"/>
+				</order>
+			</class>
+		</type>
+		<type name="CLOSED_USER_GROUP_CONTROL" prefix="CCUG">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="enableCUG" optional="true" />
+					<param name="CUGIndex" optional="true">
+						<min>0</min>
+						<max>10</max>
 					</param>
-					<param environmet="true" name="forwardingMode" optional="true"
-						parser="">
-						<true>
-							<!--// TODO Auto-generated XML - Set true value if exists -->
-						</true>
-						<false>
-							<!--// TODO Auto-generated XML - Set false value if exists -->
-						</false>
+					<param name="info" optional="true">
+						<min>0</min>
+						<max>1</max>
 					</param>
-					<param environmet="true" name="number" optional="true"
-						parser="" />
-					<param environmet="true" name="type" optional="true" parser="" />
-					<param environmet="true" name="subaddress" optional="true"
-						parser="" />
-					<param environmet="true" name="satype" optional="true"
-						parser="" />
-					<param environmet="true" name="class" optional="true" parser="" />
-					<param environmet="true" name="time" optional="true" parser="" />
-					<param environmet="true" name="active" optional="true"
-						parser="" />
-					<param environmet="true" name="enableCUG" optional="true"
-						parser="" />
-					<param environmet="true" name="CUGIndex" optional="true"
-						parser="" />
-					<param environmet="true" name="info" optional="true" parser="" />
-					<param environmet="true" name="clip" optional="true" parser="" />
-					<param environmet="true" name="USSDString" optional="true"
-						parser="" />
-					<param environmet="true" name="dataCodingScheme" optional="true"
-						parser="" />
-					<param environmet="true" name="code1" optional="true" parser="" />
-					<param environmet="true" name="code2" optional="true" parser="" />
-					<param environmet="true" name="isResponse" optional="true"
-						parser="" />
-					<param environmet="true" name="description" optional="true"
-						parser="" />
-					<param environmet="true" name="enablePresentation" optional="true"
-						parser="" />
-					<param environmet="true" name="enableCallWaitingControl"
-						optional="true" parser="" />
-					<param environmet="true" name="callHold" optional="true"
-						parser="" />
-					<param environmet="true" name="displayUnsolicitedResultCode"
-						optional="true" parser="" />
-					<param environmet="true" name="showCallNumber" optional="true"
-						parser="" />
-					<param environmet="true" name="aoc" optional="true" parser="" />
-					<param environmet="true" name="css" optional="true" parser="" />
-					<param environmet="true" name="enableResultCodePresentationOriginated"
-						optional="true" parser="" />
-					<param environmet="true" name="enableResultCodePresentationTerminated"
-						optional="true" parser="" />
-					<param environmet="true" name="showAlphaField" optional="true"
-						parser="" />
-					<param environmet="true" name="ssdControl" optional="true"
-						parser="" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="CLOSED_USER_GROUP_CONTROL" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="CALL_WAITING_CONTROL" prefix="CCWA">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="enablePresentation" optional="true"/>
+					<param name="waitingControlMode" optional="true"/>
+					<param name="class" optional="true" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="CALL_WAITING_CONTROL" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="CALL_HOLD_AND_MULTIPARTY" prefix="CHLD">
+			<class name="TEST" prefix="=?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="callHold" optional="true"/>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="CALL_HOLD_AND_MULTIPARTY" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="CALLING_LINE_IDENTIFICATION_PRESENTATION" prefix="CLIP">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="displayUnsolicitedResultCode"/>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="CALLING_LINE_IDENTIFICATION_PRESENTATION" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
 		<type name="CONTROL_WHETHER_OR_NOT_TO_SHOW_NAME_OF_INCOMING_CALL_NUMBER"
-			prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+			prefix="QCLIP">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="showCallNumber"/>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="CONNECTED_LINE_IDENTIFICATION_PRESENTATION" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="CONNECTED_LINE_IDENTIFICATION_PRESENTATION" prefix="CLIR">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="aoc" optional="true" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SHOW_ALPHA_FIELD_IN_COLP_STRING" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="SHOW_ALPHA_FIELD_IN_COLP_STRING" prefix="COLP">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="enablePresentation" optional="true"/>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="UNSTRUCTURED_SUPPLEMENTARY_SERVICE_DATA" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="UNSTRUCTURED_SUPPLEMENTARY_SERVICE_DATA" prefix="QCOLP">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="showAlphaField"/>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SUPPLEMENTARY_SERVICES_NOTIFICATION" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="SUPPLEMENTARY_SERVICES_NOTIFICATION" prefix="CUSD">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="ssdControl" optional="true"/>
+					<param name="USSDString" optional="true"/>
+					<param name="dataCodingScheme" optional="true"/>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="CALLING_LINE_IDENTIFICATION_RESTRICTION" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="CALLING_LINE_IDENTIFICATION_RESTRICTION" prefix="CSSN">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="enableResultCodePresentationOriginated" optional="true"/>
+					<param name="enableResultCodePresentationTerminated" optional="true"/>
 				</order>
 			</class>
 		</type>
 	</cmd>
-	<!--// TODO Auto-generated XML - Set command delimiter and prefix -->
-	<cmd delimiter="" name="audioCommand" prefix="">
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SET_MONITOR_SPEAKER_LOUDNESS" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+	
+	<cmd delimiter="," name="audioCommand" prefix="AT">
+		<type name="SET_MONITOR_SPEAKER_LOUDNESS" prefix="L">
+			<class name="EXECUTION">
 				<order>
-					<!--// TODO Auto-generated XML - Set param optionality and parser class 
-						Remove unused params and attributes -->
-					<param environmet="true" name="speakerLoudness" optional="true"
-						parser="">
-						<min>
-							<!--// TODO Auto-generated XML - Set min value if exists -->
-						</min>
-						<max>
-							<!--// TODO Auto-generated XML - Set max value if exists -->
-						</max>
-					</param>
-					<param environmet="true" name="internalDuration" optional="true"
-						parser="">
-						<true>
-							<!--// TODO Auto-generated XML - Set true value if exists -->
-						</true>
-						<false>
-							<!--// TODO Auto-generated XML - Set false value if exists -->
-						</false>
-					</param>
-					<param environmet="true" name="duration" optional="true"
-						parser="" />
-					<param environmet="true" name="DTMFString" optional="true"
-						parser="" />
-					<param environmet="true" name="soundMode" optional="true"
-						parser="" />
-					<param environmet="true" name="level" optional="true" parser="" />
-					<param environmet="true" name="mute" optional="true" parser="" />
-					<param environmet="true" name="gainLevel" optional="true"
-						parser="" />
-					<param environmet="true" name="microphoneChannel" optional="true"
-						parser="" />
-					<param environmet="true" name="testIsOn" optional="true"
-						parser="" />
-					<param environmet="true" name="frequency" optional="true"
-						parser="" />
-					<param environmet="true" name="periodON" optional="true"
-						parser="" />
-					<param environmet="true" name="periodOFF" optional="true"
-						parser="" />
-					<param environmet="true" name="outputPath" optional="true"
-						parser="" />
-					<param environmet="true" name="operateFunction" optional="true"
-						parser="" />
-					<param environmet="true" name="functionStatus" optional="true"
-						parser="" />
-					<param environmet="true" name="prefixPause" optional="true"
-						parser="" />
-					<param environmet="true" name="lowThreshold" optional="true"
-						parser="" />
-					<param environmet="true" name="highThreshold" optional="true"
-						parser="" />
-					<param environmet="true" name="persistenceTime" optional="true"
-						parser="" />
-					<param environmet="true" name="uplinkVolume" optional="true"
-						parser="" />
-					<param environmet="true" name="downlinkVolume" optional="true"
-						parser="" />
-					<param environmet="true" name="continuanceTime" optional="true"
-						parser="" />
-					<param environmet="true" name="muteTime" optional="true"
-						parser="" />
-					<param environmet="true" name="isResponse" optional="true"
-						parser="" />
-					<param environmet="true" name="description" optional="true"
-						parser="" />
+					<param name="speakerLoudness"/>
+				</order>
+			</class>
+		</type>
+		<type name="SET_MONITOR_SPEAKER_MODE" prefix="M">
+			<class name="EXECUTION">
+				<order>
 					<param environmet="true" name="speakerMode" optional="true"
 						parser="" />
-					<param environmet="true" name="audioChannel" optional="true"
-						parser="" />
-					<param environmet="true" name="startPlayingTone" optional="true"
-						parser="" />
-					<param environmet="true" name="toneDetection" optional="true"
-						parser="" />
-					<param environmet="true" name="dtmfOperate" optional="true"
-						parser="" />
-					<param environmet="true" name="dtmfCode" optional="true"
-						parser="" />
-					<param environmet="true" name="algorithm" optional="true"
-						parser="" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SET_MONITOR_SPEAKER_MODE" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="TONE_DURATION" prefix="+VTD">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="internalDuration">
+						<min>1</min>
+						<max>255</max>
+					</param>
+					<param name="duration" optional="true">
+						<min>0</min>
+						<max>100000</max>
+					</param>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="TONE_DURATION" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="DTMF_AND_TONE_GENERATION" prefix="+VTS">
+			<class name="TEST" prefix="=?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="DTMFString"/>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="DTMF_AND_TONE_GENERATION" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="ALERT_SOUND_MODE" prefix="+CALM">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="soundMode"/>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="ALERT_SOUND_MODE" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="RINGER_SOUND_LEVEL" prefix="+CRSL">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="level">
+						<min>0</min>
+						<max>100</max>
+					</param>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="RINGER_SOUND_LEVEL" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="LOUD_SPEAKER_VOLUME_LEVEL" prefix="+CLVL">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="level">
+						<min>0</min>
+						<max>100</max>
+					</param>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="LOUD_SPEAKER_VOLUME_LEVEL" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="MUTE_CONTROL" prefix="+CMUT">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="mute"/>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="MUTE_CONTROL" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="CHANGE_THE_SIDE_TONE_GAIN_LEVEL" prefix="+QSIDET">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="gainLevel">
+						<min>0</min>
+						<max>255</max>
+					</param>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="CHANGE_THE_SIDE_TONE_GAIN_LEVEL" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="CHANGE_THE_MICROPHONE_GAIN_LEVEL" prefix="+QMIC">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="microphoneChannel"/>
+					<param name="gainLevel">
+						<min>0</min>
+						<max>255</max>
+					</param>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="CHANGE_THE_MICROPHONE_GAIN_LEVEL" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="GENERATE_LOCAL_DTMF_TONES" prefix="+QLDTMF">
+			<class name="TEST" prefix="=?"/>
+			<class name="EXECUTION"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="duration" optional="true">
+						<min>0</min>
+						<max>1000</max>
+					</param>
+					<param name="DTMFString" optional="true"/>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="GENERATE_LOCAL_DTMF_TONES" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="SWAP_THE_AUDIO_CHANNELS" prefix="+QAUDCH">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="audioChannel" optional="true"/>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SWAP_THE_AUDIO_CHANNELS" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="AUDIO_CHANNEL_LOOP_BACK_TEST" prefix="+QAUDLOOP">
+			<class name="TEST" prefix="=?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="testIsOn"/>
+					<param name="audioChannel" optional="true"/>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="AUDIO_CHANNEL_LOOP_BACK_TEST" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="GENERATE_LOCAL_SPECIFIC_TONE" prefix="+QLTONE">
+			<class name="TEST" prefix="=?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="startPlayingTone"/>
+					<param name="frequency"/>
+					<param name="periodON"/>
+					<param name="periodOFF"/>
+					<param name="duration"/>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="GENERATE_LOCAL_SPECIFIC_TONE" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="SET_DTMF_OUTPUT_PATH" prefix="+QTONEP">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="outputPath"/>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SET_DTMF_OUTPUT_PATH" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="SET_TONE_DETECTION_MODE" prefix="+QTDMOD">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="operateFunction"/>
+					<param name="functionStatus"/>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SET_TONE_DETECTION_MODE" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="DETECT_DTMF" prefix="+QTONEDET">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="toneDetection" />
+					<param name="dtmfOperate" optional="true"/>
+					<param name="prefixPause" optional="true"/>
+					<param name="lowThreshold" optional="true" />
+					<param name="highThreshold" optional="true" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="DETECT_DTMF" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="PLAY_DTMF_TONE_DURING_CALL" prefix="+QWDTMF">
+			<class name="TEST" prefix="=?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="PLAY_DTMF_TONE_DURING_CALL" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="uplinkVolume">
+						<min>0</min>
+						<max>7</max>
+					</param>
+					<param name="downlinkVolume">
+						<min>0</min>
+						<max>7</max>
+					</param>
+					<param name="dtmfCode"/>
+					<param name="continuanceTime"/>
+					<param name="muteTime"/>
+					<param name="audioChannel" optional="true"/>
+					<param name="algorithm" optional="true"/>
 				</order>
 			</class>
 		</type>
 	</cmd>
-	<!--// TODO Auto-generated XML - Set command delimiter and prefix -->
-	<cmd delimiter="" name="hardwareRelatedCommand" prefix="">
+	
+	<cmd delimiter="" name="hardwareRelatedCommand" prefix="AT+">
 		<!--// TODO Auto-generated XML - Set command type prefix -->
 		<type name="CLOCK" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Set param optionality and parser class 
-						Remove unused params and attributes -->
-					<param environmet="true" name="time" optional="true" parser="">
-						<min>
-							<!--// TODO Auto-generated XML - Set min value if exists -->
-						</min>
-						<max>
-							<!--// TODO Auto-generated XML - Set max value if exists -->
-						</max>
-					</param>
-					<param environmet="true" name="setAlarm" optional="true"
-						parser="">
-						<true>
-							<!--// TODO Auto-generated XML - Set true value if exists -->
-						</true>
-						<false>
-							<!--// TODO Auto-generated XML - Set false value if exists -->
-						</false>
-					</param>
-					<param environmet="true" name="repeat" optional="true"
-						parser="" />
-					<param environmet="true" name="power" optional="true" parser="" />
-					<param environmet="true" name="batteryCharge" optional="true"
-						parser="" />
-					<param environmet="true" name="batteryConnectionLevel"
-						optional="true" parser="" />
-					<param environmet="true" name="batteryVoltage" optional="true"
-						parser="" />
-					<param environmet="true" name="readStatus" optional="true"
-						parser="" />
-					<param environmet="true" name="slowClock" optional="true"
-						parser="" />
-					<param environmet="true" name="ledMode" optional="true"
-						parser="" />
-					<param environmet="true" name="thresholdType" optional="true"
-						parser="" />
-					<param environmet="true" name="threshold" optional="true"
-						parser="" />
-					<param environmet="true" name="isResponse" optional="true"
-						parser="" />
-					<param environmet="true" name="description" optional="true"
-						parser="" />
-					<param environmet="true" name="thresholdFunctionTurnedON"
-						optional="true" parser="" />
+					<param name="time"/>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SET_ALARM" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="SET_ALARM" prefix="QALARM">
+			<class name="TEST" prefix="=?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="setAlarm"/>
+					<param name="time"/>
+					<param name="repeat"/>
+					<param name="power"/>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="BATTERY_CHARGE" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="BATTERY_CHARGE" prefix="CBC">
+			<class name="TEST" prefix="=?"/>
+			<class name="EXECUTION"/>
+		</type>
+		<type name="READ_ADC" prefix="QADC">
+			<class name="TEST" prefix="=?"/>
+			<class name="EXECUTION" prefix="?"/>
+		</type>
+		<type name="CONFIGURE_SHOW_CLOCK" prefix="QSCLK">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="slowClock"/>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="READ_ADC" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="CONFIGURE_NETWORK_LED_PATTERNS" prefix="QLEDMODE">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="ledMode"/>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="CONFIGURE_SHOW_CLOCK" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="CONFIGURE_THRESHOLD_OF_VOLTAGE" prefix="QVBATT">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="CONFIGURE_NETWORK_LED_PATTERNS" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="CONFIGURE_THRESHOLD_OF_VOLTAGE" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="thresholdType"/>
+					<param name="threshold" optional="true"/>
+					<param name="thresholdFunctionTurnedON" optional="true"/>
 				</order>
 			</class>
 		</type>
 	</cmd>
-	<!--// TODO Auto-generated XML - Set command delimiter and prefix -->
-	<cmd delimiter="" name="othersCommand" prefix="">
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="REISSUES_LAST_COMMAND_GIVEN" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+	
+
+
+	<cmd delimiter="," name="othersCommand" prefix="A">
+		<type name="REISSUES_LAST_COMMAND_GIVEN" prefix="/">
+			<class name="EXECUTION"/>
+		</type>
+		<type name="SET_COMMAND_ECHO_MODE" prefix="TE">
+			<class name="EXECUTION">
 				<order>
-					<!--// TODO Auto-generated XML - Set param optionality and parser class 
-						Remove unused params and attributes -->
-					<param environmet="true" name="echoModeOn" optional="true"
-						parser="">
-						<min>
-							<!--// TODO Auto-generated XML - Set min value if exists -->
-						</min>
-						<max>
-							<!--// TODO Auto-generated XML - Set max value if exists -->
-						</max>
+					<param name="echoModeOn" optional="true"/>
+				</order>
+			</class>
+		</type>
+		<type name="SET_COMMAND_LINE_TERMINATION_CHARACTER" prefix="TS3">
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="commandLineTerminationCharacter">
+						<min>0</min>
+						<max>127</max>
 					</param>
-					<param environmet="true" name="commandLineTerminationCharacter"
-						optional="true" parser="">
-						<true>
-							<!--// TODO Auto-generated XML - Set true value if exists -->
-						</true>
-						<false>
-							<!--// TODO Auto-generated XML - Set false value if exists -->
-						</false>
+				</order>
+			</class>
+		</type>
+		<type name="SET_RESPONSE_FORMATTING_CHARACTER" prefix="TS4">
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
+				<order>
+					<param name="responseFormattingCharacter">
+						<min>0</min>
+						<max>127</max>
 					</param>
-					<param environmet="true" name="responseFormattingCharacter"
-						optional="true" parser="" />
-					<param environmet="true" name="responseEditingCharacter"
-						optional="true" parser="" />
-					<param environmet="true" name="timeMode" optional="true"
-						parser="" />
-					<param environmet="true" name="indMode" optional="true"
-						parser="" />
-					<param environmet="true" name="isResponse" optional="true"
-						parser="" />
-					<param environmet="true" name="description" optional="true"
-						parser="" />
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SET_COMMAND_ECHO_MODE" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="SET_COMMAND_LINE_EDITING_CHARACTER" prefix="TS5">
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="responseEditingCharacter">
+						<min>0</min>
+						<max>127</max>
+					</param>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SET_COMMAND_LINE_TERMINATION_CHARACTER" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="SET_RI_TIME" prefix="T+QRIMODE">
+			<class name="TEST" prefix="=?"/>
+			<class name="READ" prefix="?"/>
+			<class name="WRITE" prefix="=">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="timeMode"/>
 				</order>
 			</class>
 		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SET_RESPONSE_FORMATTING_CHARACTER" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
+		<type name="BURST_TRANSITION_SIGNAL_INDICATION" prefix="T+QCFG">
+			<class name="READ" prefix="=&quot;RFTXBurst&quot;"/>		
+			<class name="WRITE" prefix="==&quot;RFTXBurst&quot;,">
 				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SET_COMMAND_LINE_EDITING_CHARACTER" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="SET_RI_TIME" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
-		</type>
-		<!--// TODO Auto-generated XML - Set command type prefix -->
-		<type name="BURST_TRANSITION_SIGNAL_INDICATION" prefix="">
-			<!--//TODO Auto-generated XML - Set class name [TEST, READ, WRITE, EXECUTION] 
-				Set class prefix, parser and optional if exists -->
-			<class name="" optional="true" parser="" prefix="" />
-			<class name="" prefix="">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
+					<param name="indMode"/>
 				</order>
 			</class>
 		</type>

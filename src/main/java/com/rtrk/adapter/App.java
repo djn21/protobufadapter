@@ -11,7 +11,7 @@ public class App {
 
 	public static void main(String[] args) throws InvalidProtocolBufferException {
 		
-		byte[] decoded = ProtobufATCommandAdapter.decode("AT+QSCANF=3,238".getBytes());
+		byte[] decoded = ProtobufATCommandAdapter.decode("AT+QFTPLIST='root'".getBytes());
 		byte[] encoded = ProtobufATCommandAdapter.encode(decoded);
 		System.out.println(new String(encoded));
 		

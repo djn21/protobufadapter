@@ -3,7 +3,7 @@ package com.rtrk.atcommand.parser;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.SMSCommand;
 
-public class SaveSMSSettingsParser implements ProtobufParser {
+public class SaveSMSSettingsParser implements Parser {
 
 	@Override
 	public byte[] encode(Command command) {

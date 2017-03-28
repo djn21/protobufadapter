@@ -4,7 +4,7 @@ import com.rtrk.atcommand.exception.XMLParseException;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.CallRelatedCommand;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 
-public class MobileOriginatedCallParser implements ProtobufParser {
+public class MobileOriginatedCallParser implements Parser {
 
 	@Override
 	public byte[] encode(Command command) {

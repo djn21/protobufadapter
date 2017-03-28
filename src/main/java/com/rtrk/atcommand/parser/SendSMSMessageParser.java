@@ -5,7 +5,7 @@ import com.rtrk.atcommand.exception.XMLParseException;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.SMSCommand;
 
-public class SendSMSMessageParser implements ProtobufParser {
+public class SendSMSMessageParser implements Parser {
 
 	@Override
 	public byte[] encode(Command command) {

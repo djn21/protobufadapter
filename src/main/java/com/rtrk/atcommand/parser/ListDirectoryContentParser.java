@@ -3,7 +3,7 @@ package com.rtrk.atcommand.parser;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.FTPCommand;
 
-public class ListDirectoryContentParser implements ProtobufParser {
+public class ListDirectoryContentParser implements Parser {
 
 	@Override
 	public byte[] encode(Command command) {
