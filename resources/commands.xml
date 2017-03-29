@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<cmds regex="(AT[A-Z][0-9][0-9]?(=|\?))|AT&amp;[A-Z]|AT[A-Z]|\+{3}|A\/|AT\+[A-Z]*[0-9]?=?\??">
+<cmds
+	regex="(AT[A-Z][0-9][0-9]?(=|\?))|AT&amp;[A-Z]|AT[A-Z]|\+{3}|A\/|AT\+[A-Z]*[0-9]?=?\??">
 
 	<cmd delimiter="," name="fileCommand" prefix="AT+QF">
 		<type name="GET_STORAGE_DATE_SIZE" prefix="LDS">
@@ -221,8 +222,7 @@
 		<type name="SET_PARAMETERS" prefix="CFG">
 			<class name="TEST" prefix="=?" />
 			<class name="WRITE" prefix="="
-				parser="com.rtrk.atcommand.parser.SetParametersFTPParser" 
-				generator="com.rtrk.atcommand.generator.SetParametersFTPGenerator"/>
+				parser="com.rtrk.atcommand.parser.SetParametersFTPParser" generator="com.rtrk.atcommand.generator.SetParametersFTPGenerator" />
 		</type>
 		<type name="QUERY_STATUS_OF_FTP_SERVICE" prefix="STAT">
 			<class name="TEST" prefix="=?" />
@@ -277,13 +277,12 @@
 			<class name="TEST" prefix="=?" />
 			<class name="WRITE" prefix="=" optional="true"
 				parser="com.rtrk.atcommand.parser.ListDirectoryContentParser"
-				generator="com.rtrk.atcommand.generator.ListContentsFTPGenerator"/>
+				generator="com.rtrk.atcommand.generator.ListContentsFTPGenerator" />
 		</type>
 		<type name="LIST_FILE_NAMES" prefix="NLST">
 			<class name="TEST" prefix="=?" />
 			<class name="WRITE" prefix="=" optional="true"
-				parser="com.rtrk.atcommand.parser.ListFileNamesParser"
-				generator="com.rtrk.atcommand.generator.ListFileNamesFTPGenerator"/>
+				parser="com.rtrk.atcommand.parser.ListFileNamesParser" generator="com.rtrk.atcommand.generator.ListFileNamesFTPGenerator" />
 		</type>
 	</cmd>
 
@@ -430,8 +429,7 @@
 		<type name="WRITE_MMS_MESSAGE" prefix="SW">
 			<class name="TEST" prefix="=?" />
 			<class name="WRITE" prefix="="
-				parser="com.rtrk.atcommand.parser.WriteMMSMessageParser" 
-				generator="com.rtrk.atcommand.generator.WriteMMSMessageGenerator"/>
+				parser="com.rtrk.atcommand.parser.WriteMMSMessageParser" generator="com.rtrk.atcommand.generator.WriteMMSMessageGenerator" />
 		</type>
 		<type name="SEND_MMS_MESSAGE" prefix="SEND">
 			<class name="TEST" prefix="=?" />
@@ -606,7 +604,7 @@
 			<class name="EXECUTION" prefix="=">
 				<order>
 					<param name="forbidOperatorMode" />
-					<param name="line" optional="true"/>
+					<param name="line" optional="true" />
 					<param name="forbiddenData" optional="true" />
 				</order>
 			</class>
@@ -641,7 +639,7 @@
 		</type>
 		<type name="STOP_PLAYING_MEDIA_FILE" prefix="STOP">
 			<class name="TEST" prefix="=?" />
-			<class name="EXECUTION" prefix="" />
+			<class name="EXECUTION" />
 		</type>
 	</cmd>
 
@@ -770,7 +768,7 @@
 				</order>
 			</class>
 		</type>
-		<type name="SEND_EMAIL" prefix="">
+		<type name="SEND_EMAIL" prefix="PUT">
 			<class name="TEST" prefix="=?" />
 			<class name="EXECUTION" />
 			<class name="WRITE" prefix="=">
@@ -857,7 +855,7 @@
 		</type>
 	</cmd>
 
-	    <cmd delimiter="," name="generalCommand" prefix="AT">
+	<cmd delimiter="," name="generalCommand" prefix="AT">
 		<type name="DISPLAY_PRODUCT_IDENTIFICATION_INFORMATION" prefix="I">
 			<class name="EXECUTION" />
 		</type>
@@ -1056,11 +1054,10 @@
 					<param name="transmissionRate" optional="true" />
 					<param name="maximumFrameSize" optional="true" />
 					<param name="acknowledmentTimer" optional="true" />
-					<param name="maximumNumberOfRetransmissions"
-						optional="true" />
+					<param name="maximumNumberOfRetransmissions" optional="true" />
 					<param name="responseTimer" optional="true" />
-					<param name="wakeUpResponseTimer" optional="true"/>
-					<param name="windowsSize" optional="true"/>
+					<param name="wakeUpResponseTimer" optional="true" />
+					<param name="windowsSize" optional="true" />
 				</order>
 			</class>
 		</type>
@@ -1319,10 +1316,9 @@
 			<class name="WRITE" prefix="=">
 				<order>
 					<param name="operatorMode" />
-					<param name="operatorFormat" optional="true"
-						parser="" />
+					<param name="operatorFormat" optional="true" parser="" />
 					<param environmet="true" name="operator" optional="true"
-						parser=""/>
+						parser="" />
 				</order>
 			</class>
 		</type>
@@ -1347,8 +1343,8 @@
 					<param name="index">
 						<min>0</min>
 					</param>
-					<param name="operatorFormat" optional="true"/>
-					<param name="operator"/>
+					<param name="operatorFormat" optional="true" />
+					<param name="operator" />
 				</order>
 			</class>
 		</type>
@@ -1415,11 +1411,11 @@
 	<cmd delimiter="," name="callRelatedCommand">
 		<type name="ANSWER_AN_INCOMING_CALL" prefix="ATA">
 			<class name="EXECUTION" />
-		</type>	
+		</type>
 		<type name="MOBILE_ORIGINATED_CALL_TO_DIAL_A_NUMBER" prefix="ATD">
 			<class name="EXECUTION"
 				parser="com.rtrk.atcommand.parser.MobileOriginatedCallParser"
-				generator="com.rtrk.atcommand.generator.MobileOriginatedCallGenerator"/>
+				generator="com.rtrk.atcommand.generator.MobileOriginatedCallGenerator" />
 		</type>
 		<type name="DISCONNECT_EXISTING_CONNECTION" prefix="ATH">
 			<class name="EXECUTION">
@@ -1505,7 +1501,7 @@
 			<class name="READ" prefix="?" />
 		</type>
 		<type name="SELECT_TYPE_OF_ADDRESS" prefix="AT+CSTA">
-			<class name="EXECUTION"/>
+			<class name="EXECUTION" />
 		</type>
 		<type name="LIST_CURRENT_CALLS_OF_ME" prefix="AT+CLCC">
 			<class name="TEST" prefix="=?" />
@@ -1526,7 +1522,7 @@
 			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="enableExtendedFormat" optional="true"/>
+					<param name="enableExtendedFormat" optional="true" />
 				</order>
 			</class>
 		</type>
@@ -1572,7 +1568,7 @@
 			<class name="TEST" prefix="=?" />
 			<class name="WRITE" prefix="=">
 				<order>
-						<param name="alternatingMode" optional="true" />
+					<param name="alternatingMode" optional="true" />
 				</order>
 			</class>
 		</type>
@@ -1620,7 +1616,7 @@
 			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="messageFormat" optional="true"  environment="true"/>
+					<param name="messageFormat" optional="true" environment="true" />
 				</order>
 			</class>
 		</type>
@@ -1660,11 +1656,8 @@
 		</type>
 		<type name="LIST_SMS_MESSAGE_FROM_PREFERRED_STORAGE" prefix="CMGL">
 			<class name="TEST" prefix="=?" />
-			<class name="WRITE" prefix="=">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
+			<class name="WRITE" prefix="="
+				parser="com.rtrk.atcommand.parser.ListSMSMessagesParser" generator="com.rtrk.atcommand.generator.ListSMSMessageGenerator" />
 		</type>
 		<type name="READ_SMS_MESSAGE" prefix="CMGR">
 			<class name="TEST" prefix="=?" />
@@ -1679,19 +1672,13 @@
 		</type>
 		<type name="SEND_SMS_MESSAGE" prefix="CMGS">
 			<class name="TEST" prefix="=?" />
-			<class name="WRITE" prefix="=">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
+			<class name="WRITE" prefix="="
+				parser="com.rtrk.atcommand.parser.SendSMSMessageParser" generator="com.rtrk.atcommand.generator.SendSMSMessageGenerator" />
 		</type>
 		<type name="WRITE_SMS_MESSAGE_TO_MEMORY" prefix="CMGW">
 			<class name="TEST" prefix="=?" />
-			<class name="WRITE" prefix="=">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
+			<class name="WRITE" prefix="="
+				parser="com.rtrk.atcommand.parser.WriteSMSMessageParser" generator="com.rtrk.atcommand.generator.WriteSMSMessageGenerator" />
 		</type>
 		<type name="SEND_SMS_MESSAGE_FROM_STORAGE" prefix="CMSS">
 			<class name="TEST" prefix="=?" />
@@ -1701,17 +1688,14 @@
 						<min>0</min>
 					</param>
 					<param name="destinationAddress" optional="true" />
-					<param name="typeOfDestinationAddress" optional="true"/>
+					<param name="typeOfDestinationAddress" optional="true" />
 				</order>
 			</class>
 		</type>
 		<type name="SEND_SMS_COMMAND" prefix="CMGC">
 			<class name="TEST" prefix="=?" />
-			<class name="WRITE" prefix="=">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
+			<class name="WRITE" prefix="="
+				parser="com.rtrk.atcommand.parser.SendSMSCommandParser" generator="com.rtrk.atcommand.generator.SendSMSCommandGenerator" />
 		</type>
 		<type name="NEW_SMS_MESSAGE_INDICATION" prefix="CNMI">
 			<class name="TEST" prefix="=?" />
@@ -1727,19 +1711,14 @@
 		</type>
 		<type name="RESTORE_SMS_SETTINGS" prefix="CRES">
 			<class name="TEST" prefix="=?" />
-			<class name="WRITE" prefix="=">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
+			<class name="WRITE" prefix="=" optional="true"
+				parser="com.rtrk.atcommand.parser.RestoreSMSSettingsParser"
+				generator="com.rtrk.atcommand.generator.RestoreSMSSettingsGenerator" />
 		</type>
 		<type name="SAVE_SMS_SETTINGS" prefix="CSAS">
 			<class name="TEST" prefix="=?" />
-			<class name="WRITE" prefix="=">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
+			<class name="WRITE" prefix="=" optional="true"
+				parser="com.rtrk.atcommand.parser.SaveSMSSettingsParser" generator="com.rtrk.atcommand.generator.SaveSMSSettingsGenerator" />
 		</type>
 		<type name="SELECT_CELL_BROADCAST_SMS_MESSAGE" prefix="CSCB">
 			<class name="TEST" prefix="=?" />
@@ -1785,11 +1764,8 @@
 		</type>
 		<type name="DELETE_ALL_SMS" prefix="QMGDA">
 			<class name="TEST" prefix="=?" />
-			<class name="WRITE" prefix="=">
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->
-				</order>
-			</class>
+			<class name="WRITE" prefix="="
+				parser="com.rtrk.atcommand.parser.DeleteAllSMSParser" generator="com.rtrk.atcommand.generator.DeleteAllSMSGenerator" />
 		</type>
 		<type name="CONFIGURE_SMS_CODE_MODE" prefix="QSMSCODE">
 			<class name="TEST" prefix="=?" />
@@ -1801,17 +1777,17 @@
 			</class>
 		</type>
 	</cmd>
-	
+
 	<cmd delimiter="," name="phonebookCommand" prefix="AT+C">
 		<type name="SELECT_PHONEBOOK_MEMORY_STORAGE" prefix="PBS">
 			<class name="WRITE" prefix="=?" />
 			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="storage"/>
+					<param name="storage" />
 				</order>
 			</class>
-		</type>	
+		</type>
 		<type name="WRITE_PHONEBOOK_ENTRY" prefix="PBW">
 			<class name="WRITE" prefix="=?" />
 			<class name="WRITE" prefix="=">
@@ -1883,16 +1859,16 @@
 					<param name="precedence" optional="true">
 						<min>0</min>
 					</param>
-					<param name="delay" optional="true" >
+					<param name="delay" optional="true">
 						<min>0</min>
 					</param>
-					<param name="reliability" optional="true" >
+					<param name="reliability" optional="true">
 						<min>0</min>
 					</param>
-					<param name="peak" optional="true" >
+					<param name="peak" optional="true">
 						<min>0</min>
 					</param>
-					<param name="mean" optional="true" >
+					<param name="mean" optional="true">
 						<min>0</min>
 					</param>
 				</order>
@@ -1909,16 +1885,16 @@
 					<param name="precedence" optional="true">
 						<min>0</min>
 					</param>
-					<param name="delay" optional="true" >
+					<param name="delay" optional="true">
 						<min>0</min>
 					</param>
-					<param name="reliability" optional="true" >
+					<param name="reliability" optional="true">
 						<min>0</min>
 					</param>
-					<param name="peak" optional="true" >
+					<param name="peak" optional="true">
 						<min>0</min>
 					</param>
-					<param name="mean" optional="true" >
+					<param name="mean" optional="true">
 						<min>0</min>
 					</param>
 				</order>
@@ -2005,7 +1981,7 @@
 		<type name="SET_UP_TCP_OR_UDP_CONNECTION" prefix="IOPEN">
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="index" optional="true" />
 					<param name="mode" />
@@ -2017,16 +1993,13 @@
 		<type name="SEND_DATA_THROUGH_TCP_OR_UDP_CONNECTION" prefix="ISEND">
 			<class name="TEST" prefix="=?" />
 			<class name="EXECUTION" />
-			<class name="WRITE" prefix="=" >
-				<order>
-					<!--// TODO Auto-generated XML - Copy command params here -->	
-				</order>
-			</class>
+			<class name="WRITE" prefix="="
+				parser="com.rtrk.atcommand.parser.SendDataTCPUDPParser" generator="com.rtrk.atcommand.generator.SendDataTCPUDPGenerator" />
 		</type>
 		<type name="CLOSE_TCP_OR_UDP_CONNECTION" prefix="ICLOSE">
 			<class name="TEST" prefix="=?" />
 			<class name="EXECUTION" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="index" />
 				</order>
@@ -2039,7 +2012,7 @@
 		<type name="SET_LOCAL_PORT" prefix="ILPORT">
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="mode" />
 					<param name="port">
@@ -2053,7 +2026,7 @@
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
 			<class name="EXECUTION" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="APN" />
 					<param name="username" />
@@ -2085,7 +2058,7 @@
 		<type name="CONFIGURE_DOMAIN_NAME_SERVER" prefix="IDNSCFG">
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="primaryDNS" />
 					<param name="seondaryDNS" optional="true" />
@@ -2094,7 +2067,7 @@
 		</type>
 		<type name="QUERY_IP_ADDRESS_OF_GIVEN_DOMAIN_NAME" prefix="IDNSGIP">
 			<class name="TEST" prefix="=?" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="domainName" />
 				</order>
@@ -2104,7 +2077,7 @@
 			prefix="IDNSIP">
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="serverState" />
 				</order>
@@ -2113,7 +2086,7 @@
 		<type name="ADD_AN_IP_HEADER_WHEN_RECEIVING_DATE" prefix="IHEAD">
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="ipHeader" />
 				</order>
@@ -2122,7 +2095,7 @@
 		<type name="SET_AUTO_SENDING_TIMER" prefix="IAUTOS">
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="timer" />
 					<param name="time" optional="true">
@@ -2134,7 +2107,7 @@
 		<type name="SET_PROMPT_WHEN_SENDING_DATA" prefix="IPROMPT">
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="sendPrompt" />
 				</order>
@@ -2144,7 +2117,7 @@
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
 			<class name="EXECUTION" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="configureAsServer" />
 					<param name="max" optional="true">
@@ -2157,20 +2130,20 @@
 		<type name="SELECT_CSD_OR_GPRS_AS_THE_BEARER" prefix="ICSGP">
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="bearerType" />
-					<param name="APN" optional="true"/>
-					<param name="username" optional="true"/>
-					<param name="password" optional="true"/>
-					<param name="rate" optional="true"/>
+					<param name="APN" optional="true" />
+					<param name="username" optional="true" />
+					<param name="password" optional="true" />
+					<param name="rate" optional="true" />
 				</order>
 			</class>
 		</type>
 		<type name="CHOOSE_CONNECTION" prefix="ISRVC">
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="connection" />
 				</order>
@@ -2180,7 +2153,7 @@
 			prefix="ISHOWRA">
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="showAddress" />
 				</order>
@@ -2194,7 +2167,7 @@
 		<type name="SELECT_TCPIP_TRANSFER_MODE" prefix="IMODE">
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="transferMode" />
 				</order>
@@ -2203,7 +2176,7 @@
 		<type name="CONFIGURE_TRANSPARENT_TRANSFER_MODE" prefix="ITCFG">
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="numberOfRetry">
 						<min>0</min>
@@ -2221,7 +2194,7 @@
 		<type name="CONTROL_WHETHER_OR_NOT_TO_SHOW_PROTOCOL_TYPE" prefix="ISHOWPT">
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="showTransportProtocolType" />
 				</order>
@@ -2230,7 +2203,7 @@
 		<type name="ENABLE_MULTIPLE_TCPIP_SESSION" prefix="IMUX">
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="enableMultipleTCPIPSession" />
 				</order>
@@ -2240,7 +2213,7 @@
 			prefix="ISHOWLA">
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="showAddress" />
 				</order>
@@ -2249,7 +2222,7 @@
 		<type name="SELECT_A_CONTEXT_AS_FOREGROUND_CONTEXT" prefix="IFGCNT">
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="id">
 						<min>0</min>
@@ -2261,7 +2234,7 @@
 		<type name="QUERY_THE_DATA_INFORMATION_FOR_SENDING" prefix="ISACK">
 			<class name="TEST" prefix="=?" />
 			<class name="EXECUTION" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="n">
 						<min>0</min>
@@ -2272,7 +2245,7 @@
 		<type name="SET_METHOD_TO_HANDLE_RECEIVED_TCPIP_DATA" prefix="INDI">
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="receivedDataMode" />
 				</order>
@@ -2280,13 +2253,13 @@
 		</type>
 		<type name="RETRIEVE_THE_RECEIVED_TCPIP_DATA" prefix="IRD">
 			<class name="TEST" prefix="=?" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="id">
 						<min>0</min>
 						<max>1</max>
 					</param>
-					<param name="serverClient"/>
+					<param name="serverClient" />
 					<param name="sid">
 						<min>0</min>
 						<max>5</max>
@@ -2302,7 +2275,7 @@
 			prefix="ISDE">
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="echoData" />
 				</order>
@@ -2310,7 +2283,7 @@
 		</type>
 		<type name="PING_A_REMOTE_SERVER" prefix="PING">
 			<class name="TEST" prefix="=?" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="host" />
 					<param name="timeout" optional="true">
@@ -2328,7 +2301,7 @@
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
 			<class name="EXECUTION" />
-			<class name="WRITE" prefix="=" >
+			<class name="WRITE" prefix="=">
 				<order>
 					<param name="server" />
 					<param name="port" optional="true">
@@ -2343,17 +2316,17 @@
 	<cmd delimiter="," name="supplementaryServiceCommand" prefix="AT+">
 		<type name="CALL_FORWARDING_NUMBER_AND_CONDITIONS_CONTROL"
 			prefix="CCFC">
-			<class name="TEST" prefix="=?"/>
+			<class name="TEST" prefix="=?" />
 			<class name="WRITE" prefix="=">
 				<order>
 					<param name="reads" />
-					<param name="forwardingMode"/>
-					<param name="number" optional="true"/>
+					<param name="forwardingMode" />
+					<param name="number" optional="true" />
 					<param name="type" optional="true">
 						<min>0</min>
 					</param>
-					<param name="clazz" optional="true"/>
-					<param name="subaddress" optional="true"/>
+					<param name="clazz" optional="true" />
+					<param name="subaddress" optional="true" />
 					<param name="satype" optional="true">
 						<min>0</min>
 					</param>
@@ -2365,8 +2338,8 @@
 			</class>
 		</type>
 		<type name="CLOSED_USER_GROUP_CONTROL" prefix="CCUG">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
 					<param name="enableCUG" optional="true" />
@@ -2382,46 +2355,46 @@
 			</class>
 		</type>
 		<type name="CALL_WAITING_CONTROL" prefix="CCWA">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="enablePresentation" optional="true"/>
-					<param name="waitingControlMode" optional="true"/>
+					<param name="enablePresentation" optional="true" />
+					<param name="waitingControlMode" optional="true" />
 					<param name="clazz" optional="true" />
 				</order>
 			</class>
 		</type>
 		<type name="CALL_HOLD_AND_MULTIPARTY" prefix="CHLD">
-			<class name="TEST" prefix="=?"/>
+			<class name="TEST" prefix="=?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="callHold" optional="true"/>
+					<param name="callHold" optional="true" />
 				</order>
 			</class>
 		</type>
 		<type name="CALLING_LINE_IDENTIFICATION_PRESENTATION" prefix="CLIP">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="displayUnsolicitedResultCode" optional="true"/>
+					<param name="displayUnsolicitedResultCode" optional="true" />
 				</order>
 			</class>
 		</type>
 		<type name="CONTROL_WHETHER_OR_NOT_TO_SHOW_NAME_OF_INCOMING_CALL_NUMBER"
 			prefix="QCLIP">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="showCallNumber"/>
+					<param name="showCallNumber" />
 				</order>
 			</class>
 		</type>
 		<type name="CONNECTED_LINE_IDENTIFICATION_PRESENTATION" prefix="CLIR">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
 					<param name="aoc" optional="true" />
@@ -2429,41 +2402,43 @@
 			</class>
 		</type>
 		<type name="SHOW_ALPHA_FIELD_IN_COLP_STRING" prefix="COLP">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="enablePresentation" optional="true"/>
+					<param name="enablePresentation" optional="true" />
 				</order>
 			</class>
 		</type>
 		<type name="UNSTRUCTURED_SUPPLEMENTARY_SERVICE_DATA" prefix="QCOLP">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="showAlphaField"/>
+					<param name="showAlphaField" />
 				</order>
 			</class>
 		</type>
 		<type name="SUPPLEMENTARY_SERVICES_NOTIFICATION" prefix="CUSD">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="ssdControl" optional="true"/>
-					<param name="USSDString" optional="true"/>
-					<param name="dataCodingScheme" optional="true"/>
+					<param name="ssdControl" optional="true" />
+					<param name="USSDString" optional="true" />
+					<param name="dataCodingScheme" optional="true" />
 				</order>
 			</class>
 		</type>
 		<type name="CALLING_LINE_IDENTIFICATION_RESTRICTION" prefix="CSSN">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="enableResultCodePresentationOriginated" optional="true"/>
-					<param name="enableResultCodePresentationTerminated" optional="true"/>
+					<param name="enableResultCodePresentationOriginated"
+						optional="true" />
+					<param name="enableResultCodePresentationTerminated"
+						optional="true" />
 				</order>
 			</class>
 		</type>
@@ -2473,7 +2448,7 @@
 		<type name="SET_MONITOR_SPEAKER_LOUDNESS" prefix="L">
 			<class name="EXECUTION">
 				<order>
-					<param name="speakerLoudness"/>
+					<param name="speakerLoudness" />
 				</order>
 			</class>
 		</type>
@@ -2486,8 +2461,8 @@
 			</class>
 		</type>
 		<type name="TONE_DURATION" prefix="+VTD">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
 					<param name="internalDuration">
@@ -2502,25 +2477,25 @@
 			</class>
 		</type>
 		<type name="DTMF_AND_TONE_GENERATION" prefix="+VTS">
-			<class name="TEST" prefix="=?"/>
+			<class name="TEST" prefix="=?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="DTMFString"/>
+					<param name="DTMFString" />
 				</order>
 			</class>
 		</type>
 		<type name="ALERT_SOUND_MODE" prefix="+CALM">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="soundMode"/>
+					<param name="soundMode" />
 				</order>
 			</class>
 		</type>
 		<type name="RINGER_SOUND_LEVEL" prefix="+CRSL">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
 					<param name="level">
@@ -2531,8 +2506,8 @@
 			</class>
 		</type>
 		<type name="LOUD_SPEAKER_VOLUME_LEVEL" prefix="+CLVL">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
 					<param name="level">
@@ -2543,17 +2518,17 @@
 			</class>
 		</type>
 		<type name="MUTE_CONTROL" prefix="+CMUT">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="mute"/>
+					<param name="mute" />
 				</order>
 			</class>
 		</type>
 		<type name="CHANGE_THE_SIDE_TONE_GAIN_LEVEL" prefix="+QSIDET">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
 					<param name="gainLevel">
@@ -2564,11 +2539,11 @@
 			</class>
 		</type>
 		<type name="CHANGE_THE_MICROPHONE_GAIN_LEVEL" prefix="+QMIC">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="microphoneChannel"/>
+					<param name="microphoneChannel" />
 					<param name="gainLevel">
 						<min>0</min>
 						<max>255</max>
@@ -2577,42 +2552,42 @@
 			</class>
 		</type>
 		<type name="GENERATE_LOCAL_DTMF_TONES" prefix="+QLDTMF">
-			<class name="TEST" prefix="=?"/>
-			<class name="EXECUTION"/>
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
 			<class name="WRITE" prefix="=">
 				<order>
 					<param name="duration" optional="true">
 						<min>0</min>
 						<max>1000</max>
 					</param>
-					<param name="DTMFString" optional="true"/>
+					<param name="DTMFString" optional="true" />
 				</order>
 			</class>
 		</type>
 		<type name="SWAP_THE_AUDIO_CHANNELS" prefix="+QAUDCH">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="audioChannel" optional="true"/>
+					<param name="audioChannel" optional="true" />
 				</order>
 			</class>
 		</type>
 		<type name="AUDIO_CHANNEL_LOOP_BACK_TEST" prefix="+QAUDLOOP">
-			<class name="TEST" prefix="=?"/>
+			<class name="TEST" prefix="=?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="testIsOn"/>
-					<param name="audioChannel" optional="true"/>
+					<param name="testIsOn" />
+					<param name="audioChannel" optional="true" />
 				</order>
 			</class>
 		</type>
 		<type name="GENERATE_LOCAL_SPECIFIC_TONE" prefix="+QLTONE">
-			<class name="TEST" prefix="=?"/>
+			<class name="TEST" prefix="=?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="startPlayingTone"/>
-					<param name="frequency"/>
+					<param name="startPlayingTone" />
+					<param name="frequency" />
 					<param name="periodON">
 						<min>0</min>
 					</param>
@@ -2626,39 +2601,39 @@
 			</class>
 		</type>
 		<type name="SET_DTMF_OUTPUT_PATH" prefix="+QTONEP">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="outputPath"/>
+					<param name="outputPath" />
 				</order>
 			</class>
 		</type>
 		<type name="SET_TONE_DETECTION_MODE" prefix="+QTDMOD">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="operateFunction"/>
-					<param name="functionStatus"/>
+					<param name="operateFunction" />
+					<param name="functionStatus" />
 				</order>
 			</class>
 		</type>
 		<type name="DETECT_DTMF" prefix="+QTONEDET">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
 					<param name="toneDetection" />
-					<param name="dtmfOperate" optional="true"/>
-					<param name="prefixPause" optional="true"/>
+					<param name="dtmfOperate" optional="true" />
+					<param name="prefixPause" optional="true" />
 					<param name="lowThreshold" optional="true" />
 					<param name="highThreshold" optional="true" />
 				</order>
 			</class>
 		</type>
 		<type name="PLAY_DTMF_TONE_DURING_CALL" prefix="+QWDTMF">
-			<class name="TEST" prefix="=?"/>
+			<class name="TEST" prefix="=?" />
 			<class name="WRITE" prefix="=">
 				<order>
 					<param name="uplinkVolume">
@@ -2669,73 +2644,73 @@
 						<min>0</min>
 						<max>7</max>
 					</param>
-					<param name="dtmfCode"/>
-					<param name="continuanceTime"/>
-					<param name="muteTime"/>
-					<param name="audioChannel" optional="true"/>
-					<param name="algorithm" optional="true"/>
+					<param name="dtmfCode" />
+					<param name="continuanceTime" />
+					<param name="muteTime" />
+					<param name="audioChannel" optional="true" />
+					<param name="algorithm" optional="true" />
 				</order>
 			</class>
 		</type>
 	</cmd>
 
 	<cmd delimiter="," name="hardwareRelatedCommand" prefix="AT+">
-		<type name="CLOCK" prefix="">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+		<type name="CLOCK" prefix="CCLK">
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="time"/>
+					<param name="time" />
 				</order>
 			</class>
 		</type>
 		<type name="SET_ALARM" prefix="QALARM">
-			<class name="TEST" prefix="=?"/>
+			<class name="TEST" prefix="=?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="setAlarm"/>
-					<param name="time"/>
-					<param name="repeat"/>
-					<param name="power"/>
+					<param name="setAlarm" />
+					<param name="time" />
+					<param name="repeat" />
+					<param name="power" />
 				</order>
 			</class>
 		</type>
 		<type name="BATTERY_CHARGE" prefix="CBC">
-			<class name="TEST" prefix="=?"/>
-			<class name="EXECUTION"/>
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" />
 		</type>
 		<type name="READ_ADC" prefix="QADC">
-			<class name="TEST" prefix="=?"/>
-			<class name="EXECUTION" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="EXECUTION" prefix="?" />
 		</type>
 		<type name="CONFIGURE_SHOW_CLOCK" prefix="QSCLK">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="slowClock"/>
+					<param name="slowClock" />
 				</order>
 			</class>
 		</type>
 		<type name="CONFIGURE_NETWORK_LED_PATTERNS" prefix="QLEDMODE">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="ledMode"/>
+					<param name="ledMode" />
 				</order>
 			</class>
 		</type>
 		<type name="CONFIGURE_THRESHOLD_OF_VOLTAGE" prefix="QVBATT">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="thresholdType"/>
+					<param name="thresholdType" />
 					<param name="threshold" optional="true">
 						<min>0</min>
 					</param>
-					<param name="thresholdFunctionTurnedON" optional="true"/>
+					<param name="thresholdFunctionTurnedON" optional="true" />
 				</order>
 			</class>
 		</type>
@@ -2743,17 +2718,17 @@
 
 	<cmd delimiter="," name="othersCommand" prefix="A">
 		<type name="REISSUES_LAST_COMMAND_GIVEN" prefix="/">
-			<class name="EXECUTION"/>
+			<class name="EXECUTION" />
 		</type>
 		<type name="SET_COMMAND_ECHO_MODE" prefix="TE">
 			<class name="EXECUTION">
 				<order>
-					<param name="echoModeOn" optional="true"/>
+					<param name="echoModeOn" optional="true" />
 				</order>
 			</class>
 		</type>
 		<type name="SET_COMMAND_LINE_TERMINATION_CHARACTER" prefix="TS3">
-			<class name="READ" prefix="?"/>
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
 					<param name="commandLineTerminationCharacter">
@@ -2764,7 +2739,7 @@
 			</class>
 		</type>
 		<type name="SET_RESPONSE_FORMATTING_CHARACTER" prefix="TS4">
-			<class name="READ" prefix="?"/>
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
 					<param name="responseFormattingCharacter">
@@ -2775,7 +2750,7 @@
 			</class>
 		</type>
 		<type name="SET_COMMAND_LINE_EDITING_CHARACTER" prefix="TS5">
-			<class name="READ" prefix="?"/>
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
 					<param name="responseEditingCharacter">
@@ -2786,27 +2761,27 @@
 			</class>
 		</type>
 		<type name="SET_RI_TIME" prefix="T+QRIMODE">
-			<class name="TEST" prefix="=?"/>
-			<class name="READ" prefix="?"/>
+			<class name="TEST" prefix="=?" />
+			<class name="READ" prefix="?" />
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="timeMode"/>
+					<param name="timeMode" />
 				</order>
 			</class>
 		</type>
 		<type name="BURST_TRANSITION_SIGNAL_INDICATION" prefix="T+QCFG">
 			<class name="READ" prefix="=">
 				<order>
-					<param name="RFTXBurst"/>
-				</order>	
-			</class>	
+					<param name="RFTXBurst" />
+				</order>
+			</class>
 			<class name="WRITE" prefix="=">
 				<order>
-					<param name="RFTXBurst"/>
-					<param name="indMode" optional="true"/>
+					<param name="RFTXBurst" />
+					<param name="indMode" optional="true" />
 				</order>
 			</class>
 		</type>
 	</cmd>
-		
+
 </cmds>
