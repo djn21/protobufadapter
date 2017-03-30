@@ -28,9 +28,12 @@ public class SendDataTCPUDPParser implements Parser {
 		if (params.length() == 0) {
 			throw new XMLParseException("Required parameter enableMultipleTCPIPSession missing");
 		}
-		boolean enableMultipleTCPIPSession = Boolean
-				.parseBoolean(new String(ProtobufATCommandAdapter.environmentVariables
-						.get("tcpipCommand.ENABLE_MULTIPLE_TCPIP_SESSION.enableMultipleTCPIPSession")));
+		boolean enableMultipleTCPIPSession = false;
+		if (ProtobufATCommandAdapter.environmentVariables
+				.containsKey("tcpipCommand.ENABLE_MULTIPLE_TCPIP_SESSION.enableMultipleTCPIPSession")) {
+			enableMultipleTCPIPSession = Boolean.parseBoolean(new String(ProtobufATCommandAdapter.environmentVariables
+					.get("tcpipCommand.ENABLE_MULTIPLE_TCPIP_SESSION.enableMultipleTCPIPSession")));
+		}
 		TCPIPCommand.Builder tcpipCommandBuilder = (TCPIPCommand.Builder) commandBuilder;
 		if (enableMultipleTCPIPSession) {
 			int index = Integer.parseInt(params.split(",")[0].trim());

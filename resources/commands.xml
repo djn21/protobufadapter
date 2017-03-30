@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <cmds
-	regex="(AT[A-Z][0-9][0-9]?(=|\?))|AT&amp;[A-Z]|AT[A-Z]|\+{3}|A\/|AT\+[A-Z]*[0-9]?=?\??">
+	regex="(AT[A-Z][0-9][0-9]?(=|\?))|AT&amp;[A-Z]|AT[A-Z]|\+{3}|A\/|AT\+[A-Z]*[0-9]?=?\??(&quot;RFTXbust&quot;)?,?">
 
 	<cmd delimiter="," name="fileCommand" prefix="AT+QF">
 		<type name="GET_STORAGE_DATE_SIZE" prefix="LDS">
@@ -1497,8 +1497,7 @@
 			</class>
 		</type>
 		<type name="SELECT_TONE_DIALING" prefix="ATT">
-			<class name="TEST" prefix="=?" />
-			<class name="READ" prefix="?" />
+			<class name="EXECUTION" />
 		</type>
 		<type name="SELECT_TYPE_OF_ADDRESS" prefix="AT+CSTA">
 			<class name="EXECUTION" />
@@ -1677,7 +1676,7 @@
 		</type>
 		<type name="WRITE_SMS_MESSAGE_TO_MEMORY" prefix="CMGW">
 			<class name="TEST" prefix="=?" />
-			<class name="WRITE" prefix="="
+			<class name="WRITE" prefix="=" optional="true"
 				parser="com.rtrk.atcommand.parser.WriteSMSMessageParser" generator="com.rtrk.atcommand.generator.WriteSMSMessageGenerator" />
 		</type>
 		<type name="SEND_SMS_MESSAGE_FROM_STORAGE" prefix="CMSS">
@@ -1981,14 +1980,8 @@
 		<type name="SET_UP_TCP_OR_UDP_CONNECTION" prefix="IOPEN">
 			<class name="TEST" prefix="=?" />
 			<class name="READ" prefix="?" />
-			<class name="WRITE" prefix="=">
-				<order>
-					<param name="index" optional="true" />
-					<param name="mode" />
-					<param name="domainName" />
-					<param name="port" />
-				</order>
-			</class>
+			<class name="WRITE" prefix="="
+				parser="com.rtrk.atcommand.parser.StartConnectionParser" generator="com.rtrk.atcommand.generator.StartConnectionGenerator" />
 		</type>
 		<type name="SEND_DATA_THROUGH_TCP_OR_UDP_CONNECTION" prefix="ISEND">
 			<class name="TEST" prefix="=?" />
@@ -2770,15 +2763,10 @@
 			</class>
 		</type>
 		<type name="BURST_TRANSITION_SIGNAL_INDICATION" prefix="T+QCFG">
-			<class name="READ" prefix="=">
+			<class name="READ" prefix="=&quot;RFTXbust&quot;"/>
+			<class name="WRITE" prefix="=&quot;RFTXbust&quot;,">
 				<order>
-					<param name="RFTXBurst" />
-				</order>
-			</class>
-			<class name="WRITE" prefix="=">
-				<order>
-					<param name="RFTXBurst" />
-					<param name="indMode" optional="true" />
+					<param name="indMode"/>
 				</order>
 			</class>
 		</type>
