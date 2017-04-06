@@ -8,6 +8,7 @@ import com.rtrk.atcommand.protobuf.ProtobufATCommand.SMSCommand;
 
 public class DeleteAllSMSParser implements Parser {
 
+	
 	@Override
 	public byte[] encode(Command command) {
 		String commandString = "AT+QMGDA=";

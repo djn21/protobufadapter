@@ -29,7 +29,7 @@ import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 
 /**
  * 
- * Utility class for AT command encoding and decoding. The class conatins static
+ * Utility class for AT Command encoding and decoding. The class contains static
  * methods encode and decode for converting between AT Command and Protobuf AT
  * Command format.
  * 
@@ -46,7 +46,7 @@ public class ProtobufATCommandAdapter {
 	public static Map<String, Map<String, Map<String, ATCommand>>> encodeMap = new HashMap<String, Map<String, Map<String, ATCommand>>>();
 
 	public static String regexp;
-	
+
 	static {
 		// fill wrepper types map
 		wrepperTypes.put(byte.class, Byte.class);
@@ -61,9 +61,16 @@ public class ProtobufATCommandAdapter {
 		init();
 	}
 
+	/**
+	 * 
+	 * Reads .xml file which contains description of AT Command, creates instance
+	 * of ATCommand class and put them to encode and decode maps.
+	 * 
+	 */
 	public static void init() {
 
-		File commandDescriptionFile = new File("C:/Users/djekanovic/Documents/EclipseProjects/protobufadapter/resources/commands.xml");
+		File commandDescriptionFile = new File(
+				"C:/Users/djekanovic/Documents/EclipseProjects/protobufadapter/resources/commands.xml");
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder;
 		Document document;
@@ -107,7 +114,7 @@ public class ProtobufATCommandAdapter {
 						String classOptional = classElement.getAttribute("optional").trim();
 						String classParser = classElement.getAttribute("parser").trim();
 						String classGenerator = classElement.getAttribute("generator").trim();
-						
+
 						// order node list
 						Vector<Parameter> parameters = new Vector<Parameter>();
 						if (classElement.hasChildNodes()) {
@@ -223,7 +230,7 @@ public class ProtobufATCommandAdapter {
 	/**
 	 * 
 	 * Translate AT Command from Protobuf format using a specific description of
-	 * message. The method uses XML file which contains description of specific
+	 * command. The method uses XML file which contains description of specific
 	 * AT command.
 	 * 
 	 * @param commandByteArray
@@ -310,6 +317,7 @@ public class ProtobufATCommandAdapter {
 				| IllegalArgumentException | InvocationTargetException | ClassNotFoundException
 				| InstantiationException e) {
 			e.printStackTrace();
+			return null;
 		}
 		return commandString.getBytes();
 	}
@@ -391,7 +399,7 @@ public class ProtobufATCommandAdapter {
 				Class<?> parserClass = Class.forName(atCommand.getParser());
 				Parser parser = (Parser) parserClass.newInstance();
 				parser.decode(params.getBytes(), commandTypeBuilderObject);
-				
+
 				// standard command decode
 			} else {
 				for (int i = 0; i < atCommand.getParameters().size(); i++) {
@@ -544,6 +552,7 @@ public class ProtobufATCommandAdapter {
 		} catch (NoSuchMethodException | IllegalAccessException | java.lang.IllegalArgumentException
 				| InvocationTargetException | SecurityException | ClassNotFoundException | InstantiationException e) {
 			e.printStackTrace();
+			return null;
 		}
 
 		return commandBuilder.build().toByteArray();
