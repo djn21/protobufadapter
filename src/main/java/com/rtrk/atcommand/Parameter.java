@@ -22,6 +22,11 @@ public class Parameter {
 
 	public Parameter() {
 		super();
+		this.name="";
+		this.optional=false;
+		this.parser="";
+		this.environment=false;
+		this.pattern="";
 	}
 
 	public Parameter(String name, boolean optional, String parser, boolean environment, Map<String, Double> boundaries,

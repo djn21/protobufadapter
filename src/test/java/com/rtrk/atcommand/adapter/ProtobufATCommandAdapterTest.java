@@ -25,8 +25,23 @@ import junit.framework.TestSuite;
  * @author djekanovic
  *
  */
+
 public class ProtobufATCommandAdapterTest extends TestCase {
 
+	private Command.Builder command;
+	private HTTPCommand.Builder httpCommand;
+	private GeneralCommand.Builder generalCommand;
+	
+	private MMSCommand mmsCommand;
+	private FileCommand fileCommand;
+	
+	private Command protocommand;
+	
+	byte[] encoded;
+	byte[] protobyte;
+	
+	String textcommand;
+	
 	/**
 	 * 
 	 * Create the test case
@@ -49,28 +64,29 @@ public class ProtobufATCommandAdapterTest extends TestCase {
 	}
 
 	public void testEncode() {
+		
 		// 1. branch (without parameters)
-		Command.Builder command = Command.newBuilder();
+		command = Command.newBuilder();
 		command.setCommandType(CommandType.HTTP_COMMAND);
 
-		HTTPCommand.Builder httpCommand = HTTPCommand.newBuilder();
+		httpCommand = HTTPCommand.newBuilder();
 		httpCommand.setMessageType(HTTPMessageType.SET_HTTP_SERVER_URL);
 		httpCommand.setAction(Action.TEST);
 
 		command.setHttpCommand(httpCommand.build());
-		Command protocommand = command.build();
+		protocommand = command.build();
 
-		byte[] encoded = ProtobufATCommandAdapter.encode(protocommand.toByteArray());
+		encoded = ProtobufATCommandAdapter.encode(protocommand.toByteArray());
 		assertNotNull(encoded);
 
-		String textcommand = new String(encoded);
+		textcommand = new String(encoded);
 		assertEquals("AT+QHTTPURL=?", textcommand);
 
 		// 2. branch (with parameters, number of parameters is 0)
 		command = Command.newBuilder();
 		command.setCommandType(CommandType.GENERAL_COMMAND);
 
-		GeneralCommand.Builder generalCommand = GeneralCommand.newBuilder();
+		generalCommand = GeneralCommand.newBuilder();
 		generalCommand.setMessageType(GeneralMessageType.SET_ALL_PARAMETERS_TO_MANUFACTURER_DEFAULTS);
 		generalCommand.setAction(Action.EXECUTION);
 
@@ -105,17 +121,18 @@ public class ProtobufATCommandAdapterTest extends TestCase {
 
 	public void testDecode() {
 		try {
+			
 			// 1. branch
-			String command = "AT+QMMPROXY=1,\"255.255.255.255\",100";
+			textcommand = "AT+QMMPROXY=1,\"255.255.255.255\",100";
 
-			byte[] protobyte = ProtobufATCommandAdapter.decode(command.getBytes());
+			protobyte = ProtobufATCommandAdapter.decode(textcommand.getBytes());
 			assertNotNull(protobyte);
 
-			Command protocommand = Command.parseFrom(protobyte);
+			protocommand = Command.parseFrom(protobyte);
 			assertTrue(protocommand.hasMmsCommand());
 			assertEquals(CommandType.MMS_COMMAND, protocommand.getCommandType());
 
-			MMSCommand mmsCommand = protocommand.getMmsCommand();
+			mmsCommand = protocommand.getMmsCommand();
 			assertTrue(mmsCommand.hasProtocolType());
 			assertTrue(mmsCommand.hasGateway());
 			assertTrue(mmsCommand.hasPort());
@@ -129,15 +146,15 @@ public class ProtobufATCommandAdapterTest extends TestCase {
 			assertEquals(100, port);
 
 			// 2. branch
-			command = "AT+QFMOV=srcfilename,dstfilename,1,1";
-			protobyte=ProtobufATCommandAdapter.decode(command.getBytes());
+			textcommand = "AT+QFMOV=srcfilename,dstfilename,1,1";
+			protobyte=ProtobufATCommandAdapter.decode(textcommand.getBytes());
 			assertNotNull(protobyte);
 			
 			protocommand=Command.parseFrom(protobyte);
 			assertTrue(protocommand.hasFileCommand());
 			assertEquals(CommandType.FILE_COMMAND, protocommand.getCommandType());
 			
-			FileCommand fileCommand=protocommand.getFileCommand();
+			fileCommand=protocommand.getFileCommand();
 			assertTrue(fileCommand.hasSourceFileName());
 			assertTrue(fileCommand.hasDestinationFileName());
 			assertTrue(fileCommand.hasCopy());
@@ -154,8 +171,8 @@ public class ProtobufATCommandAdapterTest extends TestCase {
 			assertTrue(overwrite);
 			
 			// 3. branch
-			command="AT+CMGF=1";
-			protobyte=ProtobufATCommandAdapter.decode(command.getBytes());
+			textcommand="AT+CMGF=1";
+			protobyte=ProtobufATCommandAdapter.decode(textcommand.getBytes());
 			assertNotNull(protocolType);
 			
 			protocommand=Command.parseFrom(protobyte);
