@@ -63,14 +63,13 @@ public class ProtobufATCommandAdapter {
 
 	/**
 	 * 
-	 * Reads .xml file which contains description of AT Command, creates instance
-	 * of ATCommand class and put them to encode and decode maps.
+	 * Reads .xml file which contains description of AT Command, creates
+	 * instance of ATCommand class and put them to encode and decode maps.
 	 * 
 	 */
 	public static void init() {
 
-		File commandDescriptionFile = new File(
-				"C:/Users/djekanovic/Documents/EclipseProjects/protobufadapter/resources/commands.xml");
+		File commandDescriptionFile = new File("resources/commands.xml");
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder;
 		Document document;

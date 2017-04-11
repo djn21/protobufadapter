@@ -3,7 +3,7 @@ package com.rtrk.atcommand.parser;
 import com.rtrk.atcommand.adapter.ProtobufATCommandAdapter;
 import com.rtrk.atcommand.exception.XMLParseException;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
-import com.rtrk.atcommand.protobuf.ProtobufATCommand.MessageStatus;
+import com.rtrk.atcommand.protobuf.ProtobufATCommand.MessageStatusList;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.SMSCommand;
 
 public class WriteSMSMessageParser implements Parser {
@@ -21,8 +21,8 @@ public class WriteSMSMessageParser implements Parser {
 		if (smsCommand.hasLength()) {
 			commandString += "=" + smsCommand.getLength();
 		}
-		if (smsCommand.hasMessageStatusPDU()) {
-			commandString += "," + smsCommand.getMessageStatusPDU().getNumber();
+		if (smsCommand.hasMessageStatusListPDU()) {
+			commandString += "," + smsCommand.getMessageStatusListPDU().getNumber();
 		}
 		return commandString.getBytes();
 	}
@@ -42,7 +42,7 @@ public class WriteSMSMessageParser implements Parser {
 			}
 			if (params.split(",").length == 3) {
 				int messageStatus = Integer.parseInt(params.split(",")[2].trim());
-				smsCommandBuilder.setMessageStatusPDU(MessageStatus.valueOf(messageStatus));
+				smsCommandBuilder.setMessageStatusListPDU(MessageStatusList.valueOf(messageStatus));
 			}
 			if (params.split(",").length > 3) {
 				throw new XMLParseException("Wrong number of parameters");
@@ -55,7 +55,7 @@ public class WriteSMSMessageParser implements Parser {
 			smsCommandBuilder.setLength(length);
 			if (params.split(",").length == 2) {
 				int messageStatus = Integer.parseInt(params.split(",")[1].trim());
-				smsCommandBuilder.setMessageStatusPDU(MessageStatus.valueOf(messageStatus));
+				smsCommandBuilder.setMessageStatusListPDU(MessageStatusList.valueOf(messageStatus));
 			}
 			if (params.split(",").length > 2) {
 				throw new XMLParseException("Wrong number of parameters");

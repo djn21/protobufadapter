@@ -2,8 +2,8 @@ package com.rtrk.atcommand.parser;
 
 import com.rtrk.atcommand.exception.XMLParseException;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.BearerType;
+import com.rtrk.atcommand.protobuf.ProtobufATCommand.CSDRate;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
-import com.rtrk.atcommand.protobuf.ProtobufATCommand.Rate;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.TCPIPCommand;
 
 public class SelectCSDOrGPRSParser implements Parser {
@@ -15,6 +15,9 @@ public class SelectCSDOrGPRSParser implements Parser {
 		commandString += tcpipCommand.getBearerType().getNumber();
 		if (tcpipCommand.hasAPN()) {
 			commandString += "," + tcpipCommand.getAPN();
+		}
+		if (tcpipCommand.hasDialNumber()) {
+			commandString += "," + tcpipCommand.getDialNumber();
 		}
 		if (tcpipCommand.hasUsername()) {
 			commandString += "," + tcpipCommand.getUsername();
@@ -42,7 +45,7 @@ public class SelectCSDOrGPRSParser implements Parser {
 				String dialNumber = params.split(",")[1].trim();
 				int rate = Integer.parseInt(params.split(",")[4].trim());
 				tcpipCommandBuilder.setDialNumber(dialNumber);
-				tcpipCommandBuilder.setRate(Rate.valueOf(rate));
+				tcpipCommandBuilder.setRate(CSDRate.valueOf(rate));
 			} else {
 				String apn = params.split(",")[1].trim();
 				tcpipCommandBuilder.setAPN(apn);

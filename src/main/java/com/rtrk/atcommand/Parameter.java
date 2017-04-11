@@ -85,7 +85,7 @@ public class Parameter {
 	}
 
 	public boolean hasPattern() {
-		return pattern != null;
+		return !"".equals(pattern);
 	}
 
 	public double getMinValue() {

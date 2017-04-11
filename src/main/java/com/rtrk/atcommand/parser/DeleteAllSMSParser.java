@@ -3,18 +3,17 @@ package com.rtrk.atcommand.parser;
 import com.rtrk.atcommand.adapter.ProtobufATCommandAdapter;
 import com.rtrk.atcommand.exception.XMLParseException;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
-import com.rtrk.atcommand.protobuf.ProtobufATCommand.MessageStatus;
+import com.rtrk.atcommand.protobuf.ProtobufATCommand.MessageStatusDelete;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.SMSCommand;
 
 public class DeleteAllSMSParser implements Parser {
 
-	
 	@Override
 	public byte[] encode(Command command) {
 		String commandString = "AT+QMGDA=";
 		SMSCommand smsCommand = command.getSmsCommand();
-		if (smsCommand.hasMessageStatusPDU()) {
-			commandString += smsCommand.getMessageStatusPDU().getNumber();
+		if (smsCommand.hasMessageStatusDeletePDU()) {
+			commandString += smsCommand.getMessageStatusDeletePDU().getNumber();
 		} else if (smsCommand.hasMessageStatusText()) {
 			commandString += smsCommand.getMessageStatusText();
 		}
@@ -37,7 +36,7 @@ public class DeleteAllSMSParser implements Parser {
 			smsBuilder.setMessageStatusText(param.trim());
 		} else {
 			int messageStatus = Integer.parseInt(param.trim());
-			smsBuilder.setMessageStatusPDU(MessageStatus.valueOf(messageStatus));
+			smsBuilder.setMessageStatusDeletePDU(MessageStatusDelete.valueOf(messageStatus));
 		}
 	}
 

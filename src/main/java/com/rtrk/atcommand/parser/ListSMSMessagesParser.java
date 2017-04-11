@@ -4,7 +4,7 @@ import com.rtrk.atcommand.adapter.ProtobufATCommandAdapter;
 import com.rtrk.atcommand.exception.XMLParseException;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.MessageMode;
-import com.rtrk.atcommand.protobuf.ProtobufATCommand.MessageStatus;
+import com.rtrk.atcommand.protobuf.ProtobufATCommand.MessageStatusList;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.SMSCommand;
 
 public class ListSMSMessagesParser implements Parser {
@@ -13,8 +13,8 @@ public class ListSMSMessagesParser implements Parser {
 	public byte[] encode(Command command) {
 		SMSCommand smsCommand = command.getSmsCommand();
 		String commandString = "AT+CMGL=";
-		if (smsCommand.hasMessageStatusPDU()) {
-			commandString += smsCommand.getMessageStatusPDU().getNumber();
+		if (smsCommand.hasMessageStatusListPDU()) {
+			commandString += smsCommand.getMessageStatusListPDU().getNumber();
 		} else if (smsCommand.hasMessageStatusText()) {
 			commandString += smsCommand.getMessageStatusText();
 		}
@@ -41,7 +41,7 @@ public class ListSMSMessagesParser implements Parser {
 		}
 		if (messageFormat.equals("PDU_MODE")) {
 			int messageStatus = Integer.parseInt(params.split(",")[0]);
-			smsBuilder.setMessageStatusPDU(MessageStatus.valueOf(messageStatus));
+			smsBuilder.setMessageStatusListPDU(MessageStatusList.valueOf(messageStatus));
 		} else if (messageFormat.equals("TEXT_MODE")) {
 			String messageStatus = params.split(",")[0];
 			smsBuilder.setMessageStatusText(messageStatus);
