@@ -24,6 +24,9 @@ public class WriteSMSMessageParser implements Parser {
 		if (smsCommand.hasMessageStatusListPDU()) {
 			commandString += "," + smsCommand.getMessageStatusListPDU().getNumber();
 		}
+		if (smsCommand.hasMessageStatusText()) {
+			commandString += "," + smsCommand.getMessageStatusText();
+		}
 		return commandString.getBytes();
 	}
 
@@ -34,15 +37,17 @@ public class WriteSMSMessageParser implements Parser {
 		byte[] mode = ProtobufATCommandAdapter.environmentVariables
 				.get("smsCommand.SELECT_SMS_MESSAGE_FORMAT.messageFormat");
 		if (mode != null && "TEXT_MODE".equals(new String(mode))) {
-			String destinationAddress = params.split(",")[0].trim();
-			smsCommandBuilder.setDestinationAddress(destinationAddress);
-			if (params.split(",").length == 2) {
+			if (!params.equals("")) {
+				String destinationAddress = params.split(",")[0].trim();
+				smsCommandBuilder.setDestinationAddress(destinationAddress);
+			}
+			if (params.split(",").length >= 2) {
 				int typeOfDestinationAddress = Integer.parseInt(params.split(",")[1].trim());
 				smsCommandBuilder.setTypeOfDestinationAddress(typeOfDestinationAddress);
 			}
-			if (params.split(",").length == 3) {
-				int messageStatus = Integer.parseInt(params.split(",")[2].trim());
-				smsCommandBuilder.setMessageStatusListPDU(MessageStatusList.valueOf(messageStatus));
+			if (params.split(",").length >= 3) {
+				String messageStatus = params.split(",")[2].trim();
+				smsCommandBuilder.setMessageStatusText(messageStatus);
 			}
 			if (params.split(",").length > 3) {
 				throw new XMLParseException("Wrong number of parameters");
