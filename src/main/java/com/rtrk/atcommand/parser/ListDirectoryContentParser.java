@@ -3,6 +3,13 @@ package com.rtrk.atcommand.parser;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.FTPCommand;
 
+/**
+ * 
+ * Class for parsing LIST_CONTENTS_OF_DIRECTORY_OR_FILE command between original and protobuf format
+ * 
+ * @author djekanovic
+ *
+ */
 public class ListDirectoryContentParser implements Parser {
 
 	@Override

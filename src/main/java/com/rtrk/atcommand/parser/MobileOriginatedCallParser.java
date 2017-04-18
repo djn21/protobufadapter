@@ -4,6 +4,13 @@ import com.rtrk.atcommand.exception.XMLParseException;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.CallRelatedCommand;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 
+/**
+ * 
+ * Class for parsing MOBILE_ORIGINATED_CALL_TO_DIAL_A_NUMBER command between original and protobuf format
+ * 
+ * @author djekanovic
+ *
+ */
 public class MobileOriginatedCallParser implements Parser {
 
 	@Override

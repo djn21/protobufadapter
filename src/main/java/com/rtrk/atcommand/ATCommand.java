@@ -18,6 +18,7 @@ public class ATCommand {
 	private String sufix;
 	private String delimiter;
 	private String parser;
+	private String generator;
 	private Vector<Parameter> parameters = new Vector<Parameter>();
 
 	public ATCommand() {
@@ -25,7 +26,7 @@ public class ATCommand {
 	}
 
 	public ATCommand(String name, String type, String clazz, String prefix, String sufix, String delimiter,
-			String parser, Vector<Parameter> parameters) {
+			String parser, String generator, Vector<Parameter> parameters) {
 		super();
 		this.name = name;
 		this.type = type;
@@ -34,6 +35,7 @@ public class ATCommand {
 		this.sufix = sufix;
 		this.delimiter = delimiter;
 		this.parser = parser;
+		this.generator = generator;
 		this.parameters = parameters;
 	}
 
@@ -103,6 +105,18 @@ public class ATCommand {
 
 	public boolean hasParser() {
 		return !"".equals(parser);
+	}
+
+	public String getGenerator() {
+		return generator;
+	}
+
+	public void setGenerator(String generator) {
+		this.generator = generator;
+	}
+
+	public boolean hasGenerator() {
+		return !"".equals(generator);
 	}
 
 	public Vector<Parameter> getParameters() {

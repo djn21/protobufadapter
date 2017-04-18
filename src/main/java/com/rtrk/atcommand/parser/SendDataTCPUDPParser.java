@@ -5,6 +5,13 @@ import com.rtrk.atcommand.exception.XMLParseException;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.TCPIPCommand;
 
+/**
+ * 
+ * Class for parsing SEND_DATA_THROUGH_TCP_OR_UDP_CONNECTION command between original and protobuf format
+ * 
+ * @author djekanovic
+ *
+ */
 public class SendDataTCPUDPParser implements Parser {
 
 	@Override
@@ -28,9 +35,12 @@ public class SendDataTCPUDPParser implements Parser {
 		if (params.length() == 0) {
 			throw new XMLParseException("Required parameter enableMultipleTCPIPSession missing");
 		}
-		boolean enableMultipleTCPIPSession = Boolean
-				.parseBoolean(new String(ProtobufATCommandAdapter.environmentVariables
-						.get("tcpipCommand.ENABLE_MULTIPLE_TCPIP_SESSION.enableMultipleTCPIPSession")));
+		boolean enableMultipleTCPIPSession = false;
+		if (ProtobufATCommandAdapter.environmentVariables
+				.containsKey("tcpipCommand.ENABLE_MULTIPLE_TCPIP_SESSION.enableMultipleTCPIPSession")) {
+			enableMultipleTCPIPSession = Boolean.parseBoolean(new String(ProtobufATCommandAdapter.environmentVariables
+					.get("tcpipCommand.ENABLE_MULTIPLE_TCPIP_SESSION.enableMultipleTCPIPSession")));
+		}
 		TCPIPCommand.Builder tcpipCommandBuilder = (TCPIPCommand.Builder) commandBuilder;
 		if (enableMultipleTCPIPSession) {
 			int index = Integer.parseInt(params.split(",")[0].trim());
