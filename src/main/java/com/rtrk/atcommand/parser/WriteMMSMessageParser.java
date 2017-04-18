@@ -6,6 +6,13 @@ import com.rtrk.atcommand.protobuf.ProtobufATCommand.MMSCommand;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.OperateFunction;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.OperateWriteMMS;
 
+/**
+ * 
+ * Class for parsing WRITE_MMS_MESSAGE command between original and protobuf format
+ * 
+ * @author djekanovic
+ *
+ */
 public class WriteMMSMessageParser implements Parser {
 
 	@Override

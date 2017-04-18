@@ -5,6 +5,13 @@ import com.rtrk.atcommand.exception.XMLParseException;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.SMSCommand;
 
+/**
+ * 
+ * Class for parsing SEND_SMS_COMMAND command between original and protobuf format
+ * 
+ * @author djekanovic
+ *
+ */
 public class SendSMSCommandParser implements Parser {
 
 	@Override

@@ -3,6 +3,13 @@ package com.rtrk.atcommand.parser;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.FTPCommand;
 
+/**
+ * 
+ * Class for parsing LIST_FILE_NAMES command between original and protobuf format
+ * 
+ * @author djekanovic
+ *
+ */
 public class ListFileNamesParser implements Parser {
 
 	@Override

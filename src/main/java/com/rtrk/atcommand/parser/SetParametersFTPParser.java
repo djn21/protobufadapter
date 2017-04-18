@@ -7,6 +7,13 @@ import com.rtrk.atcommand.protobuf.ProtobufATCommand.FTPCommand;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.TransferType;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.TypeOfConfigurableParameters;
 
+/**
+ * 
+ * Class for parsing SET_PARAMETERS command between original and protobuf format
+ * 
+ * @author djekanovic
+ *
+ */
 public class SetParametersFTPParser implements Parser {
 
 	@Override

@@ -5,6 +5,13 @@ import com.rtrk.atcommand.exception.XMLParseException;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.TCPIPCommand;
 
+/**
+ * 
+ * Class for parsing SEND_DATA_THROUGH_TCP_OR_UDP_CONNECTION command between original and protobuf format
+ * 
+ * @author djekanovic
+ *
+ */
 public class SendDataTCPUDPParser implements Parser {
 
 	@Override

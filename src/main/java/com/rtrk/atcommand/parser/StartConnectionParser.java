@@ -4,6 +4,13 @@ import com.rtrk.atcommand.exception.XMLParseException;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.TCPIPCommand;
 
+/**
+ * 
+ * Class for parsing SET_UP_TCP_OR_UDP_CONNECTION command between original and protobuf format
+ * 
+ * @author djekanovic
+ *
+ */
 public class StartConnectionParser implements Parser {
 
 	@Override

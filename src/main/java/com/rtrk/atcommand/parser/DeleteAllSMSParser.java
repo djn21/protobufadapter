@@ -6,6 +6,13 @@ import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.MessageStatusDelete;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.SMSCommand;
 
+/**
+ * 
+ * Class for parsing DELETE_ALL_SMS command between original and protobuf format
+ * 
+ * @author djekanovic
+ *
+ */
 public class DeleteAllSMSParser implements Parser {
 
 	@Override

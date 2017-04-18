@@ -69,7 +69,7 @@ public class ProtobufATCommandAdapter {
 	 */
 	public static void init() {
 
-		File commandDescriptionFile = new File("resources/commands.xml");
+		File commandDescriptionFile = new File("C:/Users/djekanovic/Documents/EclipseProjects/protobufadapter/resources/commands.xml");
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder;
 		Document document;

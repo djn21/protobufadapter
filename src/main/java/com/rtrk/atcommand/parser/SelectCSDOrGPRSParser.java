@@ -6,6 +6,13 @@ import com.rtrk.atcommand.protobuf.ProtobufATCommand.CSDRate;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.Command;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.TCPIPCommand;
 
+/**
+ * 
+ * Class for parsing SELECT_CSD_OR_GPRS_AS_BEARER command between original and protobuf format
+ * 
+ * @author djekanovic
+ *
+ */
 public class SelectCSDOrGPRSParser implements Parser {
 
 	@Override

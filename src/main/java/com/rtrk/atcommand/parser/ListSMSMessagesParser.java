@@ -7,6 +7,13 @@ import com.rtrk.atcommand.protobuf.ProtobufATCommand.MessageMode;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.MessageStatusList;
 import com.rtrk.atcommand.protobuf.ProtobufATCommand.SMSCommand;
 
+/**
+ * 
+ * Class for parsing LIST_SMS_MESSAGE_FROM_PREFERRED_STORAGE command between original and protobuf format
+ * 
+ * @author djekanovic
+ *
+ */
 public class ListSMSMessagesParser implements Parser {
 
 	@Override
