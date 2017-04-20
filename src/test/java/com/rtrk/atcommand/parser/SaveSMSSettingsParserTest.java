@@ -10,6 +10,13 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+/**
+ * 
+ * Unit test for SaveSMSSettingsParser
+ * 
+ * @author djekanovic
+ *
+ */
 public class SaveSMSSettingsParserTest extends TestCase{
 
 	/**
@@ -33,6 +40,12 @@ public class SaveSMSSettingsParserTest extends TestCase{
 		return new TestSuite(SaveSMSSettingsParserTest.class);
 	}
 
+	
+	/**
+	 * 
+	 * Testing encode method
+	 * 
+	 */
 	public void testEncode() {
 		// 1. branch
 		Command.Builder commandBuilder = Command.newBuilder();
@@ -69,6 +82,11 @@ public class SaveSMSSettingsParserTest extends TestCase{
 		assertEquals("AT+CSAS=2", commandString);
 	}
 
+	/**
+	 * 
+	 * Testing decode method
+	 * 
+	 */
 	public void testDecode() {
 		// 1. branch
 		String params = "";

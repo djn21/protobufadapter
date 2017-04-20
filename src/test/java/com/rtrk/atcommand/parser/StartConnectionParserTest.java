@@ -10,6 +10,13 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+/**
+ * 
+ * Unit test for StartConnectionParser
+ * 
+ * @author djekanovic
+ *
+ */
 public class StartConnectionParserTest extends TestCase {
 
 	/**
@@ -33,6 +40,12 @@ public class StartConnectionParserTest extends TestCase {
 		return new TestSuite(StartConnectionParserTest.class);
 	}
 
+	
+	/**
+	 * 
+	 * Testing encode method
+	 * 
+	 */
 	public void testEncode() {
 		// 1. branch
 		Command.Builder commandBuilder = Command.newBuilder();
@@ -75,6 +88,11 @@ public class StartConnectionParserTest extends TestCase {
 		assertEquals("AT+QIOPEN=1,\"TCP\",domainname,80", commandString);
 	}
 
+	/**
+	 * 
+	 * Testing decode method
+	 * 
+	 */
 	public void testDecode() {
 		// 1. branch
 		String params="\"TCP\",domainname,80";

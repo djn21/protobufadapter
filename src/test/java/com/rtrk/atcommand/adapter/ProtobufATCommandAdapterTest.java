@@ -31,17 +31,17 @@ public class ProtobufATCommandAdapterTest extends TestCase {
 	private Command.Builder command;
 	private HTTPCommand.Builder httpCommand;
 	private GeneralCommand.Builder generalCommand;
-	
+
 	private MMSCommand mmsCommand;
 	private FileCommand fileCommand;
-	
+
 	private Command protocommand;
-	
+
 	byte[] encoded;
 	byte[] protobyte;
-	
+
 	String textcommand;
-	
+
 	/**
 	 * 
 	 * Create the test case
@@ -63,8 +63,13 @@ public class ProtobufATCommandAdapterTest extends TestCase {
 		return new TestSuite(ProtobufATCommandAdapterTest.class);
 	}
 
+	/**
+	 * 
+	 * Testing encode method
+	 * 
+	 */
 	public void testEncode() {
-		
+
 		// 1. branch (without parameters)
 		command = Command.newBuilder();
 		command.setCommandType(CommandType.HTTP_COMMAND);
@@ -119,9 +124,14 @@ public class ProtobufATCommandAdapterTest extends TestCase {
 		assertEquals("AT+QHTTPURL=100,200", textcommand);
 	}
 
+	/**
+	 * 
+	 * Testing decode method
+	 * 
+	 */
 	public void testDecode() {
 		try {
-			
+
 			// 1. branch
 			textcommand = "AT+QMMPROXY=1,\"255.255.255.255\",100";
 
@@ -147,43 +157,43 @@ public class ProtobufATCommandAdapterTest extends TestCase {
 
 			// 2. branch
 			textcommand = "AT+QFMOV=srcfilename,dstfilename,1,1";
-			protobyte=ProtobufATCommandAdapter.decode(textcommand.getBytes());
+			protobyte = ProtobufATCommandAdapter.decode(textcommand.getBytes());
 			assertNotNull(protobyte);
-			
-			protocommand=Command.parseFrom(protobyte);
+
+			protocommand = Command.parseFrom(protobyte);
 			assertTrue(protocommand.hasFileCommand());
 			assertEquals(CommandType.FILE_COMMAND, protocommand.getCommandType());
-			
-			fileCommand=protocommand.getFileCommand();
+
+			fileCommand = protocommand.getFileCommand();
 			assertTrue(fileCommand.hasSourceFileName());
 			assertTrue(fileCommand.hasDestinationFileName());
 			assertTrue(fileCommand.hasCopy());
 			assertTrue(fileCommand.hasOwerwrite());
-			
-			String srcfilename=fileCommand.getSourceFileName();
-			String dstfilename=fileCommand.getDestinationFileName();
-			boolean copy=fileCommand.getCopy();
-			boolean overwrite=fileCommand.getOwerwrite();
-			
+
+			String srcfilename = fileCommand.getSourceFileName();
+			String dstfilename = fileCommand.getDestinationFileName();
+			boolean copy = fileCommand.getCopy();
+			boolean overwrite = fileCommand.getOwerwrite();
+
 			assertEquals("srcfilename", srcfilename);
 			assertEquals("dstfilename", dstfilename);
 			assertTrue(copy);
 			assertTrue(overwrite);
-			
+
 			// 3. branch
-			textcommand="AT+CMGF=1";
-			protobyte=ProtobufATCommandAdapter.decode(textcommand.getBytes());
+			textcommand = "AT+CMGF=1";
+			protobyte = ProtobufATCommandAdapter.decode(textcommand.getBytes());
 			assertNotNull(protocolType);
-			
-			protocommand=Command.parseFrom(protobyte);
+
+			protocommand = Command.parseFrom(protobyte);
 			assertTrue(protocommand.hasSmsCommand());
 			assertEquals(CommandType.SMS_COMMAND, protocommand.getCommandType());
-			
-			SMSCommand smsCommand=protocommand.getSmsCommand();
+
+			SMSCommand smsCommand = protocommand.getSmsCommand();
 			assertTrue(smsCommand.hasMessageFormat());
-			
-			MessageFormat mf=smsCommand.getMessageFormat();
-			
+
+			MessageFormat mf = smsCommand.getMessageFormat();
+
 			assertEquals(MessageFormat.TEXT_MODE, mf);
 		} catch (InvalidProtocolBufferException e) {
 			e.printStackTrace();

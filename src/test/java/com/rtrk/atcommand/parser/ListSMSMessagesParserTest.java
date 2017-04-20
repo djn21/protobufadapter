@@ -15,6 +15,13 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+/**
+ * 
+ * Unit test for ListSMSMessagesParser
+ * 
+ * @author djekanovic
+ *
+ */
 public class ListSMSMessagesParserTest extends TestCase {
 
 	/**
@@ -38,6 +45,11 @@ public class ListSMSMessagesParserTest extends TestCase {
 		return new TestSuite(ListSMSMessagesParserTest.class);
 	}
 
+	/**
+	 * 
+	 * Testing encode method
+	 * 
+	 */
 	public void testEncode() {
 		// 1. branch
 		Command.Builder commandBulder = Command.newBuilder();
@@ -75,6 +87,11 @@ public class ListSMSMessagesParserTest extends TestCase {
 		assertEquals("AT+CMGL=\"ALL\",0", commandString);
 	}
 
+	/**
+	 * 
+	 * Testing decode method
+	 * 
+	 */
 	public void testDecode() {
 		// 1. branch
 		String params = "0";

@@ -10,6 +10,13 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+/**
+ * 
+ * Unit test for MobileOriginatedCallParser
+ * 
+ * @author djekanovic
+ *
+ */
 public class MobileOriginatedCallParserTest extends TestCase {
 
 	/**
@@ -33,6 +40,12 @@ public class MobileOriginatedCallParserTest extends TestCase {
 		return new TestSuite(ListSMSMessagesParserTest.class);
 	}
 
+	
+	/**
+	 * 
+	 * Testing encode method
+	 * 
+	 */
 	public void testEncode() {
 		// 1. branch
 		Command.Builder commandBuilder = Command.newBuilder();
@@ -87,6 +100,12 @@ public class MobileOriginatedCallParserTest extends TestCase {
 		assertEquals("ATD+38765123456g;", commandString);
 	}
 
+	
+	/**
+	 * 
+	 * Testing decode method
+	 * 
+	 */
 	public void testDecode() {
 		// 1. branch
 		String params = "+38765123456";

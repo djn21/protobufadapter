@@ -12,6 +12,13 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+/**
+ * 
+ * Unit test for SelectCSDOrGPRSParser
+ * 
+ * @author djekanovic
+ *
+ */
 public class SelectCSDOrGPRSParserTest extends TestCase {
 
 	/**
@@ -35,6 +42,12 @@ public class SelectCSDOrGPRSParserTest extends TestCase {
 		return new TestSuite(SelectCSDOrGPRSParserTest.class);
 	}
 
+	
+	/**
+	 * 
+	 * Testing encode method
+	 * 
+	 */
 	public void testEncode() {
 		// 1. branch
 		Command.Builder commandBuilder = Command.newBuilder();
@@ -96,6 +109,11 @@ public class SelectCSDOrGPRSParserTest extends TestCase {
 		assertEquals("AT+QICSGP=1,accesspoint,username,password", commandString);
 	}
 
+	/**
+	 * 
+	 * Testing decode method
+	 * 
+	 */
 	public void testDecode() {
 		// 1. branch
 		String params = "1";

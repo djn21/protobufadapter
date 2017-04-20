@@ -12,6 +12,13 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+/**
+ * 
+ * Unit test for ListFileNamesParser
+ * 
+ * @author djekanovic
+ *
+ */
 public class ListFileNamesParserTest extends TestCase {
 
 	/**
@@ -35,6 +42,11 @@ public class ListFileNamesParserTest extends TestCase {
 		return new TestSuite(ListFileNamesParserTest.class);
 	}
 
+	/**
+	 * 
+	 * Testing encode method
+	 * 
+	 */
 	public void testEncode() {
 		// 1. branch
 		Command.Builder commandBulder = Command.newBuilder();
@@ -69,6 +81,11 @@ public class ListFileNamesParserTest extends TestCase {
 		assertEquals("AT+QFTPNLST", commandString);
 	}
 
+	/**
+	 * 
+	 * Testing decode method
+	 * 
+	 */
 	public void testDecode() {
 		// 1. branch
 		String params = "\"folder\"";

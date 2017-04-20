@@ -12,6 +12,13 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+/**
+ * 
+ * Unit test for WriteSMSMessageParser
+ * 
+ * @author djekanovic
+ *
+ */
 public class WriteSMSMessageParserTest extends TestCase {
 
 	/**
@@ -35,6 +42,11 @@ public class WriteSMSMessageParserTest extends TestCase {
 		return new TestSuite(WriteSMSMessageParserTest.class);
 	}
 
+	/**
+	 * 
+	 * Testing encode method
+	 * 
+	 */
 	public void testEncode() {
 		// 1. branch
 		Command.Builder commandBuilder = Command.newBuilder();
@@ -91,6 +103,11 @@ public class WriteSMSMessageParserTest extends TestCase {
 		assertEquals("AT+CMGW=10,2", commandString);
 	}
 
+	/**
+	 * 
+	 * Testing decode method
+	 * 
+	 */
 	public void testDecode() {
 		// 1. branch
 		String params = "";
@@ -119,13 +136,13 @@ public class WriteSMSMessageParserTest extends TestCase {
 
 		assertTrue(commandBuilder.hasDestinationAddress());
 		assertEquals("destaddr", commandBuilder.getDestinationAddress());
-		
+
 		assertTrue(commandBuilder.hasTypeOfDestinationAddress());
 		assertEquals(3, commandBuilder.getTypeOfDestinationAddress());
-		
+
 		assertTrue(commandBuilder.hasMessageStatusText());
 		assertEquals("\"ALL\"", commandBuilder.getMessageStatusText());
-		
+
 		// 3. branch
 		params = "5,3";
 
@@ -136,10 +153,10 @@ public class WriteSMSMessageParserTest extends TestCase {
 
 		parser = new WriteSMSMessageParser();
 		parser.decode(params.getBytes(), commandBuilder);
-		
+
 		assertTrue(commandBuilder.hasLength());
 		assertEquals(5, commandBuilder.getLength());
-		
+
 		assertTrue(commandBuilder.hasMessageStatusListPDU());
 		assertEquals(3, commandBuilder.getMessageStatusListPDU().getNumber());
 	}

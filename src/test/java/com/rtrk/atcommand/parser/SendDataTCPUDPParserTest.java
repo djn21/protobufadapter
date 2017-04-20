@@ -11,6 +11,13 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+/**
+ * 
+ * Unit test for SendDataTCPUDPParser
+ * 
+ * @author djekanovic
+ *
+ */
 public class SendDataTCPUDPParserTest extends TestCase {
 
 	/**
@@ -34,6 +41,11 @@ public class SendDataTCPUDPParserTest extends TestCase {
 		return new TestSuite(SendDataTCPUDPParserTest.class);
 	}
 
+	/**
+	 * 
+	 * Testing encode method
+	 * 
+	 */
 	public void testEncode() {
 		// 1. branch
 		Command.Builder commandBuilder=Command.newBuilder();
@@ -72,6 +84,11 @@ public class SendDataTCPUDPParserTest extends TestCase {
 		assertEquals("AT+QISEND=2,1", commandString);
 	}
 
+	/**
+	 * 
+	 * Testing decode method
+	 * 
+	 */
 	public void testDecode() {
 		// 1. branch
 		String params="2";

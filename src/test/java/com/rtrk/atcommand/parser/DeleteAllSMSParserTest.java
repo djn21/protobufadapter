@@ -14,6 +14,13 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+/**
+ * 
+ * Unit test for DeleteAllSMSParser
+ * 
+ * @author djekanovic
+ *
+ */
 public class DeleteAllSMSParserTest extends TestCase {
 
 	/**
@@ -37,6 +44,11 @@ public class DeleteAllSMSParserTest extends TestCase {
 		return new TestSuite(DeleteAllSMSParserTest.class);
 	}
 
+	/**
+	 * 
+	 * Testing encode method
+	 * 
+	 */
 	public void testEncode() {
 		// 1. branch
 		Command.Builder commandBuilder = Command.newBuilder();
@@ -75,6 +87,11 @@ public class DeleteAllSMSParserTest extends TestCase {
 		assertEquals("AT+QMGDA=\"DEL ALL\"", commandString);
 	}
 
+	/**
+	 * 
+	 * Testing decode method
+	 * 
+	 */
 	public void testDecode() {
 		// 1. branch
 		String params = "1";

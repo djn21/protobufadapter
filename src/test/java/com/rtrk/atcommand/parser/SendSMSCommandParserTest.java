@@ -11,6 +11,13 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+/**
+ * 
+ * Unit test for SendSMSCommandParser
+ * 
+ * @author djekanovic
+ *
+ */
 public class SendSMSCommandParserTest extends TestCase {
 
 	/**
@@ -34,6 +41,11 @@ public class SendSMSCommandParserTest extends TestCase {
 		return new TestSuite(SendDataTCPUDPParserTest.class);
 	}
 
+	/**
+	 * 
+	 * Testing encode method
+	 * 
+	 */
 	public void testEncode() {
 		// 1. branch
 		Command.Builder commandBuilder = Command.newBuilder();
@@ -76,6 +88,11 @@ public class SendSMSCommandParserTest extends TestCase {
 		assertEquals("AT+CMGC=1,2,3,4,destaddr,5", commandString);
 	}
 
+	/**
+	 * 
+	 * Testing decode method
+	 * 
+	 */
 	public void testDecode() {
 		// 1. branch
 		String params = "1";

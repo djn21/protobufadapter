@@ -12,6 +12,13 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+/**
+ * 
+ * Unit test for ListDirectoryContentParser
+ * 
+ * @author djekanovic
+ *
+ */
 public class ListDirectoryContentParserTest extends TestCase {
 
 	/**
@@ -35,6 +42,11 @@ public class ListDirectoryContentParserTest extends TestCase {
 		return new TestSuite(ListDirectoryContentParserTest.class);
 	}
 
+	/**
+	 * 
+	 * Testing encode method
+	 * 
+	 */
 	public void testEncode() {
 		// 1. branch
 		Command.Builder commandBulder = Command.newBuilder();
@@ -70,6 +82,11 @@ public class ListDirectoryContentParserTest extends TestCase {
 		assertEquals("AT+QFTPLIST", commandString);
 	}
 
+	/**
+	 * 
+	 * Testing decode method
+	 * 
+	 */
 	public void testDecode() {
 		// 1. branch
 		String params = "\"file.txt\"";

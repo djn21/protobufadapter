@@ -10,6 +10,13 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+/**
+ * 
+ * Unit test for RestoreSMSSettingsParser
+ * 
+ * @author djekanovic
+ *
+ */
 public class RestoreSMSSettingsParserTest extends TestCase {
 
 	/**
@@ -33,6 +40,11 @@ public class RestoreSMSSettingsParserTest extends TestCase {
 		return new TestSuite(RestoreSMSSettingsParserTest.class);
 	}
 
+	/**
+	 * 
+	 * Testing encode method
+	 * 
+	 */
 	public void testEncode() {
 		// 1. branch
 		Command.Builder commandBuilder = Command.newBuilder();
@@ -69,6 +81,11 @@ public class RestoreSMSSettingsParserTest extends TestCase {
 		assertEquals("AT+CRES=1", commandString);
 	}
 
+	/**
+	 * 
+	 * Testing decode method
+	 * 
+	 */
 	public void testDecode() {
 		// 1. branch
 		String params = "";

@@ -12,6 +12,13 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+/**
+ * 
+ * Unit test for WriteMMSMessagesParser
+ * 
+ * @author djekanovic
+ *
+ */
 public class WriteMMSMessageParserTest extends TestCase {
 
 	/**
@@ -35,6 +42,12 @@ public class WriteMMSMessageParserTest extends TestCase {
 		return new TestSuite(WriteMMSMessageParserTest.class);
 	}
 
+	
+	/**
+	 * 
+	 * Testing encode method
+	 * 
+	 */
 	public void testEncode() {
 		// 1. branch
 		Command.Builder commandBuilder = Command.newBuilder();
@@ -75,6 +88,11 @@ public class WriteMMSMessageParserTest extends TestCase {
 		assertEquals("AT+QMMSW=2,0,opstring", commandString);
 	}
 
+	/**
+	 * 
+	 * Testing decode method
+	 * 
+	 */
 	public void testDecode() {
 		// 1. branch
 		String params = "3";

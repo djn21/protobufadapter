@@ -13,6 +13,13 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+/**
+ * 
+ * Unit test for SetParametersFTPParser
+ * 
+ * @author djekanovic
+ *
+ */
 public class SetParametersFTPParserTest extends TestCase {
 
 	/**
@@ -36,6 +43,12 @@ public class SetParametersFTPParserTest extends TestCase {
 		return new TestSuite(SetParametersFTPParserTest.class);
 	}
 
+	
+	/**
+	 * 
+	 * Testing encode method
+	 * 
+	 */
 	public void testEncode() {
 		// 1. branch
 		Command.Builder commandBuilder = Command.newBuilder();
@@ -111,6 +124,12 @@ public class SetParametersFTPParserTest extends TestCase {
 		assertEquals("AT+QFTPCFG=4,\"COM\"", commandString);
 	}
 
+	
+	/**
+	 * 
+	 * Testing decode method
+	 * 
+	 */
 	public void testDecode() {
 		// 1. branch
 		String params = "1,1";
